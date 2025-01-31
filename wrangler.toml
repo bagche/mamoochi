@@ -1,0 +1,21 @@
+name = "alizemani"
+compatibility_date = "2024-06-17"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"                                       # available in your Worker on env.DB
+database_name = "inbox"
+database_id = "9a4c5463-2684-4973-8a04-6c3f5886924c"
+migrations_dir = "migrations"
+
+[[kv_namespaces]]
+binding = "inboxKV"
+id = "641b2dd1ff024c6d88da451bee969e54"
+
+#[[durable_objects.bindings]]
+#name = "$DurableObject"
+#class_name = "$DurableObject"
+
+#[[migrations]]
+#tag = "v1"
+#new_classes = ["$DurableObject"]
