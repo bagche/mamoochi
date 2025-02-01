@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "nitro-cloudflare-dev",
     "nuxt-auth-utils",
+    "nuxt-tiptap-editor",
     "@nuxtjs/i18n",
   ],
 
