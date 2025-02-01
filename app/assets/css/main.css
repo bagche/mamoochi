@@ -1,8 +1,8 @@
 
 
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 @import "@nuxt/ui";
+@plugin "@tailwindcss/typography";
 :root {
   font-family: FarhangDot;
 }

@@ -39,9 +39,6 @@ export default defineNuxtConfig({
   ui: {
     fonts: false,
   },
-  imports: {
-    dirs: ["composables/**"],
-  },
   i18n: {
     locales: [
       {

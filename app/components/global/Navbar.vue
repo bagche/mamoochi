@@ -8,6 +8,7 @@ const items = ref([
     {
       label: "Home",
       icon: "i-lucide-home",
+      to: "/",
     },
     {
       label: "Explorer",
