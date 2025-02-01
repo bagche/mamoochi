@@ -1,11 +1,7 @@
-<!-- <script lang="ts" setup>
+<script lang="ts" setup>
 const { locale, t } = useI18n();
-const { registerNew } = useUser();
-const runtimeConfig = useRuntimeConfig();
 
 const dir = computed(() => (locale.value === "en" ? "ltr" : "rtl"));
-
-// console.log(dir.value, lang.value);
 useHead({
   title: t("siteName"),
   titleTemplate: `%s - ${t("siteName")}:// ${t("description")} `,
@@ -15,7 +11,7 @@ useHead({
   },
   meta: [
     { name: "viewport", content: "width=device-width, initial-scale=1" },
-    { name: "theme-color", content: runtimeConfig.app.color },
+    { name: "theme-color", content: "e5e7eb" },
     {
       hid: "description",
       name: "description",
@@ -33,10 +29,7 @@ useHead({
     },
   ],
 });
-onMounted(() => {
-  registerNew();
-}); -->
-<!-- </script> -->
+</script>
 <template>
   <UApp>
     <NuxtLayout class="dark:bg-slate-800">

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const { locale, t } = useI18n();
+const navDir = computed(() =>
+  locale.value === "fa" ? "flex-row-reverse rtl" : "flex-row"
+);
 const items = ref([
   [
     {
@@ -20,9 +24,14 @@ const items = ref([
   ],
   [
     {
+      label: "i18n",
+      slot: "i18n",
+    },
+    {
       label: "theme",
       slot: "theme",
     },
+
     {
       label: "avatar",
       slot: "avatar",
@@ -37,9 +46,18 @@ const items = ref([
     highlight-color="primary"
     orientation="horizontal"
     :items="items"
-    class="data-[orientation=horizontal]:border-b border-[var(--ui-border)] data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-48 items-center"
+    :ui="{
+      root: navDir,
+    }"
+    class="navbar data-[orientation=horizontal]:border-b border-[var(--ui-border)] data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-48 items-center"
   >
     <template #theme="{ item }"> <DarkMode class="" /> </template>
+    <template #i18n="{ item }"> <LanguageSelector class="" /> </template>
     <template #avatar="{ item }"> <AvatarMenu class="" /> </template>
   </UNavigationMenu>
 </template>
+<style>
+.rtl * {
+  direction: rtl;
+}
+</style>

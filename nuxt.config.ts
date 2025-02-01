@@ -11,9 +11,10 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "nitro-cloudflare-dev",
     "nuxt-auth-utils",
+    "@nuxtjs/i18n",
   ],
 
-  css: ["~/assets/css/main.css","~/assets/css/extra.scss"],
+  css: ["~/assets/css/main.css", "~/assets/css/extra.scss"],
   vite: {
     css: {
       preprocessorOptions: {
@@ -40,5 +41,28 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: ["composables/**"],
+  },
+  i18n: {
+    locales: [
+      {
+        name: "فارسی",
+        dir: "rtl",
+        code: "fa",
+        file: "fa.json",
+      },
+      {
+        name: "English",
+        dir: "ltr",
+        code: "en",
+        file: "en.json",
+      },
+    ],
+    // lazy: true,
+    langDir: "locales",
+    defaultLocale: "fa",
+    strategy: "no_prefix",
+    experimental: {
+      localeDetector: "localeDetector.ts",
+    },
   },
 });

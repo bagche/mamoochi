@@ -9,6 +9,7 @@
     "generate": "nuxt generate",
     "postinstall": "nuxt prepare",
     "lint:fix": "eslint . --fix",
+    "i18:update": "node scripts/updateLocale.js",
     "preview": "nuxt preview"
   },
   "dependencies": {
@@ -31,6 +32,7 @@
     "@iconify-json/uil": "^1.2.3",
     "@nuxt/content": "^3.0.1",
     "@nuxt/eslint": "^1.0.0",
+    "@nuxtjs/i18n": "^9.1.4",
     "@tailwindcss/typography": "^0.5.16",
     "@types/better-sqlite3": "^7.6.12",
     "drizzle-kit": "^0.30.4",
