@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { FormSubmitEvent } from "#ui/types";
 import { z } from "zod";
+
+import type { FormSubmitEvent } from "#ui/types";
 
 const options = [
   { label: "Option 1", value: "option-1" },

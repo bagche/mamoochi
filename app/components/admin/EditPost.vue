@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { FormSubmitEvent } from "#ui/types";
 import { decode } from "js-base64";
-
 import { z } from "zod";
+
+import type { FormSubmitEvent } from "#ui/types";
 const route = useRoute();
 const { data } = await useAsyncData("page-data", () =>
   queryContent(route.path).findOne()
