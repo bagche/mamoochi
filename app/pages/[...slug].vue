@@ -2,18 +2,28 @@
 const { locale } = useI18n();
 
 const route = useRoute();
+
+const mdFile = computed(() =>
+  route.path.startsWith("/fa/") || route.path.startsWith("/en")
+    ? `%${route.path.slice(3) === "/" ? "index" : route.path.slice(4)}.${locale.value}`
+    : `%${route.path === "/" ? "index" : route.path.slice(1)}.${locale.value}`
+);
+
 const { data: page }: any = await useAsyncData(route.path, () => {
-  return queryCollection("pages")
-    .where("stem", "LIKE", "%." + locale.value)
-    .first();
+  return (
+    queryCollection("content")
+      .where("path", "LIKE", mdFile.value)
+      .first()
+  );
 });
 useSeoMeta({
   title: page.value?.title,
   description: page.value?.description,
 });
+console.log(route.path, locale.value, mdFile.value);
 </script>
 <template>
-  <div class="min-h-[30rem]">
+  <div class="pt-5">
     <!-- <ContentDoc v-slot="{ doc }"> -->
     <!-- Intro section -->
     <!-- <PageIntro v-if="doc?.postIntro" /> -->

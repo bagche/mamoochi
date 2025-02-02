@@ -3,24 +3,27 @@ const { locale, t } = useI18n();
 const navDir = computed(() =>
   locale.value === "fa" ? "flex-row-reverse rtl" : "flex-row"
 );
-const items = ref([
+const items = computed(() => [
   [
     {
       label: "Home",
       icon: "i-lucide-home",
-      to: "/",
+      to: "/" + locale.value + "/",
     },
     {
       label: "Explorer",
       icon: "i-lucide-search",
+      to: "/" + locale.value + "/explorer",
     },
     {
       label: "About",
       icon: "i-lucide-info",
+      to: "/" + locale.value + "/about",
     },
     {
       label: "Contact",
       icon: "i-lucide-mail",
+      to: "/" + locale.value + "/contact",
     },
   ],
   [
@@ -50,7 +53,7 @@ const items = ref([
     :ui="{
       root: navDir,
     }"
-    class="navbar data-[orientation=horizontal]:border-b border-[var(--ui-border)] data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-48 items-center"
+    class="navbar data-[orientation=horizontal]:w-full items-center"
   >
     <template #theme="{ item }"> <DarkMode class="" /> </template>
     <template #i18n="{ item }"> <LanguageSelector class="" /> </template>
