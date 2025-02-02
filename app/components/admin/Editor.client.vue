@@ -3,6 +3,8 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { BubbleMenu } from "@tiptap/vue-3";
 import { Markdown } from "tiptap-markdown";
 
+import HomeIntro from "../editor/Extension";
+
 const props = defineProps({
   body: { type: String, required: true, default: "" },
 });
@@ -17,6 +19,7 @@ const editor = useEditor({
   extensions: [
     TiptapStarterKit,
     BubbleMenu,
+    HomeIntro,
     Markdown,
     Placeholder.configure({
       placeholder: "چیزی بنویسید ...",

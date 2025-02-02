@@ -20,6 +20,6 @@ useSeoMeta({
 <template>
   <div class="pt-5">
     <ContentRenderer v-if="page" :value="page" />
-    <HelperStart :path="page.stem" />
+    <HelperStart :path="page?.stem" />
   </div>
 </template>
