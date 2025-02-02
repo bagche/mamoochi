@@ -28,7 +28,7 @@ const editor = useEditor({
 });
 
 onBeforeUnmount(() => {
-  unref(editor).destroy();
+  unref(editor)?.destroy();
 });
 </script>
 
