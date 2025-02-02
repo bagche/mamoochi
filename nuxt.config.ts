@@ -41,6 +41,11 @@ export default defineNuxtConfig({
     fonts: false,
   },
   i18n: {
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",  
+    },
     locales: [
       {
         name: "فارسی",
@@ -58,7 +63,7 @@ export default defineNuxtConfig({
     // lazy: true,
     langDir: "locales",
     defaultLocale: "fa",
-    strategy: "no_prefix",
+    strategy: "prefix_and_default",
     experimental: {
       localeDetector: "localeDetector.ts",
     },

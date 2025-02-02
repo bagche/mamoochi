@@ -3,7 +3,7 @@ const { locale } = useI18n();
 
 const route = useRoute();
 const { data: page }: any = await useAsyncData(route.path, () => {
-  return queryCollection("pages")
+  return queryCollection("blogs")
     .where("stem", "LIKE", "%." + locale.value)
     .first();
 });
