@@ -35,7 +35,11 @@ const items = computed(() => [
       label: "theme",
       slot: "theme",
     },
-
+    {
+      // label: "Manage",
+      icon: "i-lucide-settings",
+      to: "/manage",
+    },
     {
       label: "avatar",
       slot: "avatar",

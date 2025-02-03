@@ -35,7 +35,7 @@
     "@iconify-json/uil": "^1.2.3",
     "@nuxt/content": "^3.0.1",
     "@nuxt/eslint": "^1.0.0",
-    "@nuxtjs/i18n": "^9.1.4",
+    "@nuxtjs/i18n": "^9.1.5",
     "@tailwindcss/typography": "^0.5.16",
     "drizzle-kit": "^0.30.4",
     "eslint": "^9.19.0",

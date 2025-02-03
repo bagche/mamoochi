@@ -11,7 +11,7 @@ const items = [
 </script>
 
 <template>
-  <node-view-wrapper class="vue-component">
+  <node-view-wrapper >
     <UCarousel
       v-slot="{ item }"
       dots

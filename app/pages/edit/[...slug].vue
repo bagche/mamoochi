@@ -71,7 +71,7 @@ const isTyping = (data: string) => {
           <UButton icon="i-heroicons-chevron-down" color="gray" />
         </UButtonGroup>
       </div>
-      <AdminEditor :body="state.body" @update="isTyping" />
+      <ManageEditor :body="state.body" @update="isTyping" />
     </UForm>
   </div>
 </template>
