@@ -1,51 +1,19 @@
 <script setup lang="ts">
 const { locale, t } = useI18n();
+const appConfig = useAppConfig();
+
 const navDir = computed(() =>
   locale.value === "fa" ? "flex-row-reverse rtl" : "flex-row"
 );
-const items = computed(() => [
-  [
-    {
-      label: "Home",
-      // icon: "i-lucide-home",
-      to: "/" + locale.value + "/",
-    },
-    {
-      label: "Explorer",
-      // icon: "i-lucide-search",
-      to: "/" + locale.value + "/explorer",
-    },
-    {
-      label: "About",
-      // icon: "i-lucide-info",
-      to: "/" + locale.value + "/about",
-    },
-    {
-      label: "Contact",
-      // icon: "i-lucide-mail",
-      to: "/" + locale.value + "/contact",
-    },
-  ],
-  [
-    {
-      label: "i18n",
-      slot: "i18n",
-    },
-    {
-      label: "theme",
-      slot: "theme",
-    },
-    {
-      // label: "Manage",
-      icon: "i-lucide-settings",
-      to: "/manage",
-    },
-    {
-      label: "avatar",
-      slot: "avatar",
-    },
-  ],
-]);
+const items = computed(() => {
+  return appConfig.mainMenu.map((group) =>
+    group.map((item) => ({
+      ...item,
+      label: item.label ? t(item.label as string) : item.label,
+      to: item.to ? `/${locale.value}${item.to}` : undefined, // Prefix the locale
+    }))
+  );
+});
 </script>
 
 <template>
@@ -57,7 +25,7 @@ const items = computed(() => [
     :ui="{
       root: navDir,
     }"
-    class="navbar data-[orientation=horizontal]:w-full items-center text-2xl"
+    class="navbar data-[orientation=horizontal]:w-full text-3xl"
   >
     <template #theme="{ item }"> <DarkMode class="" /> </template>
     <template #i18n="{ item }"> <LanguageSelector class="" /> </template>

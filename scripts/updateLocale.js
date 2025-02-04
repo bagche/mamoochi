@@ -11,33 +11,24 @@ const extractMenuTitles = (configPath) => {
   const content = fs.readFileSync(configPath, "utf-8");
   const titles = [];
 
-  // Regex to match the menuItems array and its objects
-  const menuItemsRegex = /menuItems\s*:\s*\[\s*([\s\S]*?)\s*\]/m;
-  const titleRegex = /title\s*:\s*['"](.+?)['"]/g;
+  // Updated: Make sure we capture the entire mainMenu array (both sub-arrays).
+  // Change from ([\s\S]*?) to ([\s\S]*) to capture all.
+  const mainMenuRegex = /mainMenu\s*:\s*\[\s*([\s\S]*)\s*\]/m;
+  const labelRegex = /label\s*:\s*['"](.+?)['"]/g;
 
-  // Regex to match the categories array
-  const categoriesRegex = /categories\s*:\s*\[\s*([\s\S]*?)\s*\]/m;
-
-  const menuMatch = content.match(menuItemsRegex);
-  const categoriesMatch = content.match(categoriesRegex);
-
-console.log()
-
-  // Extract menu titles
-  if (menuMatch) {
-    const menuContent = menuMatch[1];
-    let titleMatch;
-    while ((titleMatch = titleRegex.exec(menuContent)) !== null) {
-      titles.push(titleMatch[1]);
-    }
+  const mainMenuMatch = content.match(mainMenuRegex);
+  if (!mainMenuMatch) {
+    return titles;
   }
 
-  // Extract categories if available, but only return titles
-  if (categoriesMatch) {
-    const categoriesContent = categoriesMatch[1];
-    const categories = categoriesContent.split(",").map(item => item.trim().replace(/['"]/g, ''));
-    titles.push(...categories);  // Add categories to titles
+  const menuContent = mainMenuMatch[1];
+
+  let match;
+  // Find all label: "Something"
+  while ((match = labelRegex.exec(menuContent)) !== null) {
+    titles.push(match[1]);
   }
+
   return titles;
 };
 
