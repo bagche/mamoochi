@@ -18,8 +18,8 @@ useSeoMeta({
 });
 </script>
 <template>
-  <div class="pt-5">
-    <ContentRenderer v-if="page" :value="page" />
+  <div v-if="page" class="pt-5" >
+    <ContentRenderer  :value="page" />
     <HelperStart :path="page?.stem" />
   </div>
 </template>
