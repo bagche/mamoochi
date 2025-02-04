@@ -5,7 +5,9 @@ import AutoJoiner from "tiptap-extension-auto-joiner";
 import { Markdown } from "tiptap-markdown";
 
 import GlobalDragHandle from "../editor/dragger";
-import components from "../editor/Extension";
+import { getExtensions } from "../editor/Extension";
+
+const extensions = await getExtensions();
 
 const props = defineProps({
   body: { type: String, required: true, default: "" },
@@ -46,7 +48,7 @@ const editor = useEditor({
       //
       customNodes: [],
     }),
-    ...components,
+    ...extensions,
     Markdown,
     Placeholder.configure({
       placeholder: "چیزی بنویسید ...",
