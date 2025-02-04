@@ -3,34 +3,71 @@ import path from 'path';
 
 
 /**
- * Extracts menuItems titles from app.config.ts using regex.
+ * Find the matching ']' bracket for an array starting at `startPos`.
+ * - Uses bracket counting to handle nested arrays.
+ * @param {string} content - The entire file string.
+ * @param {number} startPos - The position of the initial '['.
+ * @returns {number} Index of the matching ']' or -1 if not found.
  */
-const extractMenuTitles = (configPath) => {
+function findMatchingBracket(content, startPos) {
+  let bracketCount = 0;
+  for (let i = startPos; i < content.length; i++) {
+    if (content[i] === "[") {
+      bracketCount++;
+    } else if (content[i] === "]") {
+      bracketCount--;
+      if (bracketCount === 0) {
+        return i; // Found the matching bracket
+      }
+    }
+  }
+  return -1; // No matching bracket found
+}
+
+/**
+ * Extract all `label` values from any "*Menu" property (e.g., `mainMenu`, `dashMenu`)
+ * in the given app.config.ts file.
+ * @param {string} configPath - Absolute path to app.config.ts
+ * @returns {string[]} An array of all label strings
+ */
+export function extractMenuTitles(configPath) {
   if (!fs.existsSync(configPath)) return [];
 
   const content = fs.readFileSync(configPath, "utf-8");
   const titles = [];
 
-  // Updated: Make sure we capture the entire mainMenu array (both sub-arrays).
-  // Change from ([\s\S]*?) to ([\s\S]*) to capture all.
-  const mainMenuRegex = /mainMenu\s*:\s*\[\s*([\s\S]*)\s*\]/m;
-  const labelRegex = /label\s*:\s*['"](.+?)['"]/g;
+  // Regex to find the beginning of any property ending with "Menu"
+  // e.g. "mainMenu: [" or "dashMenu: ["
+  const menuStartRegex = /(\w+Menu)\s*:\s*\[/g;
 
-  const mainMenuMatch = content.match(mainMenuRegex);
-  if (!mainMenuMatch) {
-    return titles;
-  }
-
-  const menuContent = mainMenuMatch[1];
+  // Regex for extracting label: "SomeLabel" or label: 'SomeLabel'
+  const labelRegex = /label\s*:\s*(['"])(.*?)\1/g;
 
   let match;
-  // Find all label: "Something"
-  while ((match = labelRegex.exec(menuContent)) !== null) {
-    titles.push(match[1]);
+  while ((match = menuStartRegex.exec(content)) !== null) {
+    // match.index points to the start of `(\w+Menu)`, but we want the position of the '['
+    // so we do:
+    const startPos = match.index + match[0].length - 1; // position at the first '['
+    const endPos = findMatchingBracket(content, startPos);
+    if (endPos === -1) {
+      // No matching bracket found; skip
+      continue;
+    }
+
+    // Extract the substring that represents the entire array for this Menu
+    const menuBlock = content.slice(startPos, endPos + 1);
+
+    // Now find all label: "..." occurrences inside this substring
+    let labelMatch;
+    while ((labelMatch = labelRegex.exec(menuBlock)) !== null) {
+      const labelValue = labelMatch[2]; // The text inside the quotes
+      titles.push(labelValue);
+    }
   }
 
   return titles;
-};
+}
+
 
 /**
  * Retrieves all files with the specified extensions from the given directory, excluding specified directories.

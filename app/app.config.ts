@@ -42,4 +42,55 @@ export default defineAppConfig({
       },
     ],
   ],
+  dashMenu: [
+    [
+      {
+        label: "Dashboard",
+        type: "label",
+      },
+      {
+        label: "Posts",
+        icon: "i-lucide-book-open",
+        active: true,
+        defaultOpen: true,
+        children: [
+          {
+            label: "All Posts",
+            icon: "i-lucide-file-text",
+            description: "Use NuxtLink with superpowers.",
+            // to: "/components/link",
+          },
+          {
+            label: "Category",
+            icon: "i-lucide-file-text",
+            description: "Display a modal within your application.",
+            // to: "/components/modal",
+          },
+        ],
+      },
+      {
+        label: "Comments",
+        icon: "i-lucide-database",
+      },
+      {
+        label: "Users",
+        icon: "i-lucide-box",
+        // to: "/components",
+      },
+    ],
+    [
+      {
+        label: "GitHub",
+        icon: "i-simple-icons-github",
+        badge: "3.8k",
+        to: "https://github.com/bagche/Mamoochi",
+        target: "_blank",
+      },
+      {
+        label: "Help",
+        icon: "i-lucide-circle-help",
+        // disabled: true,
+      },
+    ],
+  ],
 });
