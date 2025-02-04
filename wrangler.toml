@@ -1,5 +1,6 @@
 name = "mamoochi"
 pages_build_output_dir = "dist"
+compatibility_flags = [ "nodejs_compat" ]
 
 [[d1_databases]]
 binding = "DB"                                       # available in your Worker on env.DB
