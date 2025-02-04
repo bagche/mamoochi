@@ -1,36 +1,41 @@
-import { mergeAttributes, Node } from '@tiptap/core'
-import { VueNodeViewRenderer } from '@tiptap/vue-3'
+import { mergeAttributes, Node } from "@tiptap/core";
+import { NodeViewWrapper, VueNodeViewRenderer } from "@tiptap/vue-3";
+import { defineComponent, h } from "vue";
 
-import HomeIntro from '../content/HomeIntro.vue'
+import HomeIntro from "../content/HomeIntro.vue";
 
 export default Node.create({
-  name: 'HomeIntro',
-
-  group: 'block',
-
+  name: "HomeIntro",
+  group: "block",
   atom: true,
-
-  addAttributes() {
-    return {
-      count: {
-        default: 0,
-      },
-    }
-  },
-
+  // addAttributes() {
+  //   return {
+  //     count: {
+  //       default: 0,
+  //     },
+  //   };
+  // },
   parseHTML() {
     return [
       {
-        tag: 'HomeIntro',
+        tag: "HomeIntro",
       },
-    ]
+    ];
   },
-
   renderHTML({ HTMLAttributes }) {
-    return ['HomeIntro', mergeAttributes(HTMLAttributes)]
+    return ["HomeIntro", mergeAttributes(HTMLAttributes)];
   },
-
   addNodeView() {
-    return VueNodeViewRenderer(HomeIntro)
+    return VueNodeViewRenderer(
+      defineComponent({
+        components: { HomeIntro },
+        setup() {
+          return () =>
+            h(NodeViewWrapper, null, {
+              default: () => h(HomeIntro),
+            });
+        },
+      })
+    );
   },
-})
+});
