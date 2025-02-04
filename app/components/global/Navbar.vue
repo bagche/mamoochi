@@ -7,22 +7,22 @@ const items = computed(() => [
   [
     {
       label: "Home",
-      icon: "i-lucide-home",
+      // icon: "i-lucide-home",
       to: "/" + locale.value + "/",
     },
     {
       label: "Explorer",
-      icon: "i-lucide-search",
+      // icon: "i-lucide-search",
       to: "/" + locale.value + "/explorer",
     },
     {
       label: "About",
-      icon: "i-lucide-info",
+      // icon: "i-lucide-info",
       to: "/" + locale.value + "/about",
     },
     {
       label: "Contact",
-      icon: "i-lucide-mail",
+      // icon: "i-lucide-mail",
       to: "/" + locale.value + "/contact",
     },
   ],
@@ -57,7 +57,7 @@ const items = computed(() => [
     :ui="{
       root: navDir,
     }"
-    class="navbar data-[orientation=horizontal]:w-full items-center"
+    class="navbar data-[orientation=horizontal]:w-full items-center text-2xl"
   >
     <template #theme="{ item }"> <DarkMode class="" /> </template>
     <template #i18n="{ item }"> <LanguageSelector class="" /> </template>

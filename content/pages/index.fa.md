@@ -1,4 +1,4 @@
-...<HomeIntro />
+</br><HomeIntro />
 
 ## سرفصل فرعی اول
 
