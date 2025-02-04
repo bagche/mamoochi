@@ -32,6 +32,6 @@ const items = computed(() => {
     }"
     orientation="vertical"
     :items="items"
-    class="data-[orientation=vertical]:w-60 bg-gray-100 dark:bg-slate-900 dark:border-slate-100 p-2 justify-between"
+    class="data-[orientation=vertical]:w-60 bg-gray-100 dark:bg-slate-900 dark:border-slate-100 pt-5 px-2 justify-between"
   />
 </template>

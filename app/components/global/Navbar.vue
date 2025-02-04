@@ -24,8 +24,9 @@ const items = computed(() => {
     :items="items"
     :ui="{
       root: navDir,
+      label: 'text-3xl',
     }"
-    class="navbar data-[orientation=horizontal]:w-full text-3xl"
+    class="navbar data-[orientation=horizontal]:w-full"
   >
     <template #theme="{ item }"> <DarkMode class="" /> </template>
     <template #i18n="{ item }"> <LanguageSelector class="" /> </template>
@@ -36,4 +37,5 @@ const items = computed(() => {
 .rtl * {
   direction: rtl;
 }
+ 
 </style>

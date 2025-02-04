@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { data } = useAsyncData("home-archives", () => {
-  return queryCollection("content").limit(10).all();
+  return queryCollection("items").limit(10).all();
 });
 </script>
 
@@ -12,7 +12,7 @@ const { data } = useAsyncData("home-archives", () => {
       <div v-if="data" class="px-5 md:m-0">
         <ol>
           <li v-for="item in data" :key="item.id" class="mb-2">
-            <NuxtLink :to="item.path" class="hover:underline">
+            <NuxtLink :to="item.path.slice(0,-3)" class="hover:underline">
               {{ item.title }}
             </NuxtLink>
             /

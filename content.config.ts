@@ -9,5 +9,12 @@ export default defineContentConfig({
         rawbody: z.string(),
       }),
     }),
+    items: defineCollection({
+      type: "page",
+      source: "items/*.md",
+      schema: z.object({
+        rawbody: z.string(),
+      }),
+    }),
   },
 });

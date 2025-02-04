@@ -34,6 +34,9 @@ export default defineNuxtConfig({
     // preset: "cloudflare-pages",
     compressPublicAssets: true,
     minify: true,
+    prerender: {
+      crawlLinks: true,
+    },
   },
   ui: {
     fonts: false,
@@ -42,7 +45,7 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: "i18n_redirected",
-      redirectOn: "root",  
+      redirectOn: "root",
     },
     locales: [
       {
@@ -64,5 +67,8 @@ export default defineNuxtConfig({
     experimental: {
       localeDetector: "localeDetector.ts",
     },
+  },
+  routeRules: {
+    "/**": { prerender: true }, // Prerender (SSG) all routes by default
   },
 });

@@ -46,36 +46,64 @@ export default defineAppConfig({
     [
       {
         label: "Dashboard",
-        type: "label",
+        // type: "label",
+        icon: "i-lucide-book-open",
+        to: "/manage",
       },
       {
-        label: "Posts",
+        label: "Items",
         icon: "i-lucide-book-open",
-        active: true,
+        // active: true,
         defaultOpen: true,
+        // to: "/manage/items",
         children: [
           {
-            label: "All Posts",
+            label: "All",
             icon: "i-lucide-file-text",
             description: "Use NuxtLink with superpowers.",
-            // to: "/components/link",
+            to: "/manage/items",
           },
           {
             label: "Category",
             icon: "i-lucide-file-text",
             description: "Display a modal within your application.",
+            to: "/manage/items/category",
             // to: "/components/modal",
+          },
+          {
+            label: "Comments",
+            icon: "i-lucide-database",
+            to: "/manage/items/comments",
+          },
+        ],
+        
+      },
+      
+      {
+        label: "Users",
+        icon: "i-lucide-box",
+        to: "/users",
+        defaultOpen: true,
+        children: [
+          {
+            label: "All",
+            icon: "i-lucide-file-text",
+            description: "Use NuxtLink with superpowers.",
+            to: "/manage/users",
+          },
+          {
+            label: "Roles",
+            icon: "i-lucide-file-text",
+            description: "Display a modal within your application.",
+            to: "/manage/users/roles",
           },
         ],
       },
       {
-        label: "Comments",
-        icon: "i-lucide-database",
-      },
-      {
-        label: "Users",
-        icon: "i-lucide-box",
-        // to: "/components",
+        label: "Settings",
+        // type: "label",
+        icon: "i-lucide-book-open",
+        to: "/manage/settings",
       },
     ],
     [
