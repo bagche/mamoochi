@@ -6,7 +6,7 @@ const { data } = useAsyncData("home-intro", () => {
 <template>
   <div>
     <div
-      class="flex flex-col-reverse md:flex-row justify-between items-center h-screen-md"
+      class="flex flex-col-reverse md:flex-row justify-between items-center h-screen-md gap-3"
     >
       <div class="basis-2/2 md:basis-1/2 flex-col justify-start items-center">
         <div class="items-center flex gap-3">
@@ -28,15 +28,15 @@ const { data } = useAsyncData("home-intro", () => {
           {{ $t("more") }}...
         </NuxtLink>
       </div>
-      <div class="w-full md:basis-1/2 flex justify-end items-center">
+      <div class="w-full md:basis-1/2 flex justify-end items-center mt-20">
         <nuxt-img
           preload
           loading="lazy"
-          sizes="sm:100vw md:50vw lg:500px"
-          class="flex w-full md:max-w-[25rem]"
+          sizes="sm:100vw md:80vw lg:500px"
+          class="flex w-full"
           :src="data?.thumbnail"
           :alt="data?.title"
-          :placeholder="[400]"
+          :placeholder="[600]"
         />
       </div>
     </div>

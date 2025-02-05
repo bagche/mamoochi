@@ -1,3 +1,4 @@
-</br><HomeIntro />
+...
+<HomeIntro />
 
-</br><HomeArchives />
+<HomeArchives />
