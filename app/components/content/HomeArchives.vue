@@ -12,17 +12,12 @@ const { data } = useAsyncData("home-archives", () => {
       <div v-if="data" class="px-5 md:m-0">
         <ol>
           <li v-for="item in data" :key="item.id" class="mb-2">
-            <NuxtLink :to="item.path.slice(0,-3)" class="hover:underline">
+            <NuxtLink :to="item.path.slice(0, -3)" class="hover:underline">
               {{ item.title }}
             </NuxtLink>
-            /
-            <!-- <NuxtLink
-              :to="locale + '/' + _category"
-              class="font-thin hover:underline"
-            >
-              {{ $t(_category) }}
-            </NuxtLink> -->
-            <!-- <span class="font-thin"> / {{ formatDateTime(item) }} </span> -->
+
+            <span class="font-thin"> / {{ formatDateTime(item.date) }} </span>
+            <span class="font-thin"> / {{ item.category }} </span>
           </li>
         </ol>
       </div>

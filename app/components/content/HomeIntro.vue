@@ -1,16 +1,44 @@
 <script setup lang="ts">
-const items = [
-  "https://picsum.photos/640/640?random=1",
-  "https://picsum.photos/640/640?random=2",
-  "https://picsum.photos/640/640?random=3",
-  "https://picsum.photos/640/640?random=4",
-  "https://picsum.photos/640/640?random=5",
-  "https://picsum.photos/640/640?random=6",
-];
+const { data } = useAsyncData("home-intro", () => {
+  return queryCollection("items").first();
+});
 </script>
-
 <template>
-  <UCarousel v-slot="{ item }" dots :items="items" :ui="{ item: 'basis-1/3' }">
-    <NuxtImg :src="item" width="320" height="320" class="rounded-lg" />
-  </UCarousel>
+  <div>
+    <div
+      class="flex flex-col-reverse md:flex-row justify-between items-center h-screen-md"
+    >
+      <div class="basis-2/2 md:basis-1/2 flex-col justify-start items-center">
+        <div class="items-center flex gap-3">
+          <h2 class="">
+            <NuxtLink :external="false" :to="data?.path?.slice(0, -3)" class="">
+              {{ data?.title }}
+            </NuxtLink>
+          </h2>
+        </div>
+
+        <p>
+          {{ data?.description }}
+        </p>
+        <NuxtLink
+          :external="false"
+          :to="data?.path?.slice(0, -3)"
+          class="mx-4 hover:underline"
+        >
+          {{ $t("more") }}...
+        </NuxtLink>
+      </div>
+      <div class="w-full md:basis-1/2 flex justify-end items-center">
+        <nuxt-img
+          preload
+          loading="lazy"
+          sizes="sm:100vw md:50vw lg:500px"
+          class="flex w-full md:max-w-[25rem]"
+          :src="data?.thumbnail"
+          :alt="data?.title"
+          :placeholder="[400]"
+        />
+      </div>
+    </div>
+  </div>
 </template>
