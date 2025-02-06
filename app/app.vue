@@ -32,8 +32,8 @@ useHead({
 </script>
 <template>
   <UApp>
-    <NuxtLayout class="dark:bg-slate-800">
-      <NuxtLoadingIndicator />
+    <NuxtLayout class="dark:bg-slate-700">
+      <!-- <NuxtLoadingIndicator /> -->
       <NuxtPage />
     </NuxtLayout>
   </UApp>

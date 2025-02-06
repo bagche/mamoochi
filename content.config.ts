@@ -6,7 +6,15 @@ export default defineContentConfig({
       type: "page",
       source: "**/*.md",
       schema: z.object({
+         title: z.string(),
+        thumbnail: z.string(),
+        description: z.string(),
+        date: z.string(),
+        category: z.string(),
         rawbody: z.string(),
+        banner: z.boolean(),
+        postIntro: z.boolean(),
+        comments: z.boolean(),
       }),
     }),
     items: defineCollection({
