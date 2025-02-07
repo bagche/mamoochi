@@ -28,8 +28,16 @@ const items = computed(() => {
     }"
     class="navbar data-[orientation=horizontal]:w-full"
   >
-    <template #theme="{ item }"> <DarkMode class="" /> </template>
-    <template #i18n="{ item }"> <LanguageSelector class="" /> </template>
+    <template #theme="{ item }">
+      <ClientOnly>
+        <DarkMode class="" />
+      </ClientOnly>
+    </template>
+    <template #i18n="{ item }">
+      <ClientOnly>
+        <LanguageSelector class="" />
+      </ClientOnly>
+    </template>
     <template #avatar="{ item }"> <AvatarMenu class="" /> </template>
   </UNavigationMenu>
 </template>
@@ -37,5 +45,4 @@ const items = computed(() => {
 .rtl * {
   direction: rtl;
 }
- 
 </style>

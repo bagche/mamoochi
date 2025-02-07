@@ -37,41 +37,49 @@ const isTyping = (data: string) => {
 };
 </script>
 <template>
-  <div class="pt-5">
-    <UForm
-      ref="form"
-      :schema="schema"
-      :state="state"
-      class="space-y-4"
-      @submit="onSubmit"
-    >
-      <div class="flex w-full justify-between pb-3 gap-3 items-end">
-        <UFormField label="عنوان" class="basis-10/12" size="md">
-          <UInput v-model="state.title" />
-        </UFormField>
-        <UFormField
-          name="category"
-          label="دسته بدنی"
-          class="basis-2/12"
-          size="md"
+  <div class="pt-10">
+    <UContainer>
+      <div class="flex max-w-7xl mx-auto gap-10">
+        <UForm
+          ref="form"
+          :schema="schema"
+          :state="state"
+          class="space-y-4"
+          @submit="onSubmit"
         >
-          <UInput v-model="state.category" placeholder="Select..." />
-        </UFormField>
-        <UButtonGroup
-          orientation="horizontal"
-          class="basis-1/12 flex justify-end h-10"
-        >
-          <UButton
-            icon="i-heroicons-check"
-            color="gray"
-            type="submit"
-            class="text-md"
-            >انتشار</UButton
-          >
-          <UButton icon="i-heroicons-chevron-down" color="gray" />
-        </UButtonGroup>
+          <div class="flex w-full justify-between pb-3 gap-3 items-end">
+            <UFormField label="عنوان" class="basis-10/12" size="md">
+              <UInput v-model="state.title" />
+            </UFormField>
+            <UFormField
+              name="category"
+              label="دسته بدنی"
+              class="basis-2/12"
+              size="md"
+            >
+              <UInput v-model="state.category" placeholder="Select..." />
+            </UFormField>
+            <UButtonGroup
+              orientation="horizontal"
+              class="basis-1/12 flex justify-end h-10"
+            >
+              <UButton
+                icon="i-heroicons-check"
+                color="gray"
+                type="submit"
+                class="text-md"
+                >انتشار</UButton
+              >
+              <UButton icon="i-heroicons-chevron-down" color="gray" />
+            </UButtonGroup>
+          </div>
+          <ManageEditor
+            :body="state.body"
+            class="prose prose-xl dark:prose-invert mt-10"
+            @update="isTyping"
+          />
+        </UForm>
       </div>
-      <ManageEditor :body="state.body" @update="isTyping" />
-    </UForm>
+    </UContainer>
   </div>
 </template>
