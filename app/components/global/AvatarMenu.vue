@@ -95,34 +95,6 @@ const items = computed(() => [
             </span>
           </p>
         </template>
-
-        <template #item="{ item }: any">
-          <div
-            v-if="item.click"
-            class="flex w-full cursor-pointer"
-            @click="item.click"
-          >
-            <span class="truncate">{{ item.label }}</span>
-            <UIcon
-              :name="item.icon"
-              class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
-            />
-          </div>
-          <NuxtLink v-else-if="item.to" :to="item.to" class="flex w-full">
-            <span class="truncate">{{ item.label }}</span>
-            <UIcon
-              :name="item.icon"
-              class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
-            />
-          </NuxtLink>
-          <div v-else class="flex w-full cursor-default">
-            <span class="truncate">{{ item.label }}</span>
-            <UIcon
-              :name="item.icon"
-              class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
-            />
-          </div>
-        </template>
       </UDropdownMenu>
     </UChip>
     <!-- <MemberSwitch v-model:is-open="loginIsOpen" /> -->

@@ -32,9 +32,8 @@ export default defineAppConfig({
         slot: "theme",
       },
       {
-        // label: "Manage",
-        icon: "i-lucide-settings",
-        to: "/manage",
+        label: "Manage",
+        slot: "manage",
       },
       {
         label: "avatar",
@@ -76,9 +75,8 @@ export default defineAppConfig({
             to: "/manage/items/comments",
           },
         ],
-        
       },
-      
+
       {
         label: "Users",
         icon: "i-lucide-box",
