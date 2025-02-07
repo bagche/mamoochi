@@ -68,7 +68,7 @@
   "[role=\"dialog\"]": "[role=\"dialog\"]",
   "about": "درباره",
   "avatar": "آواتار",
-  "description": "توسعه‌دهنده وب",
+  "description": "کوچولو و بازیگوش",
   "displayName": "نام نمایشی",
   "div": "div",
   "email": "ایمیل",
@@ -79,10 +79,10 @@
   "name": "نام",
   "password": "گذرواژه",
   "salt": "سالـت",
-  "siteName": "علی زمانی",
+  "siteName": "مَموچی",
   "theme": "قالب",
-  "titleFirst": "علی",
-  "titleSecond": "زمانی",
+  "titleFirst": "مَـ",
+  "titleSecond": "موچیــ",
   "username": "نام کاربری",
   "vue": "ویو"
 }
