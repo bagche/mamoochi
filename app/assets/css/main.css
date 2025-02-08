@@ -6,5 +6,5 @@
 }
 
 .navbar a {
-  @apply text-lg;
+  @apply text-sm;
 }

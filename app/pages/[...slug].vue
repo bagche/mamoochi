@@ -43,45 +43,41 @@ if (error.value) showError({ statusCode: 404 });
 </script>
 
 <template>
-  <div v-if="page">
-    <div class="pt-10">
-      <template v-if="isItems">
-        <div class="max-w-8xl flex flex-col gap-3 text-center">
-          <h1 class="text-5xl pb-5">{{ page.title }}</h1>
-          <p
-            class="bg-gray-200 p-4 text-lg max-w-7xl mx-auto dark:bg-slate-800"
-          >
-            {{ page.description }}
-          </p>
-        </div>
-        <nuxt-img
-          v-if="page.thumbnail"
-          preload
-          loading="lazy"
-          sizes="sm:100vw md:400vw lg:1200px"
-          class="w-full bg-gray-200 mt-10"
-          :src="page.thumbnail"
-          :alt="page.title"
-          placeholder="/placeholder.jpg"
+  <div v-if="page" class="mt-10">
+    <template v-if="isItems">
+      <div class="max-w-8xl flex flex-col gap-3 text-center">
+        <h1 class="text-5xl pb-5">{{ page.title }}</h1>
+        <p class="bg-gray-200 p-4 text-lg max-w-7xl mx-auto dark:bg-slate-800">
+          {{ page.description }}
+        </p>
+      </div>
+      <nuxt-img
+        v-if="page.thumbnail"
+        preload
+        loading="lazy"
+        sizes="sm:100vw md:400vw lg:1200px"
+        class="w-full bg-gray-200 mt-10"
+        :src="page.thumbnail"
+        :alt="page.title"
+        placeholder="/placeholder.jpg"
+      />
+    </template>
+
+    <UContainer>
+      <div class="flex max-w-7xl mx-auto gap-10">
+        <ContentRenderer
+          :value="page"
+          class="prose prose-xl dark:prose-invert flex-1 w-full"
         />
-      </template>
-
-      <UContainer>
-        <div class="flex max-w-7xl mx-auto gap-10">
-          <ContentRenderer
-            :value="page"
-            class="prose prose-xl dark:prose-invert mt-10 flex-1 w-full"
-          />
-          <div
-            v-if="isItems"
-            class="w-[20rem] bg-gray-100 p-10 text-xl dark:bg-slate-800"
-          >
-            tools
-          </div>
+        <div
+          v-if="isItems"
+          class="w-[20rem] bg-gray-100 p-10 text-xl dark:bg-slate-800"
+        >
+          tools
         </div>
-      </UContainer>
+      </div>
+    </UContainer>
 
-      <HelperStart v-if="page.stem" :path="page.stem" />
-    </div>
+    <HelperStart v-if="page.stem" :path="page.stem" />
   </div>
 </template>
