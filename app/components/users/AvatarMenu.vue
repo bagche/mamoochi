@@ -66,6 +66,7 @@ const items = computed(() => [
     },
   ],
 ]);
+// console.log(user)
 </script>
 
 <template>

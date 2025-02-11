@@ -1,7 +1,12 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const { profile } = useUser();
+const { user } = useUserSession();
+</script>
 
 <template>
-  <UContainer>
-    <div class="flex max-w-7xl mx-auto gap-10">Profile</div>
+  <UContainer class="mt-5">
+    <div class="flex max-w-7xl mx-auto gap-10">
+      <h2>{{ user.displayName ?? profile.displayName }}</h2>
+    </div>
   </UContainer>
 </template>

@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
       });
     }
     const { DB } = event.context.cloudflare.env;
-  const drizzleDb = drizzle(DB);
+    const drizzleDb = drizzle(DB);
 
     // Check if the username is already registered
     const existingUser = await drizzleDb

@@ -21,13 +21,13 @@ const showPassword = ref(false);
 
 const schema = z.object({
   userName: z.string().min(3, t('Must be at least 3 characters')),
-  password: z.string().min(6, t('Password must be at least 6 characters')),
+  password: z.string().min(4, t('Password must be at least 6 characters')),
 });
 type Schema = z.output<typeof schema>;
 
 const state = reactive<Schema>({
-  userName: '',
-  password: '',
+  userName: 'admin',
+  password: 'admin',
 });
 
 const login = async (event: FormSubmitEvent<Schema>) => {
@@ -48,7 +48,6 @@ const login = async (event: FormSubmitEvent<Schema>) => {
       description: t('User logged in successfully'),
       color: 'green',
     });
-    navigateTo('/');
     window.location.reload();
   } catch (error: any) {
     console.error(error.statusMessage);

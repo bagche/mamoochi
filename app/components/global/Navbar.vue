@@ -38,7 +38,7 @@ const items = computed(() => {
         <LanguageSelector class="" />
       </ClientOnly>
     </template>
-    <template #avatar="{ item }"> <AvatarMenu class="" /> </template>
+    <template #avatar="{ item }"> <UsersAvatarMenu class="" /> </template>
     <template #manage="{ item }"> <ManageNavMenu class="" /> </template>
   </UNavigationMenu>
 </template>
