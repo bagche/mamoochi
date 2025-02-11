@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 const { locale, t } = useI18n();
+const { registerNew } = useUser();
 
 const dir = computed(() => (locale.value === "en" ? "ltr" : "rtl"));
 useHead({
@@ -29,6 +30,7 @@ useHead({
     },
   ],
 });
+registerNew()
 </script>
 <template>
   <UApp>

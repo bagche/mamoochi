@@ -1,10 +1,12 @@
 <script setup lang="ts">
+const { loggedIn, user, clear } = useUserSession();
+const { profile } = useUser();
+
 const updateIsOpen = ref(false);
 const changePasswordIsOpen = ref(false);
-const { loggedIn, user, clear } = useUserSession();
-
 const { locale, t } = useI18n();
-const loginIsOpen = ref(false);
+const switchIsOpen = ref(false);
+const registerIsOpen = ref(true);
 
 const items = computed(() => [
   [
@@ -16,31 +18,39 @@ const items = computed(() => [
   ],
   [
     {
-      label: "پروفایل",
+      label: t("Profile"),
       icon: "i-heroicons-user",
-      to: `/${locale.value}/user`,
-    },
-  ],
-  [
-    {
-      label: "تغییر حساب",
-      icon: "i-heroicons-arrow-left-on-rectangle",
-      click: () => {
-        loginIsOpen.value = true;
-      },
+      to: `/profile`,
     },
     {
-      label: t("Update user"),
+      label: t("Update Profile"),
       icon: "i-heroicons-user",
-      click: () => {
+      onSelect: () => {
         updateIsOpen.value = true;
       },
     },
     {
       label: t("Change Password"),
       icon: "i-heroicons-key",
-      click: () => {
+      onSelect: () => {
         changePasswordIsOpen.value = true;
+      },
+    },
+  ],
+  [
+    {
+      label: t("Register"),
+      icon: "i-heroicons-arrow-left-on-rectangle",
+      onSelect: () => {
+        console.log("register");
+        registerIsOpen.value = true;
+      },
+    },
+    {
+      label: t("Switch Profile"),
+      icon: "i-heroicons-arrow-left-on-rectangle",
+      onSelect: () => {
+        switchIsOpen.value = true;
       },
     },
   ],
@@ -48,7 +58,7 @@ const items = computed(() => [
     {
       label: t("Exit"),
       icon: "i-heroicons-arrow-left-on-rectangle",
-      click: async () => {
+      onSelect: async () => {
         // await $wipeDexie();
         await clear();
         window.location.reload();
@@ -76,30 +86,21 @@ const items = computed(() => [
         class=""
       >
         <UAvatar
-          :alt="user?.displayName"
-          src="/totoro_render.webp"
+          :alt="user?.displayName ?? profile.displayName"
           size="xs"
+          src="/totoro_render.webp"
           class="avatar-button"
         />
 
         <template #account="{ item }">
-          <UAvatar
-            :alt="user?.displayName"
-            src="/totoro_render.webp"
-            size="sm"
-            class="avatar-button"
-          />
-          <p class="text-right w-full flex gap-2 justify-between">
-            <span class="font-bold text-gray-900 dark:text-white">
-              {{ user?.displayName }}
-            </span>
+          <p class="text- w-full font-normal">
+            {{ user?.displayName ?? profile.displayName }}
           </p>
         </template>
       </UDropdownMenu>
     </UChip>
-    <!-- <MemberSwitch v-model:is-open="loginIsOpen" /> -->
-    <!-- <UpdateMember v-model:is-open="updateIsOpen" />   -->
-    <!-- <ChangePassword v-model:is-open="changePasswordIsOpen" />   -->
+    <UsersRegister v-model:is-open="registerIsOpen" />
+    <UsersSwitch v-model:is-open="switchIsOpen" />
   </div>
 </template>
 <style lang="scss">
