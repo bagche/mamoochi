@@ -6,7 +6,7 @@ const updateIsOpen = ref(false);
 const changePasswordIsOpen = ref(false);
 const { locale, t } = useI18n();
 const switchIsOpen = ref(false);
-const registerIsOpen = ref(true);
+const registerIsOpen = ref(false);
 
 const items = computed(() => [
   [
