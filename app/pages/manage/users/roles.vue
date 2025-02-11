@@ -1,114 +1,61 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
-import { h, resolveComponent } from "vue";
+import { getPaginationRowModel } from "@tanstack/vue-table";
 
+// Define page meta to use the "manage" layout
 definePageMeta({
   layout: "manage",
 });
+
+// Resolve Nuxt UI components
+const UTable = resolveComponent("UTable");
 const UButton = resolveComponent("UButton");
-const UBadge = resolveComponent("UBadge");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
+const UPagination = resolveComponent("UPagination");
 
-const toast = useToast();
-
-type Payment = {
-  id: string;
-  date: string;
-  status: "paid" | "failed" | "refunded";
-  email: string;
-  amount: number;
+// Define a Role type matching your schema
+type Role = {
+  id: number;
+  name: string;
+  description: string;
 };
 
-const data = ref<Payment[]>([
-  {
-    id: "4600",
-    date: "2024-03-11T15:30:00",
-    status: "paid",
-    email: "james.anderson@example.com",
-    amount: 594,
-  },
-  {
-    id: "4599",
-    date: "2024-03-11T10:10:00",
-    status: "failed",
-    email: "mia.white@example.com",
-    amount: 276,
-  },
-  {
-    id: "4598",
-    date: "2024-03-11T08:50:00",
-    status: "refunded",
-    email: "william.brown@example.com",
-    amount: 315,
-  },
-  {
-    id: "4597",
-    date: "2024-03-10T19:45:00",
-    status: "paid",
-    email: "emma.davis@example.com",
-    amount: 529,
-  },
-  {
-    id: "4596",
-    date: "2024-03-10T15:55:00",
-    status: "paid",
-    email: "ethan.harris@example.com",
-    amount: 639,
-  },
-]);
+// Reactive pagination state (UTable uses a 0-indexed pageIndex)
+const pagination = ref({
+  pageIndex: 0,
+  pageSize: 5,
+});
 
-const columns: TableColumn<Payment>[] = [
+// Compute query parameters for useFetch (API expects 1-indexed page)
+const queryParams = computed(() => ({
+  page: pagination.value.pageIndex + 1,
+  pageSize: pagination.value.pageSize,
+}));
+
+// Fetch paginated roles from the API endpoint. 
+// When queryParams change, useFetch re-runs automatically.
+const { data, error } = useFetch("/api/roles/all", {
+  query: queryParams,
+});
+
+// Get toast composable for notifications
+const toast = useToast();
+
+// Define the table columns for the Roles table
+const columns: TableColumn<Role>[] = [
   {
     accessorKey: "id",
     header: "#",
     cell: ({ row }) => `#${row.getValue("id")}`,
   },
   {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => {
-      return new Date(row.getValue("date")).toLocaleString("en-US", {
-        day: "numeric",
-        month: "short",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      });
-    },
+    accessorKey: "name",
+    header: "Name",
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const color = {
-        paid: "success" as const,
-        failed: "error" as const,
-        refunded: "neutral" as const,
-      }[row.getValue("status") as string];
-
-      return h(UBadge, { class: "capitalize", variant: "subtle", color }, () =>
-        row.getValue("status")
-      );
-    },
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "amount",
-    header: () => h("div", { class: "text-right" }, "Amount"),
-    cell: ({ row }) => {
-      const amount = Number.parseFloat(row.getValue("amount"));
-
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "EUR",
-      }).format(amount);
-
-      return h("div", { class: "text-right font-medium" }, formatted);
-    },
+    accessorKey: "description",
+    header: "Description",
   },
   {
     id: "actions",
@@ -119,9 +66,7 @@ const columns: TableColumn<Payment>[] = [
         h(
           UDropdownMenu,
           {
-            content: {
-              align: "end",
-            },
+            content: { align: "end" },
             items: getRowItems(row),
           },
           () =>
@@ -137,37 +82,61 @@ const columns: TableColumn<Payment>[] = [
   },
 ];
 
-function getRowItems(row: Row<Payment>) {
+// Define dropdown menu items for each role row
+function getRowItems(row: Row<Role>) {
   return [
     {
       type: "label",
       label: "Actions",
     },
     {
-      label: "Copy payment ID",
+      label: "Edit Role",
       onSelect() {
-        navigator.clipboard.writeText(row.original.id);
-
         toast.add({
-          title: "Payment ID copied to clipboard!",
-          color: "success",
-          icon: "i-lucide-circle-check",
+          title: `Edit role #${row.original.id}`,
+          color: "info",
+          icon: "i-lucide-edit",
         });
       },
     },
     {
-      type: "separator",
-    },
-    {
-      label: "View customer",
-    },
-    {
-      label: "View payment details",
+      label: "Delete Role",
+      onSelect() {
+        toast.add({
+          title: `Delete role #${row.original.id}`,
+          color: "error",
+          icon: "i-lucide-trash",
+        });
+      },
     },
   ];
 }
 </script>
 
 <template>
-  <UTable :data="data" :columns="columns" class="flex-1" />
+  <div class="w-full space-y-4 pb-4">
+    <!-- Table component with pagination -->
+    <UTable
+      v-model:pagination="pagination"
+      :data="data?.roles ?? []"
+      :columns="columns"
+      :pagination-options="{ getPaginationRowModel: getPaginationRowModel() }"
+      class="flex-1"
+    />
+
+    <!-- Pagination controls -->
+    <div class="flex justify-center border-t border-(--ui-border) pt-4">
+      <UPagination
+        :default-page="pagination.pageIndex + 1"
+        :items-per-page="pagination.pageSize"
+        :total="data?.total ?? 0"
+        @update:page="(p) => (pagination.pageIndex = p - 1)"
+      />
+    </div>
+
+    <!-- Display error if the fetch fails -->
+    <div v-if="error" class="mt-4 text-red-500">
+      Failed to load roles.
+    </div>
+  </div>
 </template>
