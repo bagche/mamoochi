@@ -1,17 +1,27 @@
 <script setup lang="ts">
 const { locale, t } = useI18n();
 const appConfig = useAppConfig();
+const { loggedIn } = useUserSession();
 
 const navDir = computed(() =>
   locale.value === "fa" ? "flex-row-reverse rtl" : "flex-row"
 );
 const items = computed(() => {
   return appConfig.mainMenu.map((group) =>
-    group.map((item) => ({
-      ...item,
-      label: item.label ? t(item.label as string) : item.label,
-      to: item.to ? `/${locale.value}${item.to}` : undefined, // Prefix the locale
-    }))
+    group
+      .filter((item) => {
+        // Hide "Manage" if user is not logged in
+        if (item.label === "Manage" && !loggedIn?.value) {
+          return false;
+        }
+        return true;
+        console.log(loggedIn.value);
+      })
+      .map((item) => ({
+        ...item,
+        label: item.label ? t(item.label as string) : item.label,
+        to: item.to ? `/${locale.value}${item.to}` : undefined,
+      }))
   );
 });
 </script>
@@ -39,7 +49,9 @@ const items = computed(() => {
       </ClientOnly>
     </template>
     <template #avatar="{ item }"> <UsersAvatarMenu class="" /> </template>
-    <template #manage="{ item }"> <ManageNavMenu class="" /> </template>
+    <template v-if="loggedIn" #manage="{ item }">
+      <ManageNavMenu class="" />
+    </template>
   </UNavigationMenu>
 </template>
 <style>

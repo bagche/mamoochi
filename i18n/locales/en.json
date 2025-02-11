@@ -12,7 +12,6 @@
   "Contact": "Contact",
   "Current Password": "Current Password",
   "Dashboard": "Dashboard",
-  "Dont have an account?": "Dont have an account?",
   "English": "English",
   "Enter Password": "Enter Password",
   "Enter password": "Enter password",
@@ -64,7 +63,6 @@
   "Update user": "Update user",
   "User Registration": "User Registration",
   "User logged in successfully": "User logged in successfully",
-  "User login successfully": "User login successfully",
   "User registered successfully": "User registered successfully",
   "Username": "Username",
   "Username is already taken. Please choose another one.": "Username is already taken. Please choose another one.",
@@ -91,5 +89,6 @@
   "theme": "theme",
   "titleFirst": "Ali",
   "titleSecond": "Zemani",
-  "username": "username"
+  "username": "username",
+  "vue": "vue"
 }

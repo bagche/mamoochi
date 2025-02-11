@@ -12,7 +12,6 @@
   "Contact": "تماس",
   "Current Password": "گذرواژه فعلی",
   "Dashboard": "داشبورد",
-  "Dont have an account?": "حساب کاربری ندارید؟",
   "English": "انگلیسی",
   "Enter Password": "گذرواژه را وارد کنید",
   "Enter password": "Enter password",
@@ -64,7 +63,6 @@
   "Update user": "به‌روزرسانی کاربر",
   "User Registration": "User Registration",
   "User logged in successfully": "User logged in successfully",
-  "User login successfully": "کاربر با موفقیت وارد شد",
   "User registered successfully": "کاربر با موفقیت ثبت شد",
   "Username": "نام کاربری",
   "Username is already taken. Please choose another one.": "این نام کاربری قبلاً انتخاب شده است. لطفاً نام دیگری را انتخاب کنید.",
@@ -91,5 +89,6 @@
   "theme": "قالب",
   "titleFirst": "مَـ",
   "titleSecond": "موچیــ",
-  "username": "نام کاربری"
+  "username": "نام کاربری",
+  "vue": "vue"
 }

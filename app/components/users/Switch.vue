@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { z } from 'zod';
+import { z } from "zod";
 
-import type { FormSubmitEvent } from '#ui/types';
+import type { FormSubmitEvent } from "#ui/types";
 
 const props = defineProps({
   isOpen: { type: Boolean, required: true },
 });
-const emit = defineEmits(['update:isOpen']);
+const emit = defineEmits(["update:isOpen"]);
 
 const modelIsOpen = computed({
   get: () => props.isOpen,
-  set: (value: boolean) => emit('update:isOpen', value),
+  set: (value: boolean) => emit("update:isOpen", value),
 });
 
 const { t } = useI18n();
@@ -20,22 +20,22 @@ const submitting = ref(false);
 const showPassword = ref(false);
 
 const schema = z.object({
-  userName: z.string().min(3, t('Must be at least 3 characters')),
-  password: z.string().min(4, t('Password must be at least 6 characters')),
+  userName: z.string().min(3, t("Must be at least 3 characters")),
+  password: z.string().min(4, t("Password must be at least 6 characters")),
 });
 type Schema = z.output<typeof schema>;
 
 const state = reactive<Schema>({
-  userName: 'admin',
-  password: 'admin',
+  userName: "admin",
+  password: "123456",
 });
 
 const login = async (event: FormSubmitEvent<Schema>) => {
   try {
     submitting.value = true;
 
-    await $fetch('/api/member/login', {
-      method: 'POST',
+    await $fetch("/api/users/login", {
+      method: "POST",
       body: JSON.stringify({
         userName: event.data.userName,
         password: event.data.password,
@@ -44,17 +44,17 @@ const login = async (event: FormSubmitEvent<Schema>) => {
 
     submitting.value = false;
     toast.add({
-      title: t('Success'),
-      description: t('User logged in successfully'),
-      color: 'green',
+      title: t("Success"),
+      description: t("User logged in successfully"),
+      color: "green",
     });
     window.location.reload();
   } catch (error: any) {
     console.error(error.statusMessage);
     toast.add({
-      color: 'red',
-      title: t('Error'),
-      description: error.statusMessage || t('Login failed'),
+      color: "red",
+      title: t("Error"),
+      description: error.statusMessage || t("Login failed"),
     });
     submitting.value = false;
   }
@@ -66,11 +66,7 @@ const login = async (event: FormSubmitEvent<Schema>) => {
     <template #body>
       <UForm ref="form" :schema="schema" :state="state" @submit="login">
         <div class="flex flex-col gap-4">
-          <UFormField
-            :label="t('Username')"
-            name="userName"
-            class="basis-full"
-          >
+          <UFormField :label="t('Username')" name="userName" class="basis-full">
             <UInput
               v-model="state.userName"
               class="w-full"
@@ -78,11 +74,7 @@ const login = async (event: FormSubmitEvent<Schema>) => {
             />
           </UFormField>
 
-          <UFormField
-            :label="t('Password')"
-            name="password"
-            class="basis-full"
-          >
+          <UFormField :label="t('Password')" name="password" class="basis-full">
             <UInput
               v-model="state.password"
               class="w-full"
@@ -96,7 +88,9 @@ const login = async (event: FormSubmitEvent<Schema>) => {
                   variant="link"
                   size="sm"
                   :icon="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                  :aria-label="showPassword ? t('Hide password') : t('Show password')"
+                  :aria-label="
+                    showPassword ? t('Hide password') : t('Show password')
+                  "
                   :aria-pressed="showPassword"
                   @click="showPassword = !showPassword"
                 />
