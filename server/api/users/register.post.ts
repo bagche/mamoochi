@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Generate a unique salt
-    const salt = generateSalt();
+    const salt = await generateSalt();
     // Hash the password with the salt
     const hashedPassword = await hashSaltPassword(body.password, salt);
 
