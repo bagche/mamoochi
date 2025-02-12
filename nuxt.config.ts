@@ -15,7 +15,6 @@ export default defineNuxtConfig({
     "nuxt-auth-utils",
     "nuxt-tiptap-editor",
     "@nuxtjs/i18n",
-    "nuxt-echarts",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.scss"],
