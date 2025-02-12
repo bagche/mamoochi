@@ -14,9 +14,9 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-      // Find the user by username
-          const { DB } = event.context.cloudflare.env;
-        const drizzleDb = drizzle(DB);
+    // Find the user by username
+    const { DB } = event.context.cloudflare.env;
+    const drizzleDb = drizzle(DB);
     const user = await drizzleDb
       .select()
       .from(users)
@@ -31,11 +31,7 @@ export default defineEventHandler(async (event) => {
     }
 
     // Verify password
-    const isPasswordValid = await verifySaltPassword(
-      user.password,
-      password,
-      user.salt
-    );
+    const isPasswordValid = await verifyPassword(user.password, password);
 
     if (!isPasswordValid) {
       throw createError({

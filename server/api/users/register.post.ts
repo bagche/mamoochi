@@ -34,10 +34,8 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Generate a unique salt
-    const salt = await generateSalt();
-    // Hash the password with the salt
-    const hashedPassword = await hashSaltPassword(body.password, salt);
+    // Hash the password
+    const hashedPassword = await hashPassword(body.password);
 
     // Insert the new user into the database
     await drizzleDb
@@ -50,7 +48,6 @@ export default defineEventHandler(async (event) => {
         avatar: body.avatar || "",
         username: body.userName,
         password: hashedPassword,
-        salt,
         createdAt: new Date(),
         lastLoginAt: new Date(),
       })

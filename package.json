@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "clean": "rm -rf .nuxt dist .output dist_build",
+    "reset": "rm -rf .nuxt dist .output dist_build .wrangler .data ",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "i18:update": "node scripts/updateLocale.js",
