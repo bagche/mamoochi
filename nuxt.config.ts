@@ -75,4 +75,7 @@ export default defineNuxtConfig({
   routeRules: {
     "/**": { prerender: true }, // Prerender (SSG) all routes by default
   },
+  experimental: {
+    restoreState: true,
+  },
 });

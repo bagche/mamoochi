@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
-import { getPaginationRowModel } from "@tanstack/vue-table";
 
 // Define page meta to use the "manage" layout
 definePageMeta({
@@ -12,7 +11,6 @@ definePageMeta({
 const UTable = resolveComponent("UTable");
 const UButton = resolveComponent("UButton");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
-const UPagination = resolveComponent("UPagination");
 
 // Define a Role type matching your schema
 type Role = {
@@ -33,7 +31,7 @@ const queryParams = computed(() => ({
   pageSize: pagination.value.pageSize,
 }));
 
-// Fetch paginated roles from the API endpoint. 
+// Fetch paginated roles from the API endpoint.
 // When queryParams change, useFetch re-runs automatically.
 const { data, error } = useFetch("/api/roles/all", {
   query: queryParams,
@@ -114,29 +112,11 @@ function getRowItems(row: Row<Role>) {
 </script>
 
 <template>
-  <div class="w-full space-y-4 pb-4">
-    <!-- Table component with pagination -->
-    <UTable
-      v-model:pagination="pagination"
-      :data="data?.roles ?? []"
-      :columns="columns"
-      :pagination-options="{ getPaginationRowModel: getPaginationRowModel() }"
-      class="flex-1"
-    />
-
-    <!-- Pagination controls -->
-    <div class="flex justify-center border-t border-(--ui-border) pt-4">
-      <UPagination
-        :default-page="pagination.pageIndex + 1"
-        :items-per-page="pagination.pageSize"
-        :total="data?.total ?? 0"
-        @update:page="(p) => (pagination.pageIndex = p - 1)"
-      />
-    </div>
+  <div class="w-full space-y-4 p-4">
+    <USeparator icon="i-heroicons-key" />
+    <UTable :data="data?.roles ?? []" :columns="columns" class="flex-1" />
 
     <!-- Display error if the fetch fails -->
-    <div v-if="error" class="mt-4 text-red-500">
-      Failed to load roles.
-    </div>
+    <div v-if="error" class="mt-4 text-red-500">Failed to load roles.</div>
   </div>
 </template>

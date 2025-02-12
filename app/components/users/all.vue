@@ -70,7 +70,11 @@ const columns: TableColumn<User>[] = [
           alt: fullName,
         }),
         h("div", null, [
-          h("p", { class: "font-medium text-(--ui-text-highlighted)" }, fullName),
+          h(
+            "p",
+            { class: "font-medium text-(--ui-text-highlighted)" },
+            fullName
+          ),
           h("p", null, `@${user.username}`),
         ]),
       ]);
@@ -141,8 +145,8 @@ function getRowItems(row: Row<User>) {
 </script>
 
 <template>
-  <div class="w-full space-y-4 pb-4">
-    <!-- Table component with pagination -->
+  <div class="w-full space-y-4 p-4">
+    <USeparator icon="i-heroicons-users" />
     <UTable
       v-model:pagination="pagination"
       :data="data?.users ?? []"
@@ -162,8 +166,6 @@ function getRowItems(row: Row<User>) {
     </div>
 
     <!-- Display an error message if the fetch fails -->
-    <div v-if="error" class="mt-4 text-red-500">
-      Failed to load users.
-    </div>
+    <div v-if="error" class="mt-4 text-red-500">Failed to load users.</div>
   </div>
 </template>
