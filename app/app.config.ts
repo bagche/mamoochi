@@ -46,32 +46,32 @@ export default defineAppConfig({
       {
         label: "Dashboard",
         // type: "label",
-        icon: "i-lucide-book-open",
+        // icon: "i-lucide-book-open",
         to: "/manage",
       },
       {
         label: "Items",
-        icon: "i-lucide-book-open",
+        // icon: "i-lucide-book-open",
         // active: true,
         defaultOpen: true,
         // to: "/manage/items",
         children: [
           {
             label: "All",
-            icon: "i-lucide-file-text",
+            // icon: "i-lucide-file-text",
             description: "Use NuxtLink with superpowers.",
             to: "/manage/items",
           },
           {
             label: "Category",
-            icon: "i-lucide-file-text",
+            // icon: "i-lucide-file-text",
             description: "Display a modal within your application.",
             to: "/manage/items/category",
             // to: "/components/modal",
           },
           {
             label: "Comments",
-            icon: "i-lucide-database",
+            // icon: "i-lucide-database",
             to: "/manage/items/comments",
           },
         ],
@@ -79,19 +79,19 @@ export default defineAppConfig({
 
       {
         label: "Users",
-        icon: "i-lucide-box",
+        // icon: "i-lucide-box",
         to: "/users",
         defaultOpen: true,
         children: [
           {
             label: "All",
-            icon: "i-lucide-file-text",
+            // icon: "i-lucide-file-text",
             description: "Use NuxtLink with superpowers.",
             to: "/manage/users",
           },
           {
             label: "Roles",
-            icon: "i-lucide-file-text",
+            // icon: "i-lucide-file-text",
             description: "Display a modal within your application.",
             to: "/manage/users/roles",
           },
@@ -106,16 +106,23 @@ export default defineAppConfig({
     ],
     [
       {
-        label: "GitHub",
-        icon: "i-simple-icons-github",
-        badge: "3.8k",
-        to: "https://github.com/bagche/Mamoochi",
-        target: "_blank",
+        label: "Help",
+        // icon: "i-lucide-circle-help",
+        // disabled: true,
       },
       {
-        label: "Help",
-        icon: "i-lucide-circle-help",
-        // disabled: true,
+        label: "i18n",
+        slot: "i18n",
+      },
+
+      {
+        label: "theme",
+        slot: "theme",
+      },
+
+      {
+        label: "avatar",
+        slot: "avatar",
       },
     ],
   ],
