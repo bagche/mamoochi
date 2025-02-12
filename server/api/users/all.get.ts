@@ -26,8 +26,8 @@ export default defineEventHandler(async (event) => {
       .limit(pageSize)
       .offset(offset);
 
-    // Remove sensitive fields such as password
-    const safeUsers = allUsers.map(({ password, ...user }) => user);
+    // Remove sensitive fields such as password and salt
+    const safeUsers = allUsers.map(({ password, salt, ...user }) => user);
 
     return {
       total,

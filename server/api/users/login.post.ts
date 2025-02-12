@@ -31,7 +31,11 @@ export default defineEventHandler(async (event) => {
     }
 
     // Verify password
-    const isPasswordValid = await verifyPassword(user.password, password);
+    const isPasswordValid = await verifySaltPassword(
+      user.password,
+      password,
+      user.salt
+    );
 
     if (!isPasswordValid) {
       throw createError({
