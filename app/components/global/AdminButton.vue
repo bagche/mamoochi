@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n();
+const route = useRoute();
 
 // const appConfig = useAppConfig();
 // const items = computed(() => {
@@ -27,7 +28,20 @@ const { t } = useI18n();
 
 <template>
   <div class="relative flex">
-    <UButton icon="i-lucide-settings" variant="ghost" size="xs" to="/manage" />
+    <UButton
+      v-if="route.path.startsWith('/manage')"
+      icon="i-lucide-home"
+      variant="ghost"
+      size="xs"
+      to="/"
+    />
+    <UButton
+      v-else
+      icon="i-lucide-settings"
+      variant="ghost"
+      size="xs"
+      to="/manage"
+    />
     <!-- <UDropdownMenu
       :items="items"
       :content="{

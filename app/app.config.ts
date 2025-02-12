@@ -54,53 +54,29 @@ export default defineAppConfig({
         // icon: "i-lucide-book-open",
         // active: true,
         defaultOpen: true,
-        // to: "/manage/items",
-        children: [
-          {
-            label: "All",
-            // icon: "i-lucide-file-text",
-            description: "Use NuxtLink with superpowers.",
-            to: "/manage/items",
-          },
-          {
-            label: "Category",
-            // icon: "i-lucide-file-text",
-            description: "Display a modal within your application.",
-            to: "/manage/items/category",
-            // to: "/components/modal",
-          },
-          {
-            label: "Comments",
-            // icon: "i-lucide-database",
-            to: "/manage/items/comments",
-          },
-        ],
+        to: "/manage/items",
       },
-
+      {
+        label: "Comments",
+        // icon: "i-lucide-database",
+        to: "/manage/comments",
+      },
       {
         label: "Users",
         // icon: "i-lucide-box",
-        to: "/users",
+        to: "/manage/users",
         defaultOpen: true,
-        children: [
-          {
-            label: "All",
-            // icon: "i-lucide-file-text",
-            description: "Use NuxtLink with superpowers.",
-            to: "/manage/users",
-          },
-          {
-            label: "Roles",
-            // icon: "i-lucide-file-text",
-            description: "Display a modal within your application.",
-            to: "/manage/users/roles",
-          },
-        ],
+      },
+      {
+        label: "Builds",
+        // type: "label",
+        // icon: "i-lucide-book-open",
+        to: "/manage/builds",
       },
       {
         label: "Settings",
         // type: "label",
-        icon: "i-lucide-book-open",
+        // icon: "i-lucide-book-open",
         to: "/manage/settings",
       },
     ],
@@ -119,7 +95,10 @@ export default defineAppConfig({
         label: "theme",
         slot: "theme",
       },
-
+      {
+        label: "Manage",
+        slot: "manage",
+      },
       {
         label: "avatar",
         slot: "avatar",

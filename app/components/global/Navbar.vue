@@ -73,7 +73,7 @@ const items = computed(() => {
       <UsersAvatarMenu class="" />
     </template>
     <template v-if="loggedIn" #manage="{ item }">
-      <ManageNavMenu class="" />
+      <AdminButton class="" />
     </template>
   </UNavigationMenu>
 </template>
