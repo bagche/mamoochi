@@ -72,7 +72,7 @@ const items = computed(() => {
     <template #avatar="{ item }">
       <UsersAvatarMenu class="" />
     </template>
-    <template v-if="loggedIn" #manage="{ item }">
+    <template v-if="allows(seeDashboard)" #manage="{ item }">
       <AdminButton class="" />
     </template>
   </UNavigationMenu>

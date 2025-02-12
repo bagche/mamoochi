@@ -29,12 +29,9 @@ importers:
       drizzle-orm:
         specifier: ^0.39.3
         version: 0.39.3(@cloudflare/workers-types@4.20250204.0)(better-sqlite3@11.8.1)
-      echarts:
-        specifier: ^5.5.1
-        version: 5.6.0
       h3-zod:
         specifier: ^0.5.3
-        version: 0.5.3(h3@1.15.0)(zod@3.24.1)
+        version: 0.5.3(h3@1.15.0)(zod@3.24.2)
       luxon:
         specifier: ^3.5.0
         version: 3.5.0
@@ -47,9 +44,9 @@ importers:
       nuxt-auth-utils:
         specifier: 0.5.14
         version: 0.5.14(magicast@0.3.5)
-      nuxt-echarts:
-        specifier: 0.2.4
-        version: 0.2.4(echarts@5.6.0)(magicast@0.3.5)
+      nuxt-authorization:
+        specifier: 0.3.3
+        version: 0.3.3(magicast@0.3.5)
       nuxt-tiptap-editor:
         specifier: ^2.1.4
         version: 2.1.4(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@tiptap/extension-code-block@2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@tiptap/pm@2.11.5))(highlight.js@11.11.1)(magicast@0.3.5)(vue@3.5.13(typescript@5.7.3))
@@ -66,8 +63,8 @@ importers:
         specifier: latest
         version: 3.5.13(typescript@5.7.3)
       zod:
-        specifier: ^3.24.1
-        version: 3.24.1
+        specifier: ^3.24.2
+        version: 3.24.2
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20250204.0
@@ -124,8 +121,8 @@ importers:
         specifier: ^4.5.0
         version: 4.5.0(vue@3.5.13(typescript@5.7.3))
       wrangler:
-        specifier: ^3.108.0
-        version: 3.108.0(@cloudflare/workers-types@4.20250204.0)
+        specifier: ^3.108.1
+        version: 3.108.1(@cloudflare/workers-types@4.20250204.0)
 
 packages:
 
@@ -3199,9 +3196,6 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  echarts@5.6.0:
-    resolution: {integrity: sha512-oTbVTsXfKuEhxftHqL5xprgLoc0k7uScAwtryCgWF6hPYFLRwOUHiFmHGCBKP5NPFNkDVopOieyUqYGH8Fa3kA==}
-
   ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
 
@@ -4671,14 +4665,12 @@ packages:
       '@simplewebauthn/server':
         optional: true
 
+  nuxt-authorization@0.3.3:
+    resolution: {integrity: sha512-hEt8mLYodiNPpMOFFRncNkHVaFqX4lQGRN+EvDJNyUrP3a58souz34UhDXefP+jO6TaEcYVtK/t6iQk4sXy4ew==}
+
   nuxt-component-meta@0.10.0:
     resolution: {integrity: sha512-iq7hbSnfp4Ff/PTMYBF8pYabTQuF3u7HVN66Kb3hOnrnaPEdXEn/q6HkAn5V8UjOVSgXYpvycM0wSnwyADYNVA==}
     hasBin: true
-
-  nuxt-echarts@0.2.4:
-    resolution: {integrity: sha512-XLSJAuxLFYihRYhXDBWYq+IFNRqaMBvBFNGNfdZAq1FjUU9F0vzyelQkXtjzIMAFf5kcwiXN9ypptFWG8TB1pw==}
-    peerDependencies:
-      echarts: ^5.5.1
 
   nuxt-tiptap-editor@2.1.4:
     resolution: {integrity: sha512-rV5559hQyN6yDGosWJnJsc8tlR4FbG3uMpDaSxfvpBgH5vR8B+dNkrriHdr6vs/Ih+jK9RFoiruUHsofY/uGbA==}
@@ -5818,9 +5810,6 @@ packages:
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
 
-  tslib@2.3.0:
-    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
-
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
@@ -6335,8 +6324,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  wrangler@3.108.0:
-    resolution: {integrity: sha512-w8J0VtDqn8F94qw+HnxFbri7MMdT/to5/w1QHAjR//tIHkilKAUFNaEF3GDEJREvUG3iHuawrH2p5ATTHnFc/Q==}
+  wrangler@3.108.1:
+    resolution: {integrity: sha512-SuiMv/ys52Cu7r6CVRXJT/GvneXHoB0ef5nGBWghSWyHxUSIm4KavGO6F/hTphn+WmSpHYQt3xNl5hdxk6rJlA==}
     engines: {node: '>=16.17.0'}
     hasBin: true
     peerDependencies:
@@ -6459,11 +6448,8 @@ packages:
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
 
-  zod@3.24.1:
-    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
-
-  zrender@5.6.1:
-    resolution: {integrity: sha512-OFXkDJKcrlx5su2XbzJvj/34Q3m6PvyCZkVPHGYpcCJ52ek4U/ymZyfuV1nKE23AyBJ51E/6Yr0mhZ7xGTO4ag==}
+  zod@3.24.2:
+    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -7561,9 +7547,9 @@ snapshots:
       unist-util-stringify-position: 4.0.0
       unist-util-visit: 5.0.0
       ws: 8.18.0
-      zod: 3.24.1
-      zod-to-json-schema: 3.24.1(zod@3.24.1)
-      zod-to-ts: 1.2.0(typescript@5.7.3)(zod@3.24.1)
+      zod: 3.24.2
+      zod-to-json-schema: 3.24.1(zod@3.24.2)
+      zod-to-ts: 1.2.0(typescript@5.7.3)(zod@3.24.2)
     transitivePeerDependencies:
       - bufferutil
       - drizzle-orm
@@ -9783,11 +9769,6 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  echarts@5.6.0:
-    dependencies:
-      tslib: 2.3.0
-      zrender: 5.6.1
-
   ee-first@1.1.1: {}
 
   electron-to-chromium@1.5.97: {}
@@ -10484,10 +10465,10 @@ snapshots:
     dependencies:
       duplexer: 0.1.2
 
-  h3-zod@0.5.3(h3@1.15.0)(zod@3.24.1):
+  h3-zod@0.5.3(h3@1.15.0)(zod@3.24.2):
     dependencies:
       h3: 1.15.0
-      zod: 3.24.1
+      zod: 3.24.2
 
   h3@1.15.0:
     dependencies:
@@ -11755,6 +11736,13 @@ snapshots:
       - magicast
       - supports-color
 
+  nuxt-authorization@0.3.3(magicast@0.3.5):
+    dependencies:
+      '@nuxt/kit': 3.15.4(magicast@0.3.5)
+    transitivePeerDependencies:
+      - magicast
+      - supports-color
+
   nuxt-component-meta@0.10.0(magicast@0.3.5):
     dependencies:
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
@@ -11764,14 +11752,6 @@ snapshots:
       typescript: 5.7.3
       ufo: 1.5.4
       vue-component-meta: 2.2.0(typescript@5.7.3)
-    transitivePeerDependencies:
-      - magicast
-      - supports-color
-
-  nuxt-echarts@0.2.4(echarts@5.6.0)(magicast@0.3.5):
-    dependencies:
-      '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      echarts: 5.6.0
     transitivePeerDependencies:
       - magicast
       - supports-color
@@ -13294,8 +13274,6 @@ snapshots:
 
   ts-interface-checker@0.1.13: {}
 
-  tslib@2.3.0: {}
-
   tslib@2.8.1: {}
 
   tunnel-agent@0.6.0:
@@ -13872,7 +13850,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20250204.0
       '@cloudflare/workerd-windows-64': 1.20250204.0
 
-  wrangler@3.108.0(@cloudflare/workers-types@4.20250204.0):
+  wrangler@3.108.1(@cloudflare/workers-types@4.20250204.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.4
       '@esbuild-plugins/node-globals-polyfill': 0.2.3(esbuild@0.17.19)
@@ -13967,21 +13945,17 @@ snapshots:
       compress-commons: 6.0.2
       readable-stream: 4.7.0
 
-  zod-to-json-schema@3.24.1(zod@3.24.1):
+  zod-to-json-schema@3.24.1(zod@3.24.2):
     dependencies:
-      zod: 3.24.1
+      zod: 3.24.2
 
-  zod-to-ts@1.2.0(typescript@5.7.3)(zod@3.24.1):
+  zod-to-ts@1.2.0(typescript@5.7.3)(zod@3.24.2):
     dependencies:
       typescript: 5.7.3
-      zod: 3.24.1
+      zod: 3.24.2
 
   zod@3.22.3: {}
 
-  zod@3.24.1: {}
-
-  zrender@5.6.1:
-    dependencies:
-      tslib: 2.3.0
+  zod@3.24.2: {}
 
   zwitch@2.0.4: {}

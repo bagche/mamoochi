@@ -4,7 +4,7 @@ import { BubbleMenu } from "@tiptap/vue-3";
 import AutoJoiner from "tiptap-extension-auto-joiner";
 import { Markdown } from "tiptap-markdown";
 
-import GlobalDragHandle from "../editor/dragger";
+// import GlobalDragHandle from "../editor/dragger";
 import { getExtensions } from "../editor/Extension";
 
 const extensions = await getExtensions();
@@ -20,13 +20,13 @@ const editor = useEditor({
   extensions: [
     TiptapStarterKit,
     BubbleMenu,
-    GlobalDragHandle.configure({
-      dragHandleWidth: 20,
-      scrollTreshold: 100,
-      dragHandleSelector: ".custom-drag-handle",
-      excludedTags: [],
-      customNodes: [],
-    }),
+    // GlobalDragHandle.configure({
+    //   dragHandleWidth: 20,
+    //   scrollTreshold: 100,
+    //   dragHandleSelector: ".custom-drag-handle",
+    //   excludedTags: [],
+    //   customNodes: [],
+    // }),
     ...extensions,
     Markdown,
     Placeholder.configure({ placeholder: "چیزی بنویسید ..." }),
