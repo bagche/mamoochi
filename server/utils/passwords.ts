@@ -3,11 +3,11 @@ import { bytesToHex, hexToBytes, randomBytes } from "@noble/hashes/utils";
 
 /**
  * Scrypt options optimized for serverless (Cloudflare Workers).
- * The work factor N has been reduced to 2^14 to lower CPU usage.
+ * Work factor N is reduced to 2^12 (4096) to lower CPU consumption.
  * Adjust these values as needed to balance security and performance.
  */
 const scryptOptions = {
-  N: 2 ** 14, // Reduced work factor from 2^16 to 2^14 for lower CPU consumption.
+  N: 2 ** 12, // Lowered work factor for reduced CPU usage in Workers.
   r: 8,
   p: 1,
   dkLen: 32,
@@ -25,7 +25,7 @@ export const generateSalt = (): string => {
 /**
  * Hash a password using scrypt with a provided salt.
  *
- * The function derives a key using the given plain password and salt,
+ * This function derives a key using the given plain password and salt,
  * and returns a string formatted as "salt:hash" (both in hex).
  *
  * @param password - The plain text password.
