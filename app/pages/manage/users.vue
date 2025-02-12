@@ -2,6 +2,7 @@
 definePageMeta({
   layout: "manage",
 });
+const addRoleIsOpen = ref(false);
 </script>
 
 <template>
@@ -15,18 +16,20 @@ definePageMeta({
           variant="subtle"
           :label="$t('Add New Role')"
           icon="i-heroicons-key"
+          @click="addRoleIsOpen = true"
         />
-        <UButton
+        <!-- <UButton
           color="primary"
           variant="subtle"
           :label="$t('Add New User')"
           icon="i-heroicons-user-plus"
-        />
+        /> -->
       </UButtonGroup>
     </div>
     <div class="min-h-40 flex gap-3">
       <div class="basis-4/6"><UsersAll /></div>
       <div class="basis-2/6"><UsersRoles /></div>
     </div>
+    <UsersNewRole v-model:is-open="addRoleIsOpen" />
   </div>
 </template>

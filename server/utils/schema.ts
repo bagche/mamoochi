@@ -22,10 +22,12 @@ export const users = sqliteTable(
 );
 
 // 🔐 Roles Table (RBAC)
+// Now includes a "permissions" column that will store a JSON-encoded array.
 export const roles = sqliteTable("roles", {
   id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").notNull().unique(), // Example: "admin", "editor", "subscriber"
+  name: text("name").notNull().unique(), // Example: "admin", "editor", etc.
   description: text("description").default(""),
+  permissions: text("permissions").notNull(), // e.g. '["seeDashboard", "AddItem", "EditPage"]'
 });
 
 // 🔑 User Roles (Many-to-Many Relationship)
