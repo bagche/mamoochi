@@ -72,7 +72,7 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
       description: t("User registered successfully"),
       color: "green",
     });
-    window.location.reload();
+    modelIsOpen.value = false;
   } catch (error) {
     submitting.value = false;
     toast.add({

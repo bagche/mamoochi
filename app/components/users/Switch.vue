@@ -48,7 +48,7 @@ const login = async (event: FormSubmitEvent<Schema>) => {
       description: t("User logged in successfully"),
       color: "green",
     });
-    window.location.reload();
+    modelIsOpen.value = false;
   } catch (error: any) {
     console.error(error.statusMessage);
     toast.add({

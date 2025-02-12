@@ -61,7 +61,7 @@ const items = computed(() => [
       onSelect: async () => {
         // await $wipeDexie();
         await clear();
-        window.location.reload();
+        // window.location.reload();
       },
     },
   ],
