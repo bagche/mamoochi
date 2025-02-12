@@ -49,6 +49,7 @@ const login = async (event: FormSubmitEvent<Schema>) => {
       color: "green",
     });
     modelIsOpen.value = false;
+    reloadNuxtApp();
   } catch (error: any) {
     console.error(error.statusMessage);
     toast.add({

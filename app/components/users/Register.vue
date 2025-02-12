@@ -73,6 +73,7 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
       color: "green",
     });
     modelIsOpen.value = false;
+    reloadNuxtApp();
   } catch (error) {
     submitting.value = false;
     toast.add({
