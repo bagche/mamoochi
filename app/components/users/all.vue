@@ -172,7 +172,7 @@ function getRowItems(row: Row<User>) {
     <!-- Pagination controls -->
     <div class="flex justify-center border-t border-(--ui-border) pt-4">
       <UPagination
-        v-if="data.total > pagination.pageSize"
+        v-if="data?.total > pagination.pageSize"
         :default-page="pagination.pageIndex + 1"
         :items-per-page="pagination.pageSize"
         :total="data?.total ?? 0"
