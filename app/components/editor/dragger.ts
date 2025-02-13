@@ -24,10 +24,16 @@ function absoluteRect(node: Element) {
     return {
       top: rect.top - modalRect.top,
       left: rect.left - modalRect.left,
+      right: rect.right - modalRect.left,
       width: rect.width,
     };
   }
-  return { top: rect.top, left: rect.left, width: rect.width };
+  return {
+    top: rect.top,
+    left: rect.left,
+    right: rect.right,
+    width: rect.width,
+  };
 }
 
 function nodeDOMAtCoords(
@@ -81,10 +87,11 @@ export function DragHandlePlugin(
   function handleDragStart(event: DragEvent, view: EditorView) {
     view.focus();
     if (!event.dataTransfer) return;
-    const node = nodeDOMAtCoords(
-      { x: event.clientX + 50 + options.dragHandleWidth, y: event.clientY },
-      options
-    );
+    const isRTL = document.documentElement.dir === "rtl";
+    const xCoord = isRTL
+      ? event.clientX - 50 - options.dragHandleWidth
+      : event.clientX + 50 + options.dragHandleWidth;
+    const node = nodeDOMAtCoords({ x: xCoord, y: event.clientY }, options);
     if (!(node instanceof Element)) return;
     let draggedNodePos = nodePosAtDOM(node, view, options);
     if (draggedNodePos == null || draggedNodePos < 0) return;
@@ -92,24 +99,23 @@ export function DragHandlePlugin(
 
     const { from, to } = view.state.selection;
     const diff = from - to;
-    const fromPos = calcNodePos(from, view);
-    let differentNode = false;
-    const nodePos = view.state.doc.resolve(fromPos);
-    if (nodePos.node().type.name === "doc") {
-      differentNode = true;
-    } else {
+    const fromSelectionPos = calcNodePos(from, view);
+    let differentNodeSelected = false;
+    const nodePos = view.state.doc.resolve(fromSelectionPos);
+    if (nodePos.node().type.name === "doc") differentNodeSelected = true;
+    else {
       const nodeSelection = NodeSelection.create(
         view.state.doc,
         nodePos.before()
       );
-      differentNode = !(
+      differentNodeSelected = !(
         draggedNodePos + 1 >= nodeSelection.$from.pos &&
         draggedNodePos <= nodeSelection.$to.pos
       );
     }
     let selection = view.state.selection;
     if (
-      !differentNode &&
+      !differentNodeSelected &&
       diff !== 0 &&
       !(view.state.selection instanceof NodeSelection)
     ) {
@@ -209,35 +215,43 @@ export function DragHandlePlugin(
       handleDOMEvents: {
         mousemove: (view, event) => {
           if (!view.editable) return;
+          const isRTL = document.documentElement.dir === "rtl";
+          const xCoord = isRTL
+            ? event.clientX - 50 - options.dragHandleWidth
+            : event.clientX + 50 + options.dragHandleWidth;
           const node = nodeDOMAtCoords(
-            {
-              x: event.clientX + 50 + options.dragHandleWidth,
-              y: event.clientY,
-            },
+            { x: xCoord, y: event.clientY },
             options
           );
-          const notDraggable = node?.closest(".not-draggable");
+          const notDragging = node?.closest(".not-draggable");
           const excluded = options.excludedTags.concat(["ol", "ul"]).join(", ");
           if (
             !(node instanceof Element) ||
             node.matches(excluded) ||
-            notDraggable
+            notDragging
           ) {
             hideDragHandle();
             return;
           }
-          const style = window.getComputedStyle(node);
-          const lineHeight = isNaN(parseInt(style.lineHeight, 10))
-            ? parseInt(style.fontSize) * 1.2
-            : parseInt(style.lineHeight, 10);
-          const paddingTop = parseInt(style.paddingTop, 10);
+          const compStyle = window.getComputedStyle(node);
+          const parsedLineHeight = parseInt(compStyle.lineHeight, 10);
+          const lineHeight = isNaN(parsedLineHeight)
+            ? parseInt(compStyle.fontSize) * 1.2
+            : parsedLineHeight;
+          const paddingTop = parseInt(compStyle.paddingTop, 10);
           const rect = absoluteRect(node);
           rect.top += (lineHeight - 24) / 2 + paddingTop;
           if (node.matches("ul:not([data-type=taskList]) li, ol li"))
             rect.left -= options.dragHandleWidth;
           rect.width = options.dragHandleWidth;
           if (!dragHandleElement) return;
-          dragHandleElement.style.left = `${rect.left - rect.width}px`;
+          if (isRTL) {
+            dragHandleElement.style.right = `${window.innerWidth - rect.right - options.dragHandleWidth}px`;
+            dragHandleElement.style.left = "";
+          } else {
+            dragHandleElement.style.left = `${rect.left - options.dragHandleWidth}px`;
+            dragHandleElement.style.right = "";
+          }
           dragHandleElement.style.top = `${rect.top}px`;
           showDragHandle();
         },
@@ -258,11 +272,12 @@ export function DragHandlePlugin(
               : null;
           if (!droppedNode) return;
           const resolvedPos = view.state.doc.resolve(dropPos.pos);
-          const isInsideList = resolvedPos.parent.type.name === "listItem";
+          const isDroppedInsideList =
+            resolvedPos.parent.type.name === "listItem";
           if (
             view.state.selection instanceof NodeSelection &&
             view.state.selection.node.type.name === "listItem" &&
-            !isInsideList &&
+            !isDroppedInsideList &&
             listType === "OL"
           ) {
             const newList = view.state.schema.nodes.orderedList?.createAndFill(

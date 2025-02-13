@@ -21,9 +21,8 @@ const editor = useEditor({
     TiptapStarterKit,
     BubbleMenu,
     GlobalDragHandle.configure({
-      dragHandleWidth: 20,
-      scrollTreshold: 100,
-      dragHandleSelector: ".custom-drag-handle",
+      dragHandleWidth: 40,
+      scrollTreshold: 600,
       excludedTags: [],
       customNodes: [],
     }),
@@ -238,28 +237,39 @@ p.is-empty::before {
 .drag-handle {
   position: fixed;
   opacity: 1;
-  transition: opacity 0.2s ease-in;
+  transition:
+    opacity 0.2s ease-in,
+    background-color 0.2s ease-in;
   border-radius: 0.25rem;
   background-color: #ddd;
-  background-size: calc(0.5em + 0.375rem) calc(0.5em + 0.375rem);
-  background-repeat: no-repeat;
-  background-position: center;
   width: 1.2rem;
   height: 1.5rem;
   z-index: 50;
   cursor: grab;
-  &:hover {
-    background-color: #ddd;
-  }
-  &:active {
-    background-color: var(--novel-stone-200);
-    cursor: grabbing;
-  }
-  &.hide {
-    opacity: 0;
-    pointer-events: none;
-  }
-  @media screen and (max-width: 600px) {
+}
+html.light .drag-handle {
+  background-color: #bbb;
+}
+
+.drag-handle:hover {
+  background-color: #ccc;
+}
+html.light .drag-handle:hover {
+  background-color: #999;
+}
+
+.drag-handle:active {
+  background-color: var(--novel-stone-200, #aaa);
+  cursor: grabbing;
+}
+
+.drag-handle.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 600px) {
+  .drag-handle {
     display: none;
     pointer-events: none;
   }
