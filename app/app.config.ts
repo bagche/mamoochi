@@ -24,6 +24,10 @@ export default defineAppConfig({
     ],
     [
       {
+        label: "Manage",
+        slot: "manage",
+      },
+      {
         label: "i18n",
         slot: "i18n",
       },
@@ -31,10 +35,7 @@ export default defineAppConfig({
         label: "theme",
         slot: "theme",
       },
-      {
-        label: "Manage",
-        slot: "manage",
-      },
+
       {
         label: "avatar",
         slot: "avatar",
@@ -82,6 +83,10 @@ export default defineAppConfig({
     ],
     [
       {
+        label: "Manage",
+        slot: "manage",
+      },
+      {
         label: "Help",
         // icon: "i-lucide-circle-help",
         // disabled: true,
@@ -95,14 +100,40 @@ export default defineAppConfig({
         label: "theme",
         slot: "theme",
       },
-      {
-        label: "Manage",
-        slot: "manage",
-      },
+
       {
         label: "avatar",
         slot: "avatar",
       },
     ],
+  ],
+  corePermissions: [
+    "dashboard.read",
+    "dashboard.edit",
+
+    "users.all",
+    "users.edit",
+    "users.delete",
+
+    "roles.read",
+    "roles.edit",
+    "roles.delete",
+
+    "item.create",
+    "item.read",
+    "item.edit",
+    "item.delete",
+
+    "page.create",
+    "page.read",
+    "page.edit",
+    "page.delete",
+
+    "media.upload",
+    "media.read",
+    "media.delete",
+
+    "cdn.update",
+    "config.manage",
   ],
 });

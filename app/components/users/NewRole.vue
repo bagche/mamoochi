@@ -2,6 +2,7 @@
 import { z } from "zod";
 
 import type { FormSubmitEvent } from "#ui/types";
+const appConfig = useAppConfig();
 
 // Props for modal open state
 const props = defineProps({
@@ -17,9 +18,10 @@ const modelIsOpen = computed({
 const { t } = useI18n();
 const toast = useToast();
 const submitting = ref(false);
+const form = ref();
 
 // Define a static list of permission items.
-const permissionItems = ref(["Backlog", "Todo", "In Progress", "Done"]);
+const permissionItems = ref(appConfig.corePermissions);
 
 // Zod schema including the permissions field.
 const schema = z.object({
@@ -35,7 +37,7 @@ type Schema = z.infer<typeof schema>;
 const state = reactive<Schema>({
   roleName: "",
   description: "",
-  permissions: ["Backlog", "Todo"], // default selected permissions
+  permissions: [], // default selected permissions
 });
 
 // Function to add a new role via the API.
@@ -98,9 +100,13 @@ const addRole = async (event: FormSubmitEvent<Schema>) => {
           <UFormField :label="t('Permissions')" name="permissions">
             <USelectMenu
               v-model="state.permissions"
+              :ui="{
+                content: 'ltr',
+              }"
               multiple
               :items="permissionItems"
               class="w-full"
+              icon="i-lucide-user"
             />
           </UFormField>
           <UButton
@@ -117,3 +123,8 @@ const addRole = async (event: FormSubmitEvent<Schema>) => {
     </template>
   </UModal>
 </template>
+<style>
+.ltr * {
+  direction: ltr !important;
+}
+</style>

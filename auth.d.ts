@@ -2,12 +2,7 @@ declare module "#auth-utils" {
   interface User {
     id: number;
     username: string;
-    firstName: string;
-    lastName: string;
-    displayName: string;
-    avatar?: string;
-    email?: string;
-    about: string;
+    permissions: string[];
   }
 
   interface UserSession {

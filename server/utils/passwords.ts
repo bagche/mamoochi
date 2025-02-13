@@ -45,23 +45,20 @@ export const hashSaltPassword = async (
 /**
  * Verify a plain text password against a stored salted hash.
  *
- * The stored hashed password must be in the format "salt:hash".
+ * The stored hashed password is expected to be in the format "salt:hash".
  *
  * @param hashedPassword - The stored salted hash.
  * @param plainPassword - The plain text password to verify.
+ * @param salt - The stored salt (hex-encoded string) used when hashing the original password.
  * @returns A promise that resolves to true if the password is valid, false otherwise.
  */
 export const verifySaltPassword = async (
   hashedPassword: string,
-  plainPassword: string
+  plainPassword: string,
+  salt: string
 ): Promise<boolean> => {
-  const parts = hashedPassword.split(":");
-  if (parts.length !== 2) {
-    throw new Error("Invalid hashed password format");
-  }
-  const [salt, storedHash] = parts;
-  const saltBytes = hexToBytes(salt);
-  const hashBytes = await scryptAsync(plainPassword, saltBytes, scryptOptions);
-  const hashHex = bytesToHex(hashBytes);
-  return hashHex === storedHash;
+  // Recompute the salted hash using the provided plain password and salt.
+  const computed = await hashSaltPassword(plainPassword, salt);
+  // Compare the recomputed salted hash with the stored value.
+  return computed === hashedPassword;
 };

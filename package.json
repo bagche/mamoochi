@@ -25,7 +25,7 @@
     "luxon": "^3.5.0",
     "nostr-tools": "^2.10.4",
     "nuxt": "^3.15.4",
-    "nuxt-auth-utils": "0.5.14",
+    "nuxt-auth-utils": "0.5.15",
     "nuxt-authorization": "0.3.3",
     "nuxt-tiptap-editor": "^2.1.4",
     "sass": "^1.84.0",

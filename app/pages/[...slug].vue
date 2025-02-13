@@ -77,7 +77,8 @@ if (error.value) showError({ statusCode: 404 });
         </div>
       </div>
     </UContainer>
-
-    <HelperStart v-if="page.stem" :path="page.stem" />
+    <Can :ability="editPage">
+      <HelperStart v-if="page.stem" :path="page.stem" />
+    </Can>
   </div>
 </template>

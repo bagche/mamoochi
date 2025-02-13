@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Verify password
+    // Verify password using salt stored in DB.
     const isPasswordValid = await verifySaltPassword(
       user.password,
       password,
@@ -44,28 +44,43 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Set user session
+    // Fetch user's roles and extract permissions.
+    // Query the user_roles join with roles table.
+    const rolePermissions = await drizzleDb
+      .select({ permissions: roles.permissions })
+      .from(user_roles)
+      .innerJoin(roles, eq(user_roles.roleId, roles.id))
+      .where(eq(user_roles.userId, user.id))
+      .all();
+
+    // Combine permissions from all roles.
+    // Each role.permissions is assumed to be a JSON string (e.g. '["seeDashboard","AddItem","EditPage"]').
+    const permissionsSet = new Set<string>();
+    for (const role of rolePermissions) {
+      try {
+        const perms: string[] = JSON.parse(role.permissions);
+        perms.forEach((p) => permissionsSet.add(p));
+      } catch (err) {
+        console.error("Error parsing permissions for role", role, err);
+      }
+    }
+    const permissions = Array.from(permissionsSet);
+
+    // Set user session including the permissions array.
     await setUserSession(event, {
       user: {
         id: user.id,
         username: userName,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        displayName: user.displayName ?? "",
-        avatar: user.avatar || "",
-        email: user.email || "",
-        about: user.about || "",
+        permissions,
       },
       loggedInAt: Date.now(),
     });
 
-    // Return user information
     return {
       message: "Login successful",
     };
   } catch (error: any) {
     console.error("Error logging in user:", error);
-
     throw createError({
       statusCode: error.statusCode || 500,
       statusMessage: error.statusMessage || t("Internal Server Error"),

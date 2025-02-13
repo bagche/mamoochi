@@ -8,6 +8,7 @@ definePageMeta({
   layout: "manage",
 });
 
+const { t } = useI18n();
 // Resolve Nuxt UI components
 const UTable = resolveComponent("UTable");
 const UButton = resolveComponent("UButton");
@@ -47,6 +48,11 @@ const { data, error } = useFetch("/api/users/all", {
 
 // Toast for notifications
 const toast = useToast();
+
+// refs
+
+const roleUserIsOpen = ref(false);
+const currentUserId = ref(0);
 
 // Define the table columns for the User table
 const columns: TableColumn<User>[] = [
@@ -88,6 +94,7 @@ const columns: TableColumn<User>[] = [
     accessorKey: "email",
     header: "Email",
   },
+
   {
     id: "actions",
     cell: ({ row }) => {
@@ -119,6 +126,13 @@ function getRowItems(row: Row<User>) {
     {
       type: "label",
       label: "Actions",
+    },
+    {
+      label: t("Manage Roles"),
+      onSelect() {
+        roleUserIsOpen.value = true;
+        currentUserId.value = row.original.id;
+      },
     },
     {
       label: "Edit User",
@@ -158,13 +172,17 @@ function getRowItems(row: Row<User>) {
     <!-- Pagination controls -->
     <div class="flex justify-center border-t border-(--ui-border) pt-4">
       <UPagination
+        v-if="data.total > pagination.pageSize"
         :default-page="pagination.pageIndex + 1"
         :items-per-page="pagination.pageSize"
         :total="data?.total ?? 0"
         @update:page="(p) => (pagination.pageIndex = p - 1)"
       />
     </div>
-
+    <UsersAddRoleToUser
+      v-model:is-open="roleUserIsOpen"
+      :user-id="currentUserId"
+    />
     <!-- Display an error message if the fetch fails -->
     <div v-if="error" class="mt-4 text-red-500">Failed to load users.</div>
   </div>

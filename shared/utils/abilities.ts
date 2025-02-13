@@ -1,7 +1,7 @@
-// export const listPosts = defineAbility(() => true); // Only authenticated users can list posts
+export const readDashboard = defineAbility((user: any) => {
+  return user?.permissions?.includes("dashboard.read") ?? false;
+});
 
-// export const editPost = defineAbility((user: User, post: Post) => {
-//   return user.id === post.authorId;
-// });
-
-export const seeDashboard = defineAbility(() => true);
+export const editPage = defineAbility((user: any) => {
+  return user?.permissions?.includes("page.edit") ?? false;
+});

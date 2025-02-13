@@ -72,8 +72,16 @@ const items = computed(() => {
     <template #avatar="{ item }">
       <UsersAvatarMenu class="" />
     </template>
-    <template v-if="allows(seeDashboard)" #manage="{ item }">
-      <AdminButton class="" />
+    <template #manage="{ item }">
+      <Bouncer :ability="readDashboard">
+        <template #can>
+          <AdminButton class="" />
+        </template>
+
+        <template #cannot>
+          <div class="-my-10" />
+        </template>
+      </Bouncer>
     </template>
   </UNavigationMenu>
 </template>
