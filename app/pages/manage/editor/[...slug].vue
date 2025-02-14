@@ -37,47 +37,47 @@ const isTyping = (data: string) => {
 };
 </script>
 <template>
-  <div class="pt-10">
+  <div class="pt-5">
     <UContainer>
       <div class="flex max-w-7xl mx-auto gap-10">
         <UForm
           ref="form"
           :schema="schema"
           :state="state"
-          class="space-y-4"
+          class="space-y-4 w-full"
           @submit="onSubmit"
         >
-          <div class="flex w-full justify-between pb-3 gap-3 items-end">
-            <UFormField label="عنوان" class="basis-10/12" size="md">
-              <UInput v-model="state.title" />
+          <div
+            class="flex w-full justify-between pb-3 gap-3 items-end bg-gray-100 p-2 rounded-md"
+          >
+            <UFormField label="عنوان" class="basis-10/12" size="2xl">
+              <UInput v-model="state.title" class="w-full" />
             </UFormField>
             <UFormField
               name="category"
               label="دسته بدنی"
               class="basis-2/12"
-              size="md"
+              size="2xl"
             >
               <UInput v-model="state.category" placeholder="Select..." />
             </UFormField>
-            <UButtonGroup
-              orientation="horizontal"
-              class="basis-1/12 flex justify-end h-10"
+            <UButton icon="i-heroicons-cloud" type="submit" class="text-md"
+              >انتشار</UButton
             >
-              <UButton
-                icon="i-heroicons-check"
-                color="gray"
-                type="submit"
-                class="text-md"
-                >انتشار</UButton
-              >
-              <UButton icon="i-heroicons-chevron-down" color="gray" />
-            </UButtonGroup>
           </div>
-          <ManageEditor
+
+          <UTextarea
+            v-model="state.body"
+            class="w-full ltr text-xl"
+            autoresize
+            :rows="40"
+          />
+
+          <!-- <ManageEditor
             :body="state.body"
             class="prose prose-xl dark:prose-invert mt-10"
             @update="isTyping"
-          />
+          /> -->
         </UForm>
       </div>
     </UContainer>
