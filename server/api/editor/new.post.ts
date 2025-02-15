@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
   const existingEdit = await db
     .select()
     .from(edits)
-    .where(eq(edits.path, path))
+    .where(eq(edits.path, path.startsWith("/") ? path.slice(1) : path))
     .get();
 
   if (existingEdit) {
@@ -43,6 +43,7 @@ export default defineEventHandler(async (event) => {
       .set({
         updatedAt: new Date(),
         body: content,
+        path: path.startsWith("/") ? path.slice(1) : path,
       })
       .where(eq(edits.id, existingEdit.id))
       .execute();
@@ -54,7 +55,7 @@ export default defineEventHandler(async (event) => {
       .values({
         createdAt: new Date(),
         author: session.user?.id,
-        path: path,
+        path: path.startsWith("/") ? path.slice(1) : path,
         type: "page",
         body: content,
       })
