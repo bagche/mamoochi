@@ -61,6 +61,7 @@
   "Personal Details": "Personal Details",
   "Please provide a role name, a description, and select the appropriate permissions.": "Please provide a role name, a description, and select the appropriate permissions.",
   "Profile": "Profile",
+  "Publish": "Publish",
   "Register": "Register",
   "Registered successfully": "Registered successfully",
   "Role Name": "Role Name",
@@ -104,12 +105,15 @@
   "more": "more",
   "name": "name",
   "password": "password",
+  "path": "path",
   "permissions": "permissions",
   "salt": "salt",
   "siteName": "Ali Zemani",
   "theme": "theme",
+  "title": "title",
   "titleFirst": "Ali",
   "titleSecond": "Zemani",
+  "type": "type",
   "username": "username",
   "vue": "vue"
 }

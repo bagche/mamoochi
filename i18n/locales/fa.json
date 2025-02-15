@@ -61,6 +61,7 @@
   "Personal Details": "اطلاعات شخصی",
   "Please provide a role name, a description, and select the appropriate permissions.": "Please provide a role name, a description, and select the appropriate permissions.",
   "Profile": "پروفایل",
+  "Publish": "Publish",
   "Register": "ثبت‌نام",
   "Registered successfully": "ثبت‌نام با موفقیت انجام شد",
   "Role Name": "Role Name",
@@ -104,12 +105,15 @@
   "more": "بیشتر",
   "name": "نام",
   "password": "رمز عبور",
+  "path": "path",
   "permissions": "permissions",
   "salt": "salt",
   "siteName": "مَموچی",
   "theme": "قالب",
+  "title": "title",
   "titleFirst": "مَـ",
   "titleSecond": "موچیــ",
+  "type": "type",
   "username": "نام کاربری",
   "vue": "vue"
 }
