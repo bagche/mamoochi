@@ -6,25 +6,24 @@ import type { FormSubmitEvent } from "#ui/types";
 const route = useRoute();
 
 const props = defineProps<{ pagePath: string }>();
-
-// const { locale } = useI18n();
+const { t } = useI18n();
 
 const { data: page }: any = await useAsyncData(route.path, () => {
   return queryCollection("content")
     .where("path", "LIKE", "%" + props.pagePath)
     .first();
 });
-console.log("Current page path:", page);
 
 const state = reactive({
   title: page?.value?.title ?? "title",
-  category: "d",
   body: page?.value?.rawbody.replace(/\\n/g, "\n") ?? "",
 });
+const toast = useToast();
+const submitting = ref(false);
 
 const schema = z.object({
   title: z.string().min(5),
-  category: z.string().min(5),
+  body: z.string().min(5),
 });
 
 type Schema = z.infer<typeof schema>;
@@ -32,8 +31,29 @@ type Schema = z.infer<typeof schema>;
 const form = ref();
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
-  // Do something with event.data
-  console.log(event.data);
+  submitting.value = true;
+  try {
+    await $fetch("/api/editor/new", {
+      method: "POST",
+      body: JSON.stringify({
+        path: props.pagePath,
+        body: event.data.body,
+      }),
+    });
+    submitting.value = false;
+    toast.add({
+      title: t("Success"),
+      description: t("Content saved successfully"),
+      color: "green",
+    });
+  } catch (error) {
+    submitting.value = false;
+    toast.add({
+      title: error.data?.message || error.message,
+      description: error.data?.data?.issues[0]?.message || error.data?.data,
+      color: "red",
+    });
+  }
 }
 
 // const isTyping = (data: string) => {
@@ -57,14 +77,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 <UFormField label="عنوان" class="basis-10/12" size="2xl">
                   <UInput v-model="state.title" class="w-full" />
                 </UFormField>
-                <UFormField
-                  name="category"
-                  label="دسته بدنی"
-                  class="basis-2/12"
-                  size="2xl"
-                >
-                  <UInput v-model="state.category" placeholder="Select..." />
-                </UFormField>
+
                 <UButton
                   icon="i-heroicons-cloud"
                   type="submit"

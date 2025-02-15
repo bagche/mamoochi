@@ -14,11 +14,16 @@ const UButton = resolveComponent("UButton");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 const UPagination = resolveComponent("UPagination");
 
-// Define a Role type matching your schema
-type Role = {
+// Define an Edit type matching your schema
+type Edit = {
   id: number;
-  name: string;
-  description: string;
+  createdAt: number;
+  updatedAt?: number;
+  author: number;
+  path: string;
+  type: string;
+  status: string;
+  body: string;
 };
 
 // Reactive pagination state (UTable uses a 0-indexed pageIndex)
@@ -33,29 +38,49 @@ const queryParams = computed(() => ({
   pageSize: pagination.value.pageSize,
 }));
 
-// Fetch paginated roles from the API endpoint. 
-// When queryParams change, useFetch re-runs automatically.
-const { data, error } = useFetch("/api/roles/all", {
+// Fetch paginated edits from the API endpoint.
+const { data, error } = useFetch("/api/editor/new", {
   query: queryParams,
 });
 
 // Get toast composable for notifications
 const toast = useToast();
 
-// Define the table columns for the Roles table
-const columns: TableColumn<Role>[] = [
+// Define the table columns for the Edits table
+const columns: TableColumn<Edit>[] = [
   {
     accessorKey: "id",
     header: "#",
     cell: ({ row }) => `#${row.getValue("id")}`,
   },
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "path",
+    header: "Path",
   },
   {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: "createdAt",
+    header: "Created At",
+    cell: ({ row }) => new Date(row.getValue("createdAt")).toLocaleString(),
+  },
+  {
+    accessorKey: "updatedAt",
+    header: "Updated At",
+    cell: ({ row }) => {
+      const updated = row.getValue("updatedAt");
+      return updated ? new Date(updated).toLocaleString() : "Never";
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "body",
+    header: "Content",
+    cell: ({ row }) => {
+      const text = row.getValue("body") as string;
+      return text.length > 100 ? text.slice(0, 100) + "..." : text;
+    },
   },
   {
     id: "actions",
@@ -82,28 +107,28 @@ const columns: TableColumn<Role>[] = [
   },
 ];
 
-// Define dropdown menu items for each role row
-function getRowItems(row: Row<Role>) {
+// Define dropdown menu items for each edit row
+function getRowItems(row: Row<Edit>) {
   return [
     {
       type: "label",
       label: "Actions",
     },
     {
-      label: "Edit Role",
+      label: "Edit",
       onSelect() {
         toast.add({
-          title: `Edit role #${row.original.id}`,
+          title: `Edit record #${row.original.id}`,
           color: "info",
           icon: "i-lucide-edit",
         });
       },
     },
     {
-      label: "Delete Role",
+      label: "Delete",
       onSelect() {
         toast.add({
-          title: `Delete role #${row.original.id}`,
+          title: `Delete record #${row.original.id}`,
           color: "error",
           icon: "i-lucide-trash",
         });
@@ -118,7 +143,7 @@ function getRowItems(row: Row<Role>) {
     <!-- Table component with pagination -->
     <UTable
       v-model:pagination="pagination"
-      :data="data?.roles ?? []"
+      :data="data?.edits ?? []"
       :columns="columns"
       :pagination-options="{ getPaginationRowModel: getPaginationRowModel() }"
       class="flex-1"
@@ -127,6 +152,7 @@ function getRowItems(row: Row<Role>) {
     <!-- Pagination controls -->
     <div class="flex justify-center border-t border-(--ui-border) pt-4">
       <UPagination
+        v-if="data?.total > pagination.pageSize"
         :default-page="pagination.pageIndex + 1"
         :items-per-page="pagination.pageSize"
         :total="data?.total ?? 0"
@@ -135,8 +161,6 @@ function getRowItems(row: Row<Role>) {
     </div>
 
     <!-- Display error if the fetch fails -->
-    <div v-if="error" class="mt-4 text-red-500">
-      Failed to load roles.
-    </div>
+    <div v-if="error" class="mt-4 text-red-500">Failed to load edits.</div>
   </div>
 </template>

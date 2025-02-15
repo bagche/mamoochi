@@ -48,13 +48,13 @@ const formattedDay = formatDay(todayISO);
         <span class="font-bold">
           {{ formattedDay }}
         </span>
+        <span class="font-thin mx-2">/</span>
         <span class="font-thin mr-1">
           {{ formattedDate }}
         </span>
-        <span class="font-thin mx-2">/</span>
-        <span class="font-thin">
+        <!-- <span class="font-thin">
           {{ $t("Dashboard") }}
-        </span>
+        </span> -->
       </template>
       <!-- Otherwise, show the standard title and description -->
       <template v-else>

@@ -82,7 +82,7 @@ export default defineEventHandler(async (event) => {
         email: insertedUser.email || "",
         about: insertedUser.about || "",
       },
-      loggedInAt: Date.now(),
+      loggedInAt: new Date(),
     });
 
     // Return success message

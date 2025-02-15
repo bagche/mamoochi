@@ -57,11 +57,11 @@ export default defineAppConfig({
         defaultOpen: true,
         to: "/manage/items",
       },
-      {
-        label: "Comments",
-        // icon: "i-lucide-database",
-        to: "/manage/comments",
-      },
+      // {
+      //   label: "Comments",
+      //   // icon: "i-lucide-database",
+      //   to: "/manage/comments",
+      // },
       {
         label: "Users",
         // icon: "i-lucide-box",

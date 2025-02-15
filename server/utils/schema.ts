@@ -45,10 +45,12 @@ export const user_roles = sqliteTable("user_roles", {
 export const edits = sqliteTable("edits", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }),
   author: integer("author_id")
     .notNull()
     .references(() => users.id),
   path: text("path").default(""),
   type: text("type").default(""),
+  status: text("status").default(""),
   body: text("description").default(""),
 });

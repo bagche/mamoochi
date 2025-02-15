@@ -73,7 +73,7 @@ export default defineEventHandler(async (event) => {
         username: userName,
         permissions,
       },
-      loggedInAt: Date.now(),
+      loggedInAt: new Date(),
     });
 
     return {
