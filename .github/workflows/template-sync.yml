@@ -1,0 +1,28 @@
+name: Repo Sync
+
+on:
+  push:
+    branches:
+      - master
+# on:
+#   schedule:
+#     - cron: "0 0 * * *" ## At 12:00am
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: actions-template-sync
+        uses: AndreasAugustin/actions-template-sync@v1.1.1
+        with:
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
+          source_repo_path: "Bagche/Mamoochi"
+          upstream_branch: "master"
+          pr_branch_name_prefix: "daily/template_sync"
+          pr_title: "Mamoochi Daily-Update"

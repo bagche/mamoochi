@@ -78,4 +78,10 @@ export default defineNuxtConfig({
   experimental: {
     restoreState: true,
   },
+  content: {
+    database: {
+      type: "d1",
+      binding: "DB",
+    },
+  },
 });
