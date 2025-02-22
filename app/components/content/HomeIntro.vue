@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const { locale, defaultLocale } = useI18n();
 
-const { data } = await useAsyncData(`home-intro`, () =>
-  queryCollection("items")
-    .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
-    .first()
+const { data } = await useAsyncData(
+  `home-intro`,
+  async () =>
+    await queryCollection("items")
+      .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
+      .first()
 );
 </script>
 
@@ -25,11 +27,11 @@ const { data } = await useAsyncData(`home-intro`, () =>
       <nuxt-img
         preload
         loading="lazy"
-        sizes="sm:100vw md:80vw lg:500px"
+        sizes="sm:50vw md:90vw lg:200px"
         class="w-full"
         :src="data?.thumbnail"
         :alt="data?.title"
-        :placeholder="[600]"
+        :placeholder="[400]"
       />
     </div>
   </div>

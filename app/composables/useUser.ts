@@ -1,17 +1,21 @@
 import { bytesToHex } from "@noble/hashes/utils";
-import { useStorage } from "@vueuse/core";
 import { generateSecretKey, getPublicKey } from "nostr-tools";
 
 export default () => {
   const { locale } = useI18n();
-  const loggedIn = useStorage("loggedIn", false);
-  const profile = useStorage("current-user", {
-    firstName: "",
-    lastName: "",
-    displayName: "",
-    about: "",
+  const profile = useCookie("current-user", {
+    default: () => ({
+      firstName: "",
+      lastName: "",
+      displayName: "",
+      about: "",
+    }),
+    watch: true,
   });
-
+  const loggedIn = useCookie("loggedIn", {
+    default: () => false,
+    watch: true,
+  });
   const registerNew = async () => {
     if (!loggedIn.value) {
       const priv = generateSecretKey(); // `sk` is a hex string
@@ -28,8 +32,8 @@ export default () => {
       };
 
       profile.value = newUser;
-      // loggedIn.value = true;
-      // console.log(newUser);
+      loggedIn.value = true;
+      console.log(newUser);
     }
   };
   return {

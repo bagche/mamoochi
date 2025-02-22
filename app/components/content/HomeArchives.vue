@@ -1,16 +1,18 @@
 <script setup lang="ts">
 const { locale, defaultLocale } = useI18n();
 
-const { data } = await useAsyncData(`home-archives`, () =>
-  queryCollection("items")
-    .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
-    .limit(10)
-    .all()
+const { data } = await useAsyncData(
+  `home-archives`,
+  async () =>
+    await queryCollection("items")
+      .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
+      .limit(10)
+      .all()
 );
 </script>
 
 <template>
-  <span>
+  <div class="w-full">
     <h2 class="mt-0">{{ $t("Latest Incoming") }}</h2>
 
     <div v-if="data" class="px-5 md:m-0">
@@ -26,5 +28,5 @@ const { data } = await useAsyncData(`home-archives`, () =>
       </ol>
     </div>
     <p v-else>{{ $t("Noting is Here :(") }}</p>
-  </span>
+  </div>
 </template>
