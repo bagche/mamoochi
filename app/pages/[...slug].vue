@@ -1,20 +1,16 @@
 <script lang="ts" setup>
-const { locale, availableLocales, defaultLocale } = useI18n();
+const { defaultLocale } = useI18n();
 const route = useRoute();
-
-const mdFile = computed(() => {
-  return route.path === "/" ? `/${defaultLocale}/` : `${route.path}`;
-});
 
 // Fetch base page data.
 const { data: pageData } = await useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
-      return await queryCollection("content")
-        // .where("path", "LIKE", mdFile.value)
-        .path(mdFile.value)
-        .first();
+      const pathway =
+        route.path === "/" ? `/${defaultLocale}/` : `${route.path}`;
+      // console.log("file", pathway);
+      return await queryCollection("content").path(pathway).first();
     } catch (error) {
       console.error("Error fetching page content:", error);
       return null;
@@ -26,7 +22,7 @@ const { data: pageData } = await useAsyncData(
 <template>
   <div class="mt-10">
     <!-- Display page content if available -->
-    <div v-if="pageData">
+    <div v-if="pageData" :key="pageData?.path">
       <!-- <template v-if="isItems">
         <div class="max-w-8xl flex flex-col gap-3 text-center">
           <h1 class="text-5xl pb-5">{{ pageData.title }}</h1>

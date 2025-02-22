@@ -40,7 +40,7 @@ const formattedDay = formatDay(todayISO);
 <template>
   <div class="flex items-center justify-center whitespace-nowrap text-xl">
     <NuxtLink
-      :to="route.path.startsWith('/manage') ? '/manage' : '/' + locale + '/'"
+      :to="route.path.startsWith('/manage') ? '/manage' : '/' + locale"
       class="flex items-baseline"
     >
       <!-- For dashboard routes: show day, date, and "Dashboard" -->

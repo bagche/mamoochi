@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { locale, defaultLocale } = useI18n();
 
-const { data } = await useAsyncData(`home-intro-${locale.value}`, () =>
+const { data } = await useAsyncData(`home-intro`, () =>
   queryCollection("items")
     .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
     .first()
@@ -12,12 +12,12 @@ const { data } = await useAsyncData(`home-intro-${locale.value}`, () =>
   <div class="flex flex-col md:flex-row items-center h-screen-md gap-4">
     <div class="md:w-1/2 flex flex-col items-start">
       <h2 class="mt-2">
-        <NuxtLink :to="data?.path?.slice(0, -3)" class="hover:underline">
+        <NuxtLink :to="data?.path" class="hover:underline">
           {{ data?.title }}
         </NuxtLink>
       </h2>
       <p>{{ data?.description }}</p>
-      <NuxtLink :to="data?.path?.slice(0, -3)" class="hover:underline">
+      <NuxtLink :to="data?.path" class="hover:underline">
         {{ $t("more") }}...
       </NuxtLink>
     </div>
