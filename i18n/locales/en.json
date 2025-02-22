@@ -15,6 +15,7 @@
   "Confirm Password must be at least 6 characters": "Confirm Password must be at least 6 characters",
   "Confirm password": "Confirm password",
   "Contact": "Contact",
+  "Content saved successfully": "Content saved successfully",
   "Current Password": "Current Password",
   "Dashboard": "Dashboard",
   "Description": "Description",
@@ -109,11 +110,11 @@
   "permissions": "permissions",
   "salt": "salt",
   "siteName": "Ali Zemani",
+  "status": "status",
   "theme": "theme",
   "title": "title",
   "titleFirst": "Ali",
   "titleSecond": "Zemani",
   "type": "type",
-  "username": "username",
-  "vue": "vue"
+  "username": "username"
 }

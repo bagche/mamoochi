@@ -15,6 +15,7 @@
   "Confirm Password must be at least 6 characters": "رمز عبور تایید شده باید حداقل ۶ کاراکتر باشد",
   "Confirm password": "تایید رمز عبور",
   "Contact": "تماس",
+  "Content saved successfully": "Content saved successfully",
   "Current Password": "رمز عبور فعلی",
   "Dashboard": "داشبورد",
   "Description": "Description",
@@ -109,11 +110,11 @@
   "permissions": "permissions",
   "salt": "salt",
   "siteName": "مَموچی",
+  "status": "status",
   "theme": "قالب",
   "title": "title",
   "titleFirst": "مَـ",
   "titleSecond": "موچیــ",
   "type": "type",
-  "username": "نام کاربری",
-  "vue": "vue"
+  "username": "نام کاربری"
 }
