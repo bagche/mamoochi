@@ -1,6 +1,6 @@
 import viteCompression from "vite-plugin-compression";
 
-// import { generateRoutes } from "./scripts/prerender";
+import { generateRoutes } from "./scripts/prerender";
 
 export default defineNuxtConfig({
   future: { compatibilityVersion: 4 },
@@ -39,7 +39,7 @@ export default defineNuxtConfig({
     minify: true,
     prerender: {
       crawlLinks: false,
-      // routes: generateRoutes(),
+      routes: generateRoutes(),
     },
   },
   ui: {
