@@ -1,7 +1,12 @@
 <script setup lang="ts">
-const { data } = useAsyncData("home-archives", () => {
-  return queryCollection("items").limit(10).all();
-});
+const { locale, defaultLocale } = useI18n();
+
+const { data } = await useAsyncData(`home-archives-${locale.value}`, () =>
+  queryCollection("items")
+    .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
+    .limit(10)
+    .all()
+);
 </script>
 
 <template>

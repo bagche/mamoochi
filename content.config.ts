@@ -6,7 +6,7 @@ export default defineContentConfig({
       type: "page",
       source: "**/*.md",
       schema: z.object({
-         title: z.string(),
+        title: z.string(),
         thumbnail: z.string(),
         description: z.string(),
         date: z.string(),
@@ -19,7 +19,7 @@ export default defineContentConfig({
     }),
     items: defineCollection({
       type: "page",
-      source: "items/*.md",
+      source: "**/items/*.md",
       schema: z.object({
         title: z.string(),
         thumbnail: z.string(),
