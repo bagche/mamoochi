@@ -3,8 +3,6 @@ const { locale, availableLocales, defaultLocale } = useI18n();
 const route = useRoute();
 
 const mdFile = computed(() => {
-  console.log(route.path, locale.value);
-
   return route.path === "/" ? `/${defaultLocale}/` : `${route.path}`;
 });
 
@@ -13,7 +11,6 @@ const { data: pageData } = await useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
-      console.log("file", mdFile.value);
       return await queryCollection("content")
         // .where("path", "LIKE", mdFile.value)
         .path(mdFile.value)
