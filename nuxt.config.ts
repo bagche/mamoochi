@@ -73,7 +73,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    "/**": { prerender: true }, // Prerender (SSG) all routes by default
+    "/**": { prerender: true },
   },
   experimental: {
     restoreState: true,
@@ -81,7 +81,7 @@ export default defineNuxtConfig({
   content: {
     database: {
       type: "d1",
-      binding: "DB",
+      bindingName: "DB",
     },
   },
 });

@@ -6,13 +6,13 @@
   "scripts": {
     "build": "nuxt build",
     "clean": "rm -rf .nuxt dist .output dist_build",
-    "reset": "rm -rf .nuxt dist .output dist_build .wrangler .data ",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "i18:update": "node scripts/updateLocale.js",
     "postinstall": "nuxt prepare",
     "lint:fix": "eslint . --fix",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "reset": "rm -rf .nuxt dist .output dist_build .wrangler .data "
   },
   "dependencies": {
     "@noble/curves": "^1.8.1",
@@ -50,10 +50,26 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "nitro-cloudflare-dev": "^0.2.1",
     "prettier": "^3.5.2",
-    "tailwindcss": "^4.0.8",
     "typescript": "^5.7.3",
     "vite-plugin-compression": "^0.5.1",
     "vue-router": "^4.5.0",
     "wrangler": "^3.109.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "tailwindcss": "4.0.7",
+      "@tailwindcss/node": "4.0.7",
+      "@tailwindcss/postcss": "4.0.7",
+      "@tailwindcss/vite": "4.0.7"
+    },
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild",
+      "workerd",
+      "@parcel/watcher",
+      "sharp",
+      "vue-demi"
+    ],
+    "ignoredBuiltDependencies": []
   }
 }
