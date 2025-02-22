@@ -55,6 +55,12 @@
     "vue-router": "^4.5.0",
     "wrangler": "^3.109.2"
   },
+  "overrides": {
+    "tailwindcss": "4.0.7",
+    "@tailwindcss/node": "4.0.7",
+    "@tailwindcss/postcss": "4.0.7",
+    "@tailwindcss/vite": "4.0.7"
+  },
   "pnpm": {
     "overrides": {
       "tailwindcss": "4.0.7",
