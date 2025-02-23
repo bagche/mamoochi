@@ -84,14 +84,4 @@ export default defineNuxtConfig({
       bindingName: "DB",
     },
   },
-  runtimeConfig: {
-    public: {
-      site_name_fa: "",
-      title_fa: "",
-      description_fa: "",
-      site_name_en: "",
-      title_en: "",
-      description_en: "",
-    },
-  },
 });

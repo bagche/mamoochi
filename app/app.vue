@@ -2,14 +2,14 @@
 const { locale, t } = useI18n();
 const { registerNew } = useUser();
 const dir = computed(() => (locale.value === "en" ? "ltr" : "rtl"));
-const appConfig: any = useRuntimeConfig();
+const appConfig = useAppConfig();
 
 const siteName = computed(() => {
-  return appConfig?.public.site_name_fa ?? "";
+  return appConfig.app.site_name_fa ?? "";
 });
 
 const description = computed(() => {
-  return appConfig?.public.description_fa ?? "";
+  return appConfig.app.description_fa ?? "";
 });
 useHead({
   title: siteName.value,
