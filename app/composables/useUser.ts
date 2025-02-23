@@ -33,7 +33,6 @@ export default () => {
 
       profile.value = newUser;
       loggedIn.value = true;
-      console.log(newUser);
     }
   };
   return {

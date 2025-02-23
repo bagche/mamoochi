@@ -1,11 +1,19 @@
 <script lang="ts" setup>
 const { locale, t } = useI18n();
 const { registerNew } = useUser();
-
 const dir = computed(() => (locale.value === "en" ? "ltr" : "rtl"));
+const appConfig: any = useRuntimeConfig();
+
+const siteName = computed(() => {
+  return appConfig?.app.site_name_fa ?? "";
+});
+
+const description = computed(() => {
+  return appConfig?.app.description_fa ?? "";
+});
 useHead({
-  title: t("siteName"),
-  titleTemplate: `%s - ${t("siteName")}:// ${t("description")} `,
+  title: siteName.value,
+  titleTemplate: `%s - ${siteName.value}:// ${description.value} `,
   htmlAttrs: {
     lang: locale.value,
     dir,
@@ -16,7 +24,7 @@ useHead({
     {
       hid: "description",
       name: "description",
-      content: t("description"),
+      content: description.value,
     },
   ],
 
@@ -30,7 +38,7 @@ useHead({
     },
   ],
 });
-registerNew()
+registerNew();
 </script>
 <template>
   <UApp>

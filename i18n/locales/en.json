@@ -109,12 +109,10 @@
   "path": "path",
   "permissions": "permissions",
   "salt": "salt",
-  "siteName": "Ali Zemani",
   "status": "status",
   "theme": "theme",
   "title": "title",
-  "titleFirst": "Ali",
-  "titleSecond": "Zemani",
   "type": "type",
-  "username": "username"
+  "username": "username",
+  "vue": "vue"
 }

@@ -91,6 +91,7 @@ const items = computed(() => [
           size="xs"
           src="/totoro_render.webp"
           class="avatar-button"
+          placeholder
         />
 
         <template #account="{ item }">

@@ -29,7 +29,7 @@ export default defineNuxtConfig({
     },
     plugins: [viteCompression({ algorithm: "brotliCompress" })],
     build: {
-    minify: true,
+      minify: true,
     },
   },
 
@@ -82,6 +82,16 @@ export default defineNuxtConfig({
     database: {
       type: "d1",
       bindingName: "DB",
+    },
+  },
+  runtimeConfig: {
+    app: {
+      site_name_fa: "",
+      title_fa: "",
+      description_fa: "",
+      site_name_en: "",
+      title_en: "",
+      description_en: "",
     },
   },
 });

@@ -45,6 +45,7 @@
     "@nuxt/eslint": "^1.1.0",
     "@nuxtjs/i18n": "^9.2.1",
     "@tailwindcss/typography": "^0.5.16",
+    "@types/luxon": "^3.4.2",
     "drizzle-kit": "^0.30.4",
     "eslint": "^9.21.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
