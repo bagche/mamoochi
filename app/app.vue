@@ -5,11 +5,11 @@ const dir = computed(() => (locale.value === "en" ? "ltr" : "rtl"));
 const appConfig: any = useRuntimeConfig();
 
 const siteName = computed(() => {
-  return appConfig?.app.site_name_fa ?? "";
+  return appConfig?.public.site_name_fa ?? "";
 });
 
 const description = computed(() => {
-  return appConfig?.app.description_fa ?? "";
+  return appConfig?.public.description_fa ?? "";
 });
 useHead({
   title: siteName.value,

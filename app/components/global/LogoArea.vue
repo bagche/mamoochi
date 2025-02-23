@@ -42,8 +42,8 @@ const currentLocale = computed(() => locale.value || defaultLocale);
 // Helper computed property to select the appropriate title
 const currentTitle = computed(() =>
   currentLocale.value === "fa"
-    ? appConfig?.app.title_fa || ""
-    : appConfig?.app.title_en || ""
+    ? appConfig?.public.title_fa || ""
+    : appConfig?.public.title_en || ""
 );
 
 // Computed properties to split the title into first and second words
@@ -53,8 +53,8 @@ const titleSecond = computed(() => currentTitle.value.split(" ")[1] || "");
 // Computed property for the description based on the locale
 const description = computed(() =>
   currentLocale.value === "fa"
-    ? appConfig?.app.description_fa || ""
-    : appConfig?.app.description_en || ""
+    ? appConfig?.public.description_fa || ""
+    : appConfig?.public.description_en || ""
 );
 </script>
 

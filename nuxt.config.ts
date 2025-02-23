@@ -85,7 +85,7 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    app: {
+    public: {
       site_name_fa: "",
       title_fa: "",
       description_fa: "",
