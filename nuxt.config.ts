@@ -1,4 +1,4 @@
-// import viteCompression from "vite-plugin-compression";
+import viteCompression from "vite-plugin-compression";
 
 import { generateRoutes } from "./scripts/prerender";
 
@@ -27,16 +27,16 @@ export default defineNuxtConfig({
         },
       },
     },
-    // plugins: [viteCompression({ algorithm: "brotliCompress" })],
-    // build: {
-    // minify: true,
-    // },
+    plugins: [viteCompression({ algorithm: "brotliCompress" })],
+    build: {
+    minify: true,
+    },
   },
 
   nitro: {
     // preset: "cloudflare-pages",
-    // compressPublicAssets: true,
-    // minify: true,
+    compressPublicAssets: true,
+    minify: true,
     prerender: {
       crawlLinks: false,
       routes: generateRoutes(),
