@@ -9,30 +9,43 @@ const { data } = await useAsyncData(
       .first()
 );
 </script>
-
 <template>
-  <div class="flex flex-col md:flex-row items-center h-screen-md gap-4">
-    <div class="md:w-1/2 flex flex-col items-start">
-      <h2 class="mt-2">
-        <NuxtLink :to="data?.path" class="hover:underline">
-          {{ data?.title }}
+  <div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row items-center gap-0 md:gap-8">
+      <!-- Content Section -->
+      <div class="w-full md:w-1/2 flex flex-col justify-center">
+        <h2
+          class="text-2xl md:text-3xl font-semibold mt-2 hover:underline transition-colors duration-300"
+        >
+          <NuxtLink :to="data?.path" class="">
+            {{ data?.title }}
+          </NuxtLink>
+        </h2>
+        <p class="mt-4 text-base md:text-lg">
+          {{ data?.description }}
+        </p>
+        <NuxtLink
+          :to="data?.path"
+          class="mt-4 hover:underline transition-colors duration-300"
+        >
+          <span class="hover:underline transition-colors duration-300">
+            {{ $t("more") }}...
+          </span>
         </NuxtLink>
-      </h2>
-      <p>{{ data?.description }}</p>
-      <NuxtLink :to="data?.path" class="hover:underline">
-        {{ $t("more") }}...
-      </NuxtLink>
-    </div>
-    <div class="md:w-1/2 flex justify-end mt-10 md:mt-0">
-      <nuxt-img
-        preload
-        loading="lazy"
-        sizes="sm:50vw md:90vw lg:200px"
-        class="w-full"
-        :src="data?.thumbnail"
-        :alt="data?.title"
-        :placeholder="[400]"
-      />
+      </div>
+
+      <!-- Image Section -->
+      <div class="w-full md:w-1/2 flex justify-center">
+        <nuxt-img
+          preload
+          loading="lazy"
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+          class="w-full max-w-xl rounded-lg object-cover"
+          :src="data?.thumbnail"
+          :alt="data?.title || 'Image'"
+          :placeholder="[300]"
+        />
+      </div>
     </div>
   </div>
 </template>

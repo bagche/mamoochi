@@ -38,34 +38,30 @@ const formattedDay = formatDay(todayISO);
 </script>
 
 <template>
-  <div class="flex items-center justify-center whitespace-nowrap text-xl">
+  <div class="flex items-center justify-center whitespace-nowrap">
     <NuxtLink
       :to="route.path.startsWith('/manage') ? '/manage' : '/' + locale"
       class="flex items-baseline"
     >
-      <!-- For dashboard routes: show day, date, and "Dashboard" -->
       <template v-if="route.path.startsWith('/manage')">
-        <span class="font-bold">
+        <span class="font-bold text-2xl">
           {{ formattedDay }}
         </span>
-        <span class="font-thin mx-2">/</span>
-        <span class="font-thin mr-1">
+        <span class="font-thin mx-2text-2xl">/</span>
+        <span class="font-thin mr-1 text-2xl">
           {{ formattedDate }}
         </span>
-        <!-- <span class="font-thin">
-          {{ $t("Dashboard") }}
-        </span> -->
       </template>
       <!-- Otherwise, show the standard title and description -->
       <template v-else>
-        <span class="font-bold">
+        <span class="font-bold text-2xl">
           {{ $t("titleFirst") }}
         </span>
-        <span class="font-thin">
+        <span class="font-thin text-2xl">
           {{ $t("titleSecond") }}
         </span>
-        <span class="font-thin mx-2">/</span>
-        <span class="font-thin">
+        <span class="font-thin mx-2 text-2xl">/</span>
+        <span class="font-thin text-xl">
           {{ $t("description") }}
         </span>
       </template>

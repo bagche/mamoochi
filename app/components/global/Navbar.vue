@@ -49,25 +49,21 @@ const items = computed(() => {
 
 <template>
   <UNavigationMenu
+    size="xl"
     highlight
     highlight-color="primary"
     orientation="horizontal"
     :items="items"
     :ui="{
       root: navDir,
-      label: 'text-3xl',
     }"
     class="navbar data-[orientation=horizontal]:w-full"
   >
     <template #theme="{ item }">
-      <ClientOnly>
-        <DarkMode class="" />
-      </ClientOnly>
+      <DarkMode class="" />
     </template>
     <template #i18n="{ item }">
-      <ClientOnly>
-        <LanguageSelector class="" />
-      </ClientOnly>
+      <LanguageSelector class="" />
     </template>
     <template #avatar="{ item }">
       <UsersAvatarMenu class="" />
