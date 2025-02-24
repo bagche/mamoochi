@@ -1,1 +1,9 @@
-# Hello
+<div>
+
+<HomeIntro />
+
+</div>
+
+<hr >
+
+<HomeArchives />

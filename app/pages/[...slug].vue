@@ -48,7 +48,7 @@ const { data: pageData } = await useAsyncData(
         <div class="flex max-w-7xl mx-auto gap-10">
           <ContentRenderer
             :value="pageData"
-            class="prose prose-xl dark:prose-invert flex-1 w-full"
+            class="prose dark:prose-invert flex-1 w-full"
           />
           <!-- <div
             v-if="isItems"

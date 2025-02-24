@@ -43,7 +43,7 @@ export default defineNuxtConfig({
     },
   },
   ui: {
-    fonts: false,
+    fonts: true,
   },
   i18n: {
     detectBrowserLanguage: {

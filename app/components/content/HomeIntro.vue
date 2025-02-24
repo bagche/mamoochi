@@ -21,7 +21,7 @@ const { data } = await useAsyncData(
             {{ data?.title }}
           </NuxtLink>
         </h2>
-        <p class="mt-4 text-base md:text-lg">
+        <p class="mt-4 text-base md:text-lg text-justify">
           {{ data?.description }}
         </p>
         <NuxtLink
@@ -39,10 +39,11 @@ const { data } = await useAsyncData(
         <nuxt-img
           preload
           loading="lazy"
-          class="w-full max-w-xl rounded-lg object-cover"
+          class="w-full max-w-90 rounded-lg object-cover"
           :src="data?.thumbnail"
           :alt="data?.title || 'Image'"
           :placeholder="[300]"
+          sizes="100vw sm:50vw md:400px"
         />
       </div>
     </div>

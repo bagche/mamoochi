@@ -1,90 +1,70 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { DateTime } from "luxon";
-import { useRoute } from "vue-router";
+
 const { locale, defaultLocale } = useI18n();
 const route = useRoute();
 const appConfig = useAppConfig();
 
-function formatDate(inputDate: string) {
-  const dt = DateTime.fromISO(inputDate);
-  if (locale.value === "fa") {
-    return dt
-      .reconfigure({ outputCalendar: "persian" })
-      .setLocale("fa")
-      .toFormat("dd MMMM"); // e.g. "12 اسفند"
-  }
+// Format a date string based on the current locale.
+function formatDate(isoString: string): string {
+  const dt = DateTime.fromISO(isoString);
+  const calendar = locale.value === "fa" ? "persian" : "iso8601";
   return dt
-    .reconfigure({ outputCalendar: "iso8601" })
-    .setLocale("en")
-    .toFormat("dd MMMM"); // e.g. "12 December"
+    .reconfigure({ outputCalendar: calendar })
+    .setLocale(locale.value)
+    .toFormat("dd MMMM");
 }
 
-function formatDay(inputDate: string) {
-  const dt = DateTime.fromISO(inputDate);
-  if (locale.value === "fa") {
-    return dt
-      .reconfigure({ outputCalendar: "persian" })
-      .setLocale("fa")
-      .toFormat("cccc"); // e.g. "دوشنبه"
-  }
+// Format the weekday based on the current locale.
+function formatDay(isoString: string): string {
+  const dt = DateTime.fromISO(isoString);
+  const calendar = locale.value === "fa" ? "persian" : "iso8601";
   return dt
-    .reconfigure({ outputCalendar: "iso8601" })
-    .setLocale("en")
-    .toFormat("cccc"); // e.g. "Monday"
+    .reconfigure({ outputCalendar: calendar })
+    .setLocale(locale.value)
+    .toFormat("cccc");
 }
 
 const todayISO = DateTime.now().toISO();
 const formattedDate = formatDate(todayISO);
 const formattedDay = formatDay(todayISO);
 
+// Get the current title and description based on locale.
 const currentLocale = computed(() => locale.value || defaultLocale);
-
-// Helper computed property to select the appropriate title
-const currentTitle = computed(() =>
+const title = computed(() =>
   currentLocale.value === "fa"
     ? appConfig.app.title_fa || ""
     : appConfig.app.title_en || ""
 );
-
-// Computed properties to split the title into first and second words
-const titleFirst = computed(() => currentTitle.value.split(" ")[0] || "");
-const titleSecond = computed(() => currentTitle.value.split(" ")[1] || "");
-
-// Computed property for the description based on the locale
 const description = computed(() =>
   currentLocale.value === "fa"
     ? appConfig.app.description_fa || ""
     : appConfig.app.description_en || ""
 );
+
+// Split title into two parts for display.
+const [titleFirst, titleSecond] = computed(() => {
+  const parts = title.value.split(" ");
+  return [parts[0] || "", parts[1] || ""];
+}).value;
 </script>
 
 <template>
-  <div class="flex items-center justify-center whitespace-nowrap">
+  <div class="flex items-center justify-center whitespace-nowrap text-2xl">
     <NuxtLink
-      :to="route.path.startsWith('/manage') ? '/manage' : '/' + locale"
+      :to="route.path.startsWith('/manage') ? '/manage/' : '/' + locale + '/'"
       class="flex items-baseline"
     >
       <template v-if="route.path.startsWith('/manage')">
-        <span class="font-bold text-2xl">
-          {{ formattedDay }}
-        </span>
-        <span class="font-thin mx-2text-2xl">/</span>
-        <span class="font-thin mr-1 text-2xl">
-          {{ formattedDate }}
-        </span>
+        <span class="font-bold">{{ formattedDay }}</span>
+        <span class="mx-2 font-thin">/</span>
+        <span class="mr-1 font-thin text-xs">{{ formattedDate }}</span>
       </template>
-      <!-- Otherwise, show the standard title and description -->
       <template v-else>
-        <span class="font-bold text-2xl">
-          {{ titleFirst }}
-        </span>
-        <span class="font-thin text-2xl">
-          {{ titleSecond }}
-        </span>
-        <span class="font-thin mx-2 text-2xl">/</span>
-        <span class="font-thin text-xl">
-          {{ description }}
-        </span>
+        <span class="font-extrabold">{{ titleFirst }}</span>
+        <span class="font-thin">{{ titleSecond }}</span>
+        <span class="mx-1 font-thin">/</span>
+        <span class="font-thin text-lg">{{ description }}</span>
       </template>
     </NuxtLink>
   </div>

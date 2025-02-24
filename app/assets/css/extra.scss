@@ -1,28 +1,8 @@
-@font-face {
-  font-family: "Farhang";
-  font-style: normal;
-  font-weight: 100 900;
-  src: url("~/assets/fonts/FarhangVariable.woff");
-}
-
-@font-face {
-  font-family: "FarhangDot";
-  font-style: normal;
-  font-weight: 100 900;
-  src: url("~/assets/fonts/FarhangVariableDot.woff");
-}
-
 html {
   scroll-behavior: smooth;
 }
 
 /* Ordered List Styling */
-ol {
-  padding: 0 10px;
-  li::marker {
-    color: rgb(53, 53, 53);
-  }
-}
 
 /* RTL Support */
 .rtl,
