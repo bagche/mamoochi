@@ -10,12 +10,12 @@ const { data } = await useAsyncData(
 );
 </script>
 <template>
-  <div class="container mx-auto px-4 py-8">
+  <div class="container mx-auto">
     <div class="flex flex-col md:flex-row items-center gap-0 md:gap-8">
       <!-- Content Section -->
       <div class="w-full md:w-1/2 flex flex-col justify-center">
         <h2
-          class="text-2xl md:text-3xl font-semibold mt-2 hover:underline transition-colors duration-300"
+          class="text-2xl md:text-3xl hover:underline transition-colors duration-300"
         >
           <NuxtLink :to="data?.path" class="">
             {{ data?.title }}
@@ -39,7 +39,7 @@ const { data } = await useAsyncData(
         <nuxt-img
           preload
           loading="lazy"
-          class="w-full max-w-xl rounded-lg object-cover"
+          class="w-full max-w-md rounded-lg object-cover"
           :src="data?.thumbnail"
           :alt="data?.title || 'Image'"
           :placeholder="[300]"

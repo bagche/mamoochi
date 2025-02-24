@@ -31,7 +31,7 @@ useSeoMeta({
       <!-- Special Section for 'notes/' Pages -->
       <template v-if="pageData.thumbnail">
         <div
-          class=" flex flex-col gap-3 text-center pt-15 pb-10 mb-10 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100"
+          class="flex flex-col gap-3 text-center pt-15 pb-10 mb-10 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100"
         >
           <div class="max-w-7xl mx-auto">
             <h1
@@ -49,7 +49,7 @@ useSeoMeta({
             preload
             loading="lazy"
             sizes="sm:100vw md:400vw lg:700px"
-            class="w-full max-w-3xl mx-auto mt-6 rounded-lg shadow-md bg-gray-200 dark:bg-slate-700"
+            class="w-full max-w-3xl mx-auto rounded-lg"
             :src="pageData.thumbnail"
             :alt="pageData.title"
             :placeholder="[600]"
@@ -59,9 +59,7 @@ useSeoMeta({
 
       <!-- Main Content Section -->
       <UContainer>
-        <div
-          class="max-w-7xl mx-auto px-5 lg:px-0 py-8 flex flex-col items-center"
-        >
+        <div class="max-w-7xl mx-auto flex flex-col items-center">
           <ContentRenderer
             :value="pageData"
             class="prose prose-lg sm:prose-xl dark:prose-invert w-full max-w-4xl"
