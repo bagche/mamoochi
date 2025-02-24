@@ -2,14 +2,13 @@
 const { defaultLocale } = useI18n();
 const route = useRoute();
 
-// Fetch base page data.
+// Fetch page content dynamically
 const { data: pageData } = await useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
       const pathway =
-        route.path === "/" ? `/${defaultLocale}/` : `${route.path}`;
-      // console.log("file", pathway);
+        route.path === "/" ? `/${defaultLocale ?? "fa"}/` : route.path;
       return await queryCollection("content").path(pathway).first();
     } catch (error) {
       console.error("Error fetching page content:", error);
@@ -17,53 +16,71 @@ const { data: pageData } = await useAsyncData(
     }
   }
 );
+
+// Set dynamic page metadata (SEO)
+useSeoMeta({
+  title: pageData.value?.title,
+  description: pageData.value?.description,
+});
 </script>
 
 <template>
-  <div class="mt-10">
-    <!-- Display page content if available -->
-    <div v-if="pageData" :key="pageData?.path">
-      <!-- <template v-if="isItems">
-        <div class="max-w-8xl flex flex-col gap-3 text-center">
-          <h1 class="text-5xl pb-5">{{ pageData.title }}</h1>
-          <p
-            class="bg-gray-200 p-4 text-lg max-w-7xl mx-auto dark:bg-slate-800"
-          >
-            {{ pageData.description }}
-          </p>
+  <div class="w-full min-h-screen">
+    <!-- Show content if available -->
+    <div v-if="pageData" class="w-full">
+      <!-- Special Section for 'notes/' Pages -->
+      <template v-if="pageData.thumbnail">
+        <div
+          class=" flex flex-col gap-3 text-center pt-15 pb-10 mb-10 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100"
+        >
+          <div class="max-w-7xl mx-auto">
+            <h1
+              class="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white"
+            >
+              {{ pageData.title }}
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mt-3">
+              {{ pageData.description }}
+            </p>
+          </div>
+          <!-- Optional Thumbnail Image -->
+          <nuxt-img
+            v-if="pageData.thumbnail"
+            preload
+            loading="lazy"
+            sizes="sm:100vw md:400vw lg:700px"
+            class="w-full max-w-3xl mx-auto mt-6 rounded-lg shadow-md bg-gray-200 dark:bg-slate-700"
+            :src="pageData.thumbnail"
+            :alt="pageData.title"
+            :placeholder="[600]"
+          />
         </div>
-        <nuxt-img
-          v-if="pageData.thumbnail"
-          preload
-          loading="lazy"
-          sizes="sm:100vw md:400vw lg:1200px"
-          class="w-full bg-gray-200 mt-10"
-          :src="pageData.thumbnail"
-          :alt="pageData.title"
-          placeholder="/placeholder.jpg"
-        />
-      </template> -->
+      </template>
 
+      <!-- Main Content Section -->
       <UContainer>
-        <div class="flex max-w-7xl mx-auto gap-10">
+        <div
+          class="max-w-7xl mx-auto px-5 lg:px-0 py-8 flex flex-col items-center"
+        >
           <ContentRenderer
             :value="pageData"
-            class="prose dark:prose-invert flex-1 w-full"
+            class="prose prose-lg sm:prose-xl dark:prose-invert w-full max-w-4xl"
           />
-          <!-- <div
-            v-if="isItems"
-            class="w-[20rem] bg-gray-100 p-10 text-xl dark:bg-slate-800"
-          >
-            tools
-          </div> -->
         </div>
       </UContainer>
+
+      <!-- Edit Button (If User Has Permission) -->
       <Can :ability="editPage">
         <HelperStart v-if="pageData && pageData.stem" :path="pageData.stem" />
       </Can>
     </div>
 
-    <!-- Show loading state if data is not yet available -->
-    <div v-else class="text-center">Loading...</div>
+    <!-- Loading State -->
+    <div
+      v-else
+      class="flex items-center justify-center min-h-screen text-gray-500 dark:text-gray-300"
+    >
+      {{ $t(" Loading...") }}
+    </div>
   </div>
 </template>

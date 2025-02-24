@@ -39,7 +39,7 @@ const { data } = await useAsyncData(
         <nuxt-img
           preload
           loading="lazy"
-          class="w-full max-w-90 rounded-lg object-cover"
+          class="w-full max-w-xl rounded-lg object-cover"
           :src="data?.thumbnail"
           :alt="data?.title || 'Image'"
           :placeholder="[300]"
