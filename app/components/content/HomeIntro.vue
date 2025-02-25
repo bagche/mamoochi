@@ -9,7 +9,6 @@ const { data } = await useAsyncData(
       .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
       .first()
 );
-console.log("mount");
 </script>
 <template>
   <div class="container mx-auto">
