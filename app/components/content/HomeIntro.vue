@@ -1,13 +1,15 @@
 <script setup lang="ts">
 const { locale, defaultLocale } = useI18n();
+const route = useRoute();
 
 const { data } = await useAsyncData(
-  `home-intro`,
+  `home-intro-${route.path}`,
   async () =>
-    await queryCollection("items")
+    await queryCollection("notes")
       .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
       .first()
 );
+console.log("mount");
 </script>
 <template>
   <div class="container mx-auto">

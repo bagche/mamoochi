@@ -17,9 +17,9 @@ export default defineContentConfig({
         comments: z.boolean(),
       }),
     }),
-    items: defineCollection({
+    notes: defineCollection({
       type: "page",
-      source: "**/items/*.md",
+      source: "**/notes/*.md",
       schema: z.object({
         title: z.string(),
         thumbnail: z.string(),

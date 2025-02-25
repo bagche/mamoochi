@@ -75,9 +75,9 @@ export default defineNuxtConfig({
   routeRules: {
     "/**": { prerender: true },
   },
-  experimental: {
-    restoreState: true,
-  },
+  // experimental: {
+  //   restoreState: true,
+  // },
   content: {
     database: {
       type: "d1",

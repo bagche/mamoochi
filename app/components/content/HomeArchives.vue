@@ -4,7 +4,7 @@ const { locale, defaultLocale } = useI18n();
 const { data } = await useAsyncData(
   `home-archives`,
   async () =>
-    await queryCollection("items")
+    await queryCollection("notes")
       .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
       .limit(10)
       .all()
