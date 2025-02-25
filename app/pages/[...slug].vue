@@ -31,25 +31,44 @@ useSeoMeta({
       <!-- Special Section for 'notes/' Pages -->
       <template v-if="pageData.thumbnail">
         <div
-          class="flex flex-col gap-3 text-center pt-15 pb-10 mb-10 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100"
+          class="flex flex-col gap-5 text-center pt-15 pb-10 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100 min-h-[calc(100vh-2rem)] items-center justify-around"
         >
           <div class="max-w-7xl mx-auto">
             <h1
-              class="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white"
+              class="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white mb-4"
             >
               {{ pageData.title }}
             </h1>
-            <p class="text-xl text-gray-600 dark:text-gray-300 mt-3">
+            <!-- Metadata Row -->
+            <div
+              class="flex flex-wrap justify-center gap-4 text-sm text-gray-600 dark:text-gray-300"
+            >
+              <span class="font-medium"
+                >{{ $t("Author: ") }}
+                <span class="normal-case">{{ sampleAuthor }}</span></span
+              >
+              <span class="font-medium"
+                >{{ $t("Category: ") }}
+                <span class="normal-case">{{ pageData.category }}</span></span
+              >
+              <span class="font-medium"
+                >{{ $t("Date: ") }}
+                <span class="normal-case">{{
+                  formatDateTime(pageData.date)
+                }}</span></span
+              >
+            </div>
+            <p class="mt-4 text-xl text-gray-600 dark:text-gray-300">
               {{ pageData.description }}
             </p>
           </div>
-          <!-- Optional Thumbnail Image -->
+          <!-- Poster Image -->
           <nuxt-img
             v-if="pageData.thumbnail"
             preload
             loading="lazy"
-            sizes="sm:100vw md:400vw lg:700px"
-            class="w-full max-w-3xl mx-auto rounded-lg"
+            sizes="(max-width: 640px) 100vw, 700px"
+            class="object-cover max-h-[calc(100vh-24rem)] rounded-lg shadow-md"
             :src="pageData.thumbnail"
             :alt="pageData.title"
             :placeholder="[600]"
@@ -59,10 +78,10 @@ useSeoMeta({
 
       <!-- Main Content Section -->
       <UContainer>
-        <div class="max-w-7xl mx-auto flex flex-col items-center">
+        <div class="max-w-7xl mx-auto flex flex-col items-center pt-10">
           <ContentRenderer
             :value="pageData"
-            class="prose prose-lg sm:prose-xl dark:prose-invert w-full max-w-4xl"
+            class="prose prose-base sm:prose-xl dark:prose-invert w-full max-w-4xl"
           />
         </div>
       </UContainer>

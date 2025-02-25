@@ -56,7 +56,7 @@ const items = computed(() => {
     :ui="{
       root: navDir,
     }"
-    class="navbar data-[orientation=horizontal]:w-full "
+    class="navbar data-[orientation=horizontal]:w-full"
   >
     <template #theme="{ item }">
       <DarkMode class="" />
@@ -84,9 +84,5 @@ const items = computed(() => {
 <style>
 .rtl * {
   direction: rtl;
-}
-.navbar ul,
-.navbar li {
-  list-style: none !important;
 }
 </style>

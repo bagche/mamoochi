@@ -1,4 +1,5 @@
 {
+  " Loading...": " Loading...",
   ".not-draggable": ".not-draggable",
   "About": "درباره",
   "Add New Role": "افزودن نقش جدید",
@@ -7,7 +8,9 @@
   "Add Role to User": "افزودن نقش به کاربر",
   "At least one permission must be selected": "حداقل یک مجوز باید انتخاب شود",
   "At least one role must be selected": "حداقل یک نقش باید انتخاب شود",
+  "Author: ": "Author: ",
   "Builds": "ساخت‌ها",
+  "Category: ": "Category: ",
   "Change Password": "تغییر رمز عبور",
   "Change Your Password": "رمز عبور خود را تغییر دهید",
   "Comments": "نظرات",
@@ -18,6 +21,7 @@
   "Content saved successfully": "محتوا با موفقیت ذخیره شد",
   "Current Password": "رمز عبور فعلی",
   "Dashboard": "داشبورد",
+  "Date: ": "Date: ",
   "Description": "توضیحات",
   "English": "انگلیسی",
   "Enter Password": "رمز عبور را وارد کنید",

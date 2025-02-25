@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     "nuxt-authorization",
   ],
 
-  css: ["~/assets/css/main.css", "~/assets/css/extra.scss"],
+  css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
   vite: {
     css: {
       preprocessorOptions: {
@@ -67,7 +67,7 @@ export default defineNuxtConfig({
     ],
     langDir: "locales",
     defaultLocale: "fa",
-    strategy: "prefix_and_default",
+    strategy: "prefix",
     experimental: {
       localeDetector: "localeDetector.ts",
     },
@@ -75,9 +75,9 @@ export default defineNuxtConfig({
   routeRules: {
     "/**": { prerender: true },
   },
-  // experimental: {
-  //   restoreState: true,
-  // },
+  experimental: {
+    restoreState: true,
+  },
   content: {
     database: {
       type: "d1",

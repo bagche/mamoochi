@@ -1,4 +1,5 @@
 {
+  " Loading...": " Loading...",
   ".not-draggable": ".not-draggable",
   "About": "About",
   "Add New Role": "Add New Role",
@@ -7,7 +8,9 @@
   "Add Role to User": "Add Role to User",
   "At least one permission must be selected": "At least one permission must be selected",
   "At least one role must be selected": "At least one role must be selected",
+  "Author: ": "Author: ",
   "Builds": "Builds",
+  "Category: ": "Category: ",
   "Change Password": "Change Password",
   "Change Your Password": "Change Your Password",
   "Comments": "Comments",
@@ -18,6 +21,7 @@
   "Content saved successfully": "Content saved successfully",
   "Current Password": "Current Password",
   "Dashboard": "Dashboard",
+  "Date: ": "Date: ",
   "Description": "Description",
   "English": "English",
   "Enter Password": "Enter Password",
