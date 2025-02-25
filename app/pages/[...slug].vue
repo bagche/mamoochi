@@ -68,7 +68,7 @@ useSeoMeta({
             preload
             loading="lazy"
             sizes="(max-width: 640px) 100vw, 700px"
-            class="object-cover max-h-[calc(100vh-24rem)] rounded-lg shadow-md"
+            class="object-cover max-h-[calc(100vh-24rem)] rounded-lg "
             :src="pageData.thumbnail"
             :alt="pageData.title"
             :placeholder="[600]"
