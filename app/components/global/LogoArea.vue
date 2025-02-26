@@ -52,7 +52,7 @@ const titleSecond = computed(() => {
 
 <template>
   <div
-    :key="locale"
+    :key="route.path"
     class="flex items-center justify-center whitespace-nowrap text-2xl"
   >
     <NuxtLink

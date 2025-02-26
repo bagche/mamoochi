@@ -4,10 +4,6 @@ const appConfig = useAppConfig();
 const { loggedIn } = useUserSession();
 const route = useRoute();
 
-const navDir = computed(() =>
-  locale.value === "fa" ? "flex-row-reverse rtl" : "flex-row"
-);
-
 const items = computed(() => {
   if (route.path.startsWith("/manage") && loggedIn.value) {
     // When the route starts with /manage and user is logged in,
@@ -53,10 +49,7 @@ const items = computed(() => {
     highlight-color="primary"
     orientation="horizontal"
     :items="items"
-    :ui="{
-      root: navDir,
-    }"
-    class="navbar data-[orientation=horizontal]:w-full"
+    class="data-[orientation=horizontal]:w-full"
   >
     <template #theme="{ item }">
       <DarkMode class="" />
@@ -80,9 +73,3 @@ const items = computed(() => {
     </template>
   </UNavigationMenu>
 </template>
-
-<style>
-.rtl * {
-  direction: rtl;
-}
-</style>

@@ -1,3 +1,7 @@
+---
+title: صفحه نخست
+---
+
 <div>
 
 <HomeIntro />

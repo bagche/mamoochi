@@ -21,7 +21,7 @@
     "@nuxt/ui": "3.0.0-alpha.13",
     "@tiptap/extension-bubble-menu": "^2.11.5",
     "@tiptap/extension-placeholder": "^2.11.5",
-    "drizzle-orm": "^0.39.3",
+    "drizzle-orm": "^0.40.0",
     "h3-zod": "^0.5.3",
     "luxon": "^3.5.0",
     "nostr-tools": "^2.10.4",
@@ -46,7 +46,7 @@
     "@nuxtjs/i18n": "^9.2.1",
     "@tailwindcss/typography": "^0.5.16",
     "@types/luxon": "^3.4.2",
-    "drizzle-kit": "^0.30.4",
+    "drizzle-kit": "^0.30.5",
     "eslint": "^9.21.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "nitro-cloudflare-dev": "^0.2.1",
@@ -54,7 +54,7 @@
     "typescript": "^5.7.3",
     "vite-plugin-compression": "^0.5.1",
     "vue-router": "^4.5.0",
-    "wrangler": "^3.109.3"
+    "wrangler": "^3.110.0"
   },
   "overrides": {
     "@nuxt/ui": {
