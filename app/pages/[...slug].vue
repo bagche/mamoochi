@@ -43,15 +43,17 @@ useSeoMeta({
             <div
               class="flex flex-wrap justify-center gap-4 text-sm text-gray-600 dark:text-gray-300"
             >
-              <span class="font-medium"
+              <span v-if="pageData?.author" class="font-medium"
                 >{{ $t("Author: ") }}
-                <span class="normal-case">{{ sampleAuthor }}</span></span
+                <span class="normal-case">{{ pageData.author }}</span></span
               >
-              <span class="font-medium"
+              <span v-if="pageData?.category" class="font-medium"
                 >{{ $t("Category: ") }}
-                <span class="normal-case">{{ pageData.category }}</span></span
+                <span class="normal-case">{{
+                  $t(pageData?.category) ?? pageData?.category
+                }}</span></span
               >
-              <span class="font-medium"
+              <span v-if="pageData?.date" class="font-medium"
                 >{{ $t("Date: ") }}
                 <span class="normal-case">{{
                   formatDateTime(pageData.date)
@@ -68,7 +70,7 @@ useSeoMeta({
             preload
             loading="lazy"
             sizes="(max-width: 640px) 100vw, 700px"
-            class="object-cover max-h-[calc(100vh-24rem)] rounded-lg "
+            class="object-cove h-[calc(100vh-24rem)] max-w-7xl rounded-lg"
             :src="pageData.thumbnail"
             :alt="pageData.title"
             :placeholder="[600]"
