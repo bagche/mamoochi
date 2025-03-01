@@ -6,7 +6,14 @@ const { data } = await useAsyncData(
   `home-intro-${route.path}`,
   async () =>
     await queryCollection("notes")
-      .where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`)
+      .where("intro", "=", true)
+      .andWhere((query) => {
+        return query.where(
+          "path",
+          "LIKE",
+          `/${locale.value ?? defaultLocale}/%`
+        );
+      })
       .first()
 );
 </script>

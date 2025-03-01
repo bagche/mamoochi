@@ -19,12 +19,17 @@ const { data } = await useAsyncData(
     <div v-if="data" class="px-5 md:m-0">
       <ol>
         <li v-for="item in data" :key="item.id" class="mb-2">
-          <NuxtLink :to="item.path" class="hover:underline">
-            {{ item.title }}
-          </NuxtLink>
-
-          <span class="font-thin"> / {{ formatDateTime(item.date) }} </span>
-          <span class="font-thin"> / {{ item.category }} </span>
+          <div class="flex justify-start gap-2">
+            <NuxtLink :to="item.path" class="hover:underline">
+              {{ item.title }}
+            </NuxtLink>
+            <span class="font-thin text-">
+              / {{ formatDateTime(item.date) }}
+            </span>
+            <span v-if="item.category" class="font-thin">
+              / {{ $t(item.category) ?? item.category }}
+            </span>
+          </div>
         </li>
       </ol>
     </div>
