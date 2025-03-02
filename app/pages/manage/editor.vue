@@ -79,7 +79,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 </UFormField>
 
                 <UButton
-                  icon="i-heroicons-cloud"
+                  icon="i-lucide-cloud"
                   type="submit"
                   class="text-md"
                   >{{ $t("Publish") }}</UButton

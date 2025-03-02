@@ -15,14 +15,14 @@ const addRoleIsOpen = ref(false);
           color="neutral"
           variant="subtle"
           :label="$t('Add New Role')"
-          icon="i-heroicons-key"
+          icon="i-lucide-key"
           @click="addRoleIsOpen = true"
         />
         <!-- <UButton
           color="primary"
           variant="subtle"
           :label="$t('Add New User')"
-          icon="i-heroicons-user-plus"
+          icon="i-lucide-user-plus"
         /> -->
       </UButtonGroup>
     </div>

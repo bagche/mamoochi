@@ -24,49 +24,50 @@ useSeoMeta({
 
 <template>
   <div class="w-full min-h-screen">
-    <!-- Show content if available -->
+    <!-- If Content is Available -->
     <div v-if="pageData" class="w-full">
-      <!-- Notes Section -->
       <template v-if="pageData.thumbnail">
         <div
-          class="flex flex-col gap-5 text-center pt-15 pb-10 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100 min-h-[calc(100vh-2rem)] items-center justify-around"
+          class="flex flex-col gap-6 text-center pt-10 pb-12 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100 min-h-[calc(100vh-2rem)] items-center justify-between"
         >
-          <div class="max-w-7xl mx-auto">
+          <div class="max-w-7xl mx-auto px-6">
             <h1
               class="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white mb-4"
             >
               {{ pageData.title }}
             </h1>
             <div
-              class="flex flex-wrap justify-center gap-4 text-sm text-gray-600 dark:text-gray-300"
+              class="flex flex-wrap justify-center gap-6 text-sm text-gray-600 dark:text-gray-300"
             >
               <span
                 v-if="pageData?.author"
                 class="font-medium whitespace-nowrap"
               >
-                {{ $t("Author: ")
-                }}<span class="normal-case">{{ pageData.author }}</span>
+                {{ $t("Author:") }}
+                <span class="normal-case">{{ pageData.author }}</span>
               </span>
               <span
                 v-if="pageData?.category"
                 class="font-medium whitespace-nowrap"
               >
-                {{ $t("Category: ")
-                }}<span class="normal-case">{{
-                  $t(pageData?.category) ?? pageData?.category
-                }}</span>
+                {{ $t("Category:") }}
+                <span class="normal-case">
+                  {{ $t(pageData.category) ?? pageData.category }}
+                </span>
               </span>
               <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
-                {{ $t("Date: ")
-                }}<span class="normal-case">{{
+                {{ $t("Date:") }}
+                <span class="normal-case">{{
                   formatDateTime(pageData.date)
                 }}</span>
               </span>
             </div>
-            <p class="mt-4 text-xl text-gray-600 dark:text-gray-300">
+            <p class="mt-5 text-xl text-gray-600 dark:text-gray-300">
               {{ pageData.description }}
             </p>
           </div>
+
+          <!-- Optimized Image (Matches Content Layout) -->
           <nuxt-img
             v-if="pageData.thumbnail"
             preload
@@ -79,9 +80,10 @@ useSeoMeta({
           />
         </div>
       </template>
+
       <!-- Main Content -->
       <UContainer>
-        <div class="max-w-7xl mx-auto flex flex-col items-center pt-10">
+        <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
           <ContentRenderer
             :value="pageData"
             class="prose prose-lg dark:prose-invert w-full max-w-4xl"
@@ -90,50 +92,62 @@ useSeoMeta({
       </UContainer>
 
       <!-- Edit Button (If User Has Permission) -->
-      <Can :ability="editPage">
+      <!-- <Can :ability="editPage"> -->
         <HelperStart v-if="pageData && pageData.stem" :path="pageData.stem" />
-      </Can>
+      <!-- </Can> -->
     </div>
 
-    <!-- Loading Skeleton -->
-    <div
-      v-else
-      class="flex flex-col gap-5 text-center pt-15 pb-10 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100 min-h-[calc(100vh-2rem)] items-center justify-around"
-    >
-      <div class="max-w-7xl mx-auto w-full">
-        <!-- Title -->
-        <div
-          class="h-12 bg-gray-200 dark:bg-slate-700 rounded w-3/4 mx-auto animate-pulse"
-        ></div>
-        <!-- Metadata -->
-        <div class="flex justify-center gap-4 mt-4">
-          <div
-            class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-24 animate-pulse"
-          ></div>
-          <div
-            class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-24 animate-pulse"
-          ></div>
-          <div
-            class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-24 animate-pulse"
-          ></div>
-        </div>
-        <!-- Description (Multi-line) -->
-        <div class="mt-4 space-y-2">
-          <div
-            class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-full animate-pulse"
-          ></div>
-          <div
-            class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-full animate-pulse"
-          ></div>
-          <div
-            class="h-6 bg-gray-200 dark:bg-slate-700 rounded w-3/4 animate-pulse"
-          ></div>
-        </div>
-      </div>
-      <!-- Image -->
+    <!-- **Skeleton Loader (Better Matched to UI)** -->
+    <div v-else class="w-full">
       <div
-        class="h-[calc(100vh-24rem)] max-w-7xl bg-gray-200 dark:bg-slate-700 rounded-lg mx-auto animate-pulse"
-      ></div>
+        class="flex flex-col gap-6 text-center pt-10 pb-12 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100 min-h-[calc(100vh-2rem)] items-center justify-around"
+      >
+        <div class="max-w-7xl mx-auto px-5 w-full">
+          <!-- Skeleton Title -->
+          <USkeleton class="h-10 sm:h-12 w-3/4 mx-auto rounded-md" />
+
+          <!-- Metadata Skeleton -->
+          <div class="flex justify-center gap-6 mt-4">
+            <USkeleton class="h-4 w-28 sm:w-32 rounded-md" />
+            <USkeleton class="h-4 w-28 sm:w-32 rounded-md" />
+            <USkeleton class="h-4 w-28 sm:w-32 rounded-md" />
+          </div>
+
+          <!-- Description Skeleton -->
+          <div class="mt-6 space-y-3">
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-3/4 rounded-md" />
+          </div>
+        </div>
+
+        <!-- Image Skeleton (Now Matches the Loaded Image) -->
+        <USkeleton
+          class="w-full max-h-[450px] sm:max-h-[550px] md:max-h-[600px] max-w-5xl rounded-lg shadow-md min-h-[200px] sm:min-h-[300px] md:min-h-[400px]"
+        />
+      </div>
+
+      <!-- Main Content Skeleton -->
+      <UContainer>
+        <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
+          <div class="w-full space-y-5">
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-3/4 rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-3/4 rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-3/4 rounded-md" />
+          </div>
+        </div>
+      </UContainer>
     </div>
   </div>
 </template>

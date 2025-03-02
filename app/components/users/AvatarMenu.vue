@@ -19,19 +19,19 @@ const items = computed(() => [
   [
     {
       label: t("Profile"),
-      icon: "i-heroicons-user",
+      icon: "i-lucide-user",
       to: `/profile`,
     },
     {
       label: t("Update Profile"),
-      icon: "i-heroicons-user",
+      icon: "i-lucide-user-pen",
       onSelect: () => {
         updateIsOpen.value = true;
       },
     },
     {
       label: t("Change Password"),
-      icon: "i-heroicons-key",
+      icon: "i-lucide-key",
       onSelect: () => {
         changePasswordIsOpen.value = true;
       },
@@ -40,7 +40,7 @@ const items = computed(() => [
   [
     {
       label: t("Register"),
-      icon: "i-heroicons-arrow-left-on-rectangle",
+      icon: "i-lucide-log-in",
       onSelect: () => {
         console.log("register");
         registerIsOpen.value = true;
@@ -48,7 +48,7 @@ const items = computed(() => [
     },
     {
       label: t("Switch Profile"),
-      icon: "i-heroicons-arrow-left-on-rectangle",
+      icon: "i-lucide-arrow-right-left",
       onSelect: () => {
         switchIsOpen.value = true;
       },
@@ -57,7 +57,7 @@ const items = computed(() => [
   [
     {
       label: t("Exit"),
-      icon: "i-heroicons-arrow-left-on-rectangle",
+      icon: "i-lucide-log-out",
       onSelect: async () => {
         // await $wipeDexie();
         await clear();

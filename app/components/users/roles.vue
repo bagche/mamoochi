@@ -113,7 +113,7 @@ function getRowItems(row: Row<Role>) {
 
 <template>
   <div class="w-full space-y-4 p-4">
-    <USeparator icon="i-heroicons-key" />
+    <USeparator icon="i-lucide-key" />
     <UTable :data="data?.roles ?? []" :columns="columns" class="flex-1" />
 
     <!-- Display error if the fetch fails -->

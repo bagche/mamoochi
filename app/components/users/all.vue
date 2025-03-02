@@ -160,7 +160,7 @@ function getRowItems(row: Row<User>) {
 
 <template>
   <div class="w-full space-y-4 p-4">
-    <USeparator icon="i-heroicons-users" />
+    <USeparator icon="i-lucide-users" />
     <UTable
       v-model:pagination="pagination"
       :data="data?.users ?? []"

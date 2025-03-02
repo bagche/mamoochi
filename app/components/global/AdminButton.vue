@@ -1,12 +1,12 @@
 <script setup lang="ts">
-const { t } = useI18n();
+const { locale } = useI18n();
 const route = useRoute();
 </script>
 
 <template>
   <div class="relative flex">
     <UButton
-      v-if="route.path.startsWith('/manage')"
+      v-if="route.path.includes('manage')"
       icon="i-lucide-home"
       variant="ghost"
       size="xs"
@@ -17,7 +17,7 @@ const route = useRoute();
       icon="i-lucide-settings"
       variant="ghost"
       size="xs"
-      to="/manage"
+      :to="locale + '/manage'"
     />
   </div>
 </template>

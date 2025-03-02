@@ -51,17 +51,19 @@ const titleSecond = computed(() => {
 </script>
 
 <template>
-  <div
-    class="flex items-center justify-center whitespace-nowrap text-2xl"
-  >
+  <div class="flex items-center justify-center whitespace-nowrap text-2xl">
     <NuxtLink
-      :to="route.path.startsWith('/manage') ? '/manage/' : '/' + locale + '/'"
+      :to="
+        route.path.includes('manage')
+          ? '/' + locale + '/manage/'
+          : '/' + locale + '/'
+      "
       class="flex items-baseline"
     >
-      <template v-if="route.path.startsWith('/manage')">
-        <span class="font-bold">{{ formattedDay }}</span>
+      <template v-if="route.path.includes('manage')">
+        <span class="font-normal">{{ formattedDay }}</span>
         <span class="mx-2 font-thin">/</span>
-        <span class="mr-1 font-thin text-xs">{{ formattedDate }}</span>
+        <span class="mr-1 font-thin text-lg">{{ formattedDate }}</span>
       </template>
       <template v-else>
         <span class="font-extrabold">{{ titleFirst }}</span>
