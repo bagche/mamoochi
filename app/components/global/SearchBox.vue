@@ -2,7 +2,8 @@
 import Fuse from "fuse.js";
 
 // Get current locale and translation function
-const { locale, t, defaultLocale } = useI18n();
+const { locale, t } = useI18n();
+const route = useRoute();
 
 // Modal state
 const open = ref(false);
@@ -15,13 +16,16 @@ defineShortcuts({
 // Command palette search term
 const searchTerm = ref("");
 
-// Fetch data from Nuxt Content, filtering by path for the current locale
-const { data } = await useAsyncData("search-data", () =>
-  queryCollectionSearchSections("content").where(
-    "path",
-    "LIKE",
-    `/${locale.value ?? defaultLocale}/%`
-  )
+// Fetch data from Nuxt Content, filtering by path for the current locale.
+// Notice we include locale.value in the key so the data is refreshed when the locale changes.
+const { data } = await useAsyncData(
+  `searchData:${locale.value}:${route.path}`,
+  async () =>
+    await queryCollectionSearchSections("content").where(
+      "path",
+      "LIKE",
+      `/${locale.value}/%`
+    )
 );
 
 // Default items: only include items with no "notes" and no hash (i.e. regular pages)
@@ -109,7 +113,7 @@ function onSelect() {
         @update:model-value="onSelect"
       >
         <!-- Custom slot for rendering each search result -->
-        <template #item-label="{ item }">
+        <template #item-label="{ item }: any">
           <div class="flex items-center">
             <div class="mx-2">
               <UIcon :name="getIconAndLabel(item.to).icon" class="size-5" />
@@ -118,9 +122,9 @@ function onSelect() {
               <div>
                 <span class="font-d">{{ item.label }}</span>
                 <span class="mx-1 font-d">/</span>
-                <span class="font-thin">{{
-                  getIconAndLabel(item.to).label
-                }}</span>
+                <span class="font-thin">
+                  {{ getIconAndLabel(item.to).label }}
+                </span>
               </div>
               <div class="text-gray-500 text-xs">{{ item.description }}</div>
             </div>
