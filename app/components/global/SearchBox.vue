@@ -79,6 +79,7 @@ const groups = computed(() => {
 // Clear the search term when an item is selected.
 function onSelect() {
   searchTerm.value = "";
+  open.value = false;
 }
 </script>
 
@@ -104,6 +105,7 @@ function onSelect() {
         v-model:search-term="searchTerm"
         :groups="groups"
         class="flex-1 h-80"
+        :placeholder="$t('Type to Search...')"
         @update:model-value="onSelect"
       >
         <!-- Custom slot for rendering each search result -->
