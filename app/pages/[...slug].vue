@@ -2,7 +2,7 @@
 const route = useRoute();
 
 // Fetch page content dynamically
-const { data: pageData } = await useAsyncData(
+const { data: pageData }: any = await useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
@@ -12,7 +12,7 @@ const { data: pageData } = await useAsyncData(
       return null;
     }
   },
-  { default: () => null, lazy: true, cache: "max-age=3600" } // Cache for 1 hour
+  { default: () => null, lazy: true }
 );
 
 // Set dynamic page metadata (SEO)
@@ -108,18 +108,17 @@ useSeoMeta({
 
           <!-- Metadata Skeleton -->
           <div class="flex justify-center gap-6 mt-4">
-            <USkeleton class="h-4 w-28 sm:w-32 rounded-md" />
-            <USkeleton class="h-4 w-28 sm:w-32 rounded-md" />
-            <USkeleton class="h-4 w-28 sm:w-32 rounded-md" />
+            <USkeleton
+              v-for="i in 3"
+              :key="i"
+              class="h-4 w-28 sm:w-32 rounded-md"
+            />
           </div>
 
           <!-- Description Skeleton -->
           <div class="mt-6 space-y-3">
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-3/4 rounded-md" />
+            <USkeleton v-for="i in 2" :key="i" class="h-4 w-full rounded-md" />
+            <USkeleton class="h-4 w-3/4 rounded-md" />
           </div>
         </div>
 
@@ -133,17 +132,9 @@ useSeoMeta({
       <UContainer>
         <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
           <div class="w-full space-y-5">
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton v-for="i in 5" :key="i" class="h-5 w-full rounded-md" />
             <USkeleton class="h-5 w-3/4 rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-3/4 rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-full rounded-md" />
+            <USkeleton v-for="i in 5" :key="i" class="h-5 w-full rounded-md" />
             <USkeleton class="h-5 w-3/4 rounded-md" />
           </div>
         </div>
