@@ -92,9 +92,9 @@ useSeoMeta({
       </UContainer>
 
       <!-- Edit Button (If User Has Permission) -->
-      <!-- <Can :ability="editPage"> -->
+      <Can :ability="editPage">
         <HelperStart v-if="pageData && pageData.stem" :path="pageData.stem" />
-      <!-- </Can> -->
+      </Can>
     </div>
 
     <!-- **Skeleton Loader (Better Matched to UI)** -->
