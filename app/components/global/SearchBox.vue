@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import Fuse from "fuse.js";
+import MiniSearch from "minisearch";
 
 // Get current locale and translation function
 const { locale, t } = useI18n();
-const route = useRoute();
 
 // Modal state
 const open = ref(false);
@@ -13,25 +12,36 @@ defineShortcuts({
   },
 });
 
-// Command palette search term
+// Search term (bound to our external input)
 const searchTerm = ref("");
 
 // Fetch data from Nuxt Content, filtering by path for the current locale.
-// Notice we include locale.value in the key so the data is refreshed when the locale changes.
-const { data } = await useAsyncData(
-  `searchData:${locale.value}:${route.path}`,
-  async () =>
-    await queryCollectionSearchSections("content").where(
-      "path",
-      "LIKE",
-      `/${locale.value}/%`
-    )
+const { data }: any = await useAsyncData("searchData", async () =>
+  queryCollectionSearchSections("content")
 );
 
-// Default items: only include items with no "notes" and no hash (i.e. regular pages)
+// Initialize MiniSearch
+const miniSearch = new MiniSearch({
+  fields: ["title", "content"],
+  storeFields: ["title", "content", "id"],
+  searchOptions: {
+    prefix: true,
+    fuzzy: 0.2,
+  },
+});
+
+// Watch for changes in data and update MiniSearch index
+watchEffect(() => {
+  if (data.value) {
+    miniSearch.removeAll(); // Clear previous data before adding new
+    miniSearch.addAll(data.value);
+  }
+});
+
+// Default items: only include items with no "notes" and no hash (i.e., regular pages)
 const defaultItems = computed(() => {
   return data.value.filter(
-    (item) => !item.id.includes("notes") && !item.id.includes("#")
+    (item: any) => item.id.includes(locale.value) && !item.id.includes("#")
   );
 });
 
@@ -49,38 +59,27 @@ function getIconAndLabel(url: string): { icon: string; label: string } {
   return { icon: "i-lucide-book-open", label: t("Page") };
 }
 
-// Compute search groups
-const groups = computed(() => {
+// Computed property for search results.
+// If no search term is provided, display default items. Otherwise, perform a MiniSearch.
+const results = computed(() => {
   if (!searchTerm.value) {
-    return [
-      {
-        id: "results",
-        items: defaultItems.value.map((item) => ({
-          label: item.title,
-          description: item.content ? item.content.slice(0, 100) + "..." : "",
-          to: item.id,
-        })),
-      },
-    ];
+    return defaultItems.value.map((item: any) => ({
+      label: item.title,
+      description: item.content ? item.content.slice(0, 100) + "..." : "",
+      to: item.id,
+    }));
+  } else {
+    const searchResults = miniSearch.search(searchTerm.value).slice(0, 20);
+    console.log("results", searchResults);
+    return searchResults.map((r: any) => ({
+      label: r.title,
+      description: r.content ? r.content.slice(0, 100) + "..." : "",
+      to: r.id,
+    }));
   }
-  // Use Fuse to search within the full data when there is a search term
-  const fuse = new Fuse(data.value, {
-    keys: ["title", "description"],
-  });
-  const result = fuse.search(searchTerm.value).slice(0, 20);
-  return [
-    {
-      id: "results",
-      items: result.map((r) => ({
-        label: r.item.title,
-        description: r.item.content ? r.item.content.slice(0, 100) + "..." : "",
-        to: r.item.id,
-      })),
-    },
-  ];
 });
 
-// Clear the search term when an item is selected.
+// When a result is clicked, clear the search and close the modal.
 function onSelect() {
   searchTerm.value = "";
   open.value = false;
@@ -88,12 +87,7 @@ function onSelect() {
 </script>
 
 <template>
-  <UModal
-    v-model:open="open"
-    :ui="{
-      content: 'min-h-100',
-    }"
-  >
+  <UModal v-model:open="open" :ui="{ content: 'min-h-100' }">
     <UTooltip :text="$t('Search')">
       <UButton
         icon="i-lucide-search"
@@ -104,33 +98,46 @@ function onSelect() {
     </UTooltip>
 
     <template #content>
-      <!-- UCommandPalette handles both the search input and displaying results -->
-      <UCommandPalette
-        v-model:search-term="searchTerm"
-        :groups="groups"
-        class="flex-1 h-80"
-        :placeholder="$t('Type to Search...')"
-        @update:model-value="onSelect"
-      >
-        <!-- Custom slot for rendering each search result -->
-        <template #item-label="{ item }: any">
-          <div class="flex items-center">
-            <div class="mx-2">
-              <UIcon :name="getIconAndLabel(item.to).icon" class="size-5" />
-            </div>
-            <div>
+      <div class="p-4">
+        <!-- Search input -->
+        <UInput
+          v-model="searchTerm"
+          icon="i-lucide-search"
+          :placeholder="$t('Type to Search...')"
+          class="mb-4 w-full"
+        />
+        <USeparator />
+        <!-- Search results list -->
+        <ul class="mt-3">
+          <li
+            v-for="item in results"
+            :key="item.to"
+            class="flex items-center border-b last:border-none border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700"
+            
+          >
+            <NuxtLink :to="item.to" class="flex items-center py-3" @click="onSelect">
+              <UIcon
+                :name="getIconAndLabel(item.to).icon"
+                class="size-6 mx-2"
+              />
               <div>
-                <span class="font-d">{{ item.label }}</span>
-                <span class="mx-1 font-d">/</span>
-                <span class="font-thin">
-                  {{ getIconAndLabel(item.to).label }}
-                </span>
+                <div class="flex items-center">
+                  <span class="font-d">{{ item.label }}</span>
+                  <span class="mx-1 font-d">/</span>
+                  <span class="font-thin">
+                    {{ getIconAndLabel(item.to).label }}
+                  </span>
+                </div>
+                <div class="text-xs">{{ item.description }}</div>
               </div>
-              <div class="text-gray-500 text-xs">{{ item.description }}</div>
-            </div>
-          </div>
-        </template>
-      </UCommandPalette>
+            </NuxtLink>
+          </li>
+          <!-- Optionally, show a message if no results are found -->
+          <li v-if="results.length === 0" class="text-center py-4">
+            {{ $t("No results found") }}
+          </li>
+        </ul>
+      </div>
     </template>
   </UModal>
 </template>

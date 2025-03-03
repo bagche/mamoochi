@@ -9,7 +9,6 @@ const { data: pageData }: any = await useAsyncData(
       return await queryCollection("content").path(route.path).first();
     } catch (error) {
       console.error("Error fetching page content:", error);
-      return null;
     }
   },
   { default: () => null, lazy: true }
@@ -104,27 +103,35 @@ useSeoMeta({
       >
         <div class="max-w-7xl mx-auto px-5 w-full">
           <!-- Skeleton Title -->
-          <USkeleton class="h-10 sm:h-12 w-3/4 mx-auto rounded-md" />
+          <USkeleton
+            class="h-10 sm:h-12 w-3/4 mx-auto rounded-md bg-gray-300 dark:bg-slate-800"
+          />
 
           <!-- Metadata Skeleton -->
           <div class="flex justify-center gap-6 mt-4">
             <USkeleton
               v-for="i in 3"
               :key="i"
-              class="h-4 w-28 sm:w-32 rounded-md"
+              class="h-4 w-28 sm:w-32 rounded-md bg-gray-300 dark:bg-slate-800"
             />
           </div>
 
           <!-- Description Skeleton -->
           <div class="mt-6 space-y-3">
-            <USkeleton v-for="i in 2" :key="i" class="h-4 w-full rounded-md" />
-            <USkeleton class="h-4 w-3/4 rounded-md" />
+            <USkeleton
+              v-for="i in 2"
+              :key="i"
+              class="h-4 w-full rounded-md bg-gray-300 dark:bg-slate-800"
+            />
+            <USkeleton
+              class="h-4 w-3/4 rounded-md bg-gray-300 dark:bg-slate-800"
+            />
           </div>
         </div>
 
         <!-- Image Skeleton (Now Matches the Loaded Image) -->
         <USkeleton
-          class="w-full max-h-[450px] sm:max-h-[550px] md:max-h-[600px] max-w-5xl rounded-lg shadow-md min-h-[200px] sm:min-h-[300px] md:min-h-[400px]"
+          class="w-full max-h-[450px] sm:max-h-[550px] md:max-h-[600px] max-w-5xl rounded-lg shadow-md min-h-[200px] sm:min-h-[300px] md:min-h-[400px] bg-gray-300 dark:bg-slate-800"
         />
       </div>
 
@@ -132,9 +139,19 @@ useSeoMeta({
       <UContainer>
         <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
           <div class="w-full space-y-5">
-            <USkeleton v-for="i in 5" :key="i" class="h-5 w-full rounded-md" />
-            <USkeleton class="h-5 w-3/4 rounded-md" />
-            <USkeleton v-for="i in 5" :key="i" class="h-5 w-full rounded-md" />
+            <USkeleton
+              v-for="i in 5"
+              :key="i"
+              class="h-5 w-full rounded-md bg-gray-300 dark:bg-slate-800"
+            />
+            <USkeleton
+              class="h-5 w-3/4 rounded-md bg-gray-300 dark:bg-slate-800"
+            />
+            <USkeleton
+              v-for="i in 5"
+              :key="i"
+              class="h-5 w-full rounded-md bg-gray-300 dark:bg-slate-800"
+            />
             <USkeleton class="h-5 w-3/4 rounded-md" />
           </div>
         </div>
