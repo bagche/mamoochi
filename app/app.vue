@@ -63,6 +63,7 @@ registerNew();
     <NuxtLayout class="dark:bg-slate-700">
       <NuxtLoadingIndicator />
       <NuxtPage />
+      <!-- <Installer /> -->
     </NuxtLayout>
   </UApp>
 </template>
