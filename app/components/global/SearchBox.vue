@@ -87,7 +87,7 @@ function onSelect() {
 </script>
 
 <template>
-  <UModal v-model:open="open" :ui="{ content: 'min-h-100' }">
+  <UModal v-model:open="open" :ui="{ content: ' max-h-150' }">
     <UTooltip :text="$t('Search')">
       <UButton
         icon="i-lucide-search"
@@ -98,7 +98,7 @@ function onSelect() {
     </UTooltip>
 
     <template #content>
-      <div class="p-4">
+      <div class="p-4 overflow-x-auto h-full">
         <!-- Search input -->
         <UInput
           v-model="searchTerm"
@@ -113,9 +113,12 @@ function onSelect() {
             v-for="item in results"
             :key="item.to"
             class="flex items-center border-b last:border-none border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700"
-            
           >
-            <NuxtLink :to="item.to" class="flex items-center py-3" @click="onSelect">
+            <NuxtLink
+              :to="item.to"
+              class="flex items-center py-3"
+              @click="onSelect"
+            >
               <UIcon
                 :name="getIconAndLabel(item.to).icon"
                 class="size-6 mx-2"
