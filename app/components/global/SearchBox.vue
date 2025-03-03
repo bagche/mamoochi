@@ -87,7 +87,7 @@ function onSelect() {
 </script>
 
 <template>
-  <UModal v-model:open="open" :ui="{ content: ' max-h-150' }">
+  <UModal v-model:open="open"  >
     <UTooltip :text="$t('Search')">
       <UButton
         icon="i-lucide-search"
