@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 const route = useRoute();
+const { locale } = useI18n();
 
 // Fetch page content dynamically
 const { data: pageData }: any = await useAsyncData(
@@ -92,7 +93,13 @@ useSeoMeta({
 
       <!-- Edit Button (If User Has Permission) -->
       <Can :ability="editPage">
-        <HelperStart v-if="pageData && pageData.stem" :path="pageData.stem" />
+        <UButton
+          :to="'/manage/editor' + route.path"
+          :label="$t('Edit This page')"
+          class="fixed left-10 bottom-10 shadow-md rounded-full cursor-pointer text-4xl z-100 p-3 transition-all dark:text-white text-black bg-gray-200 dark:bg-slate-700 border-gray-300 dark:border-slate-800"
+        >
+          <UIcon name="i-lucide-square-pen" />
+        </UButton>
       </Can>
     </div>
 

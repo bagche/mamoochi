@@ -17,7 +17,7 @@ export default {
           pagePath = "/" + pagePath;
         }
         // If nothing remains, default to "/".
-        return { pagePath: pagePath === "/" ? "/" : pagePath };
+        return { pagePath };
       },
     },
   ],

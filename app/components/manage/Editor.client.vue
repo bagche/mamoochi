@@ -12,7 +12,7 @@ const extensions = await getExtensions();
 const props = defineProps({
   body: { type: String, required: true, default: "" },
 });
-
+const { t } = useI18n();
 const emit = defineEmits<{ (e: "update", value: string): void }>();
 
 const editor = useEditor({
@@ -28,7 +28,7 @@ const editor = useEditor({
     }),
     ...extensions,
     Markdown,
-    Placeholder.configure({ placeholder: "چیزی بنویسید ..." }),
+    Placeholder.configure({ placeholder: t("چیزی بنویسید ...") }),
     AutoJoiner,
   ],
   onUpdate({ editor }) {

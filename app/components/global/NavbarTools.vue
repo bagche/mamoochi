@@ -4,8 +4,8 @@
     <DarkMode class="" />
     <Bouncer :ability="readDashboard">
       <template #can>
-        <AdminButton class="" />
         <SearchBox class="" />
+        <AdminButton class="" />
       </template>
 
       <template #cannot>
