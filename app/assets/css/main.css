@@ -2,16 +2,13 @@
 @import "@nuxt/ui";
 @plugin "@tailwindcss/typography";
 
-.navbar a {
-}
-
 html {
   scroll-behavior: smooth;
 }
 
-/* Ordered List Styling */
+/* Navbar Links */
 
-/* RTL Support */
+/* Ordered List Styling with RTL Support */
 .rtl,
 [dir="rtl"] {
   ol {
@@ -27,22 +24,33 @@ html {
   }
 }
 
+/* Blockquote Styling - Light & Dark Mode */
 blockquote {
   text-align: justify;
   background: #f9f9f9;
-  border-right: 10px solid #ccc;
   margin: 1.5em 10px;
-  padding: 0.5em 10px;
-  quotes: "\201C" "\201D" "\2018" "\2019";
+  padding: 1em 15px;
+  font-style: italic;
+  quotes: "“" "”" "‘" "’";
+  @apply bg-gray-100 dark:bg-gray-800 border-l-gray-400 dark:border-l-gray-600 text-gray-900 dark:text-gray-100;
+}
+[dir="rtl"] {
+  blockquote {
+    border-right: 4px solid #ccc;
+  }
+  blockquote::before {
+    margin-left: 0.2em;
+  }
 }
 
-blockquote:before {
-  color: #ccc;
+blockquote::before {
+  color: #bbb;
   content: open-quote;
-  font-size: 4em;
+  font-size: 3em;
   line-height: 0.1em;
-  margin-left: 0.25em;
+  margin-right: 0.2em;
   vertical-align: -0.4em;
+  @apply text-gray-500 dark:text-gray-400;
 }
 
 blockquote p {
