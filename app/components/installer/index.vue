@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n();
+const { stepper, nextDisabled, prevDisabled } = useInstaller();
 
 const items = [
   {
@@ -27,56 +28,55 @@ const items = [
     icon: "i-lucide-list-checks",
   },
 ];
-const stepper = useTemplateRef("stepper");
 </script>
 
 <template>
-  <div class="w-full min-h-screen">
-    <UContainer>
-      <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
-        <UCard
-          :ui="{
-            root: 'min-h-200',
-          }"
-        >
-          <template #header>
-            <div class="flex justify-between items-center">
-              <h1 class="text-2xl">{{ $t("Installing App") }}</h1>
-              <UButtonGroup size="md" variant="outline">
-                <UButton
-                  icon="i-lucide-arrow-right"
-                  :label="t('Prev')"
-                  variant="outline"
-                  :disabled="!stepper?.hasPrev"
-                  @click="stepper?.prev()"
-                />
-                <UButton
-                  class="cursor-pointer"
-                  :label="t('Next')"
-                  variant="outline"
-                  icon="i-lucide-arrow-left"
-                  :disabled="!stepper?.hasNext"
-                  @click="stepper?.next()"
-                />
-              </UButtonGroup>
-            </div>
+  <div class="w-full">
+    <div
+      class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4 justify-center h-screen"
+    >
+      <UCard
+        :ui="{
+          root: 'md:min-h-160 min-h-full',
+        }"
+      >
+        <template #header>
+          <div class="flex justify-between items-center">
+            <h1 class="text-2xl">{{ $t("Installing App") }}</h1>
+            <UButtonGroup size="md" variant="outline">
+              <UButton
+                icon="i-lucide-arrow-right"
+                :label="t('Prev')"
+                variant="outline"
+                :disabled="prevDisabled"
+                @click="stepper?.prev()"
+              />
+              <UButton
+                class="cursor-pointer"
+                :label="t('Next')"
+                variant="outline"
+                icon="i-lucide-arrow-left"
+                :disabled="nextDisabled"
+                @click="stepper?.next()"
+              />
+            </UButtonGroup>
+          </div>
+        </template>
+        <UStepper ref="stepper" disabled :items="items" class="w-full">
+          <template #database="{ item }">
+            <InstallerAddDatabase />
           </template>
-          <UStepper ref="stepper" disabled :items="items" class="w-full">
-            <template #database="{ item }">
-              <InstallerAddDatabase />
-            </template>
-            <template #init="{ item }">
-              <InstallerInitDatabase />
-            </template>
-            <template #admin="{ item }">
-              <InstallerAdminInit />
-            </template>
-            <template #finish="{ item }">
-              <InstallerFinish />
-            </template>
-          </UStepper>
-        </UCard>
-      </div>
-    </UContainer>
+          <template #init="{ item }">
+            <InstallerInitDatabase />
+          </template>
+          <template #admin="{ item }">
+            <InstallerAdminInit />
+          </template>
+          <template #finish="{ item }">
+            <InstallerFinish />
+          </template>
+        </UStepper>
+      </UCard>
+    </div>
   </div>
 </template>
