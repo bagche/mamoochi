@@ -8,9 +8,6 @@ name = "$DurableObject"
 class_name = "$DurableObject"
 script_name = "$DurableObject"
 
-[[migrations]]
-tag = "v1"
-new_classes = ["$DurableObject"]
 
 [[d1_databases]]
 binding = "DB"
