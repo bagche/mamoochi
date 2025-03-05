@@ -1,15 +1,13 @@
 <script setup lang="ts">
 const { dbConnected, checkDbConnections } = useInstaller();
-onMounted(() => {
-  checkDbConnections();
-});
-
+checkDbConnections();
 </script>
 
 <template>
   <div class="w-full gap-5 flex flex-col">
-    <div v-if="dbConnected" class="flex flex-col gap-5 justify-between">
+    <div class="flex flex-col gap-5 justify-between">
       <UAlert
+        v-if="dbConnected"
         class="flex"
         color="success"
         variant="outline"
@@ -21,10 +19,8 @@ onMounted(() => {
         "
         icon="i-lucide-terminal"
       />
-      
-    </div>
-    <div v-else class="flex flex-col">
       <UAlert
+        v-else
         color="error"
         variant="outline"
         :title="$t('No Database Connection')"
