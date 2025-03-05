@@ -41,6 +41,7 @@ const queryParams = computed(() => ({
 // Fetch paginated edits from the API endpoint.
 const { data, error } = useFetch("/api/editor/new", {
   query: queryParams,
+  immediate: false,
 });
 
 // Get toast composable for notifications
