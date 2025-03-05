@@ -5,10 +5,12 @@ const wsUrl = `${wsProto}//${window.location.host}/api/ws`;
 
 const { status, data, send, open, close } = useWebSocket(wsUrl);
 
-watch(data, () => {
-  console.log(data);
+watch(data, (newData) => {
+  console.log(newData);
 });
 </script>
 <template>
-  {{ status }}
+  <span class="text-center bg-gray-300 p-2">
+    websocket status : {{ status }}
+  </span>
 </template>
