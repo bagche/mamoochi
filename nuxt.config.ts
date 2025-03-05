@@ -34,12 +34,15 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // preset: "cloudflare-pages",
+    // preset: "ccloudflare-durable",
     compressPublicAssets: true,
     minify: true,
     prerender: {
       crawlLinks: false,
       routes: generateRoutes(),
+    },
+    experimental: {
+      websocket: true,
     },
   },
   ui: {
