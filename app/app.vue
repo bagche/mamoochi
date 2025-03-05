@@ -62,7 +62,7 @@ registerNew();
   <UApp :locale="appLocales">
     <NuxtLayout class="dark:bg-slate-700">
       <NuxtLoadingIndicator />
-      <Installer v-if="appConfig.installed" />
+      <Installer v-if="!appConfig.installed" />
       <NuxtPage v-else />
     </NuxtLayout>
   </UApp>

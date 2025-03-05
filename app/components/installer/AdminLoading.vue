@@ -13,12 +13,12 @@ const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
 const adminState = reactive({
-  firstName: "admin",
-  lastName: "admin",
-  about: "about",
-  userName: "admin",
-  password: "123456",
-  confirmPassword: "123456",
+  firstName: "",
+  lastName: "",
+  about: "",
+  userName: "",
+  password: "",
+  confirmPassword: "",
 });
 
 const schema = z

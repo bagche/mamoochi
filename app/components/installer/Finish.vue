@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div class="w-full gap-5 flex flex-col">
     <div class="flex flex-col gap-5 justify-between">
