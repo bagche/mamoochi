@@ -41,12 +41,6 @@ export default defineNuxtConfig({
       crawlLinks: false,
       routes: generateRoutes(),
     },
-    storage: {
-      migrations: {
-        driver: "fs",
-        base: "./server/migrations",
-      },
-    },
   },
   ui: {
     fonts: true,

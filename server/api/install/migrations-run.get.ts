@@ -2,12 +2,6 @@ import type { D1Database } from "@cloudflare/workers-types";
 import { sha256 } from "@noble/hashes/sha256";
 import { bytesToHex } from "@noble/hashes/utils";
 
-interface MigrationFile {
-  name: string;
-  hash: string;
-  content: string;
-}
-
 function computeHash(data: string): string {
   const encoder = new TextEncoder();
   const hashBytes = sha256(encoder.encode(data));
@@ -19,22 +13,6 @@ async function ensureMigrationsTable(db: D1Database) {
   await db.exec(
     "CREATE TABLE IF NOT EXISTS __drizzle_migrations (id INTEGER PRIMARY KEY, hash TEXT NOT NULL, applied_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)"
   );
-}
-
-// Use Vite's import.meta.glob to load migration files at build time.
-async function getMigrationFiles(): Promise<MigrationFile[]> {
-  // Adjust the path to point to your migrations folder.
-  const migrationModules = import.meta.glob('/migrations/*.sql', { as: 'raw' });
-  const migrationFiles: MigrationFile[] = [];
-  
-  for (const path in migrationModules) {
-    const content = await migrationModules[path]() as string;
-    const fileName = path.split('/').pop() || path;
-    const hash = computeHash(content);
-    migrationFiles.push({ name: fileName, hash, content });
-  }
-  
-  return migrationFiles.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 async function getAppliedMigrations(db: D1Database): Promise<string[]> {
@@ -88,13 +66,13 @@ export default defineEventHandler(async (event) => {
 
   try {
     await ensureMigrationsTable(db);
-    const migrationFiles = await getMigrationFiles();
     const appliedMigrations = await getAppliedMigrations(db);
 
-    for (const migration of migrationFiles) {
-      if (!appliedMigrations.includes(migration.hash)) {
+    for (const migration of dbMigrations) {
+      const hash = computeHash(migration.content);
+      if (!appliedMigrations.includes(hash)) {
         await applyMigration(db, migration.content);
-        await markMigrationAsApplied(db, migration.hash);
+        await markMigrationAsApplied(db, hash);
         console.log(`Applied migration: ${migration.name}`);
       } else {
         console.log(`Skipping already applied migration: ${migration.name}`);

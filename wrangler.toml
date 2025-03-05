@@ -7,6 +7,6 @@ compatibility_date = "2024-09-23"
 binding = "DB"                                      
 database_name = "mamoochi"
 database_id = "1702648e-6998-4b67-bce2-281bb4622534"
-migrations_dir = "server/migrations"
+migrations_dir = "migrations"
 
  
