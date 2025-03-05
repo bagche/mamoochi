@@ -21,19 +21,19 @@ async function ensureMigrationsTable(db: D1Database) {
   );
 }
 
+// Use Vite's import.meta.glob to load migration files at build time.
 async function getMigrationFiles(): Promise<MigrationFile[]> {
-  const storage = useStorage("migrations");
-  const files = await storage.getKeys("");
+  // Adjust the path to point to your migrations folder.
+  const migrationModules = import.meta.glob('/migrations/*.sql', { as: 'raw' });
   const migrationFiles: MigrationFile[] = [];
-
-  for (const file of files) {
-    if (file.endsWith(".sql")) {
-      const content = await storage.getItem(file);
-      const hash = computeHash(content);
-      migrationFiles.push({ name: file, hash, content });
-    }
+  
+  for (const path in migrationModules) {
+    const content = await migrationModules[path]() as string;
+    const fileName = path.split('/').pop() || path;
+    const hash = computeHash(content);
+    migrationFiles.push({ name: fileName, hash, content });
   }
-
+  
   return migrationFiles.sort((a, b) => a.name.localeCompare(b.name));
 }
 

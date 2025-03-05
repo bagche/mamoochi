@@ -43,12 +43,12 @@ const schema = z
 type Schema = z.output<typeof schema>;
 
 const state = reactive({
-  firstName: "admin",
-  lastName: "admin",
-  about: "about",
-  userName: "admin",
-  password: "123456",
-  confirmPassword: "123456",
+  firstName: "",
+  lastName: "",
+  about: "",
+  userName: "",
+  password: "",
+  confirmPassword: "",
 });
 
 // Handle form submission
