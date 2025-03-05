@@ -85,14 +85,14 @@ const addUserRole = async (event: FormSubmitEvent<Schema>) => {
 </script>
 
 <template>
-  <UModal v-model:open="modelIsOpen" :title="t('Add Role to User')">
+  <UModal v-model:open="modelIsOpen" :title="$t('Add Role to User')">
     <template #body>
       <p class="mb-4 text-base text-gray-600">
         {{ t("Select one or more roles to assign to the user.") }}
       </p>
       <UForm ref="form" :schema="schema" :state="state" @submit="addUserRole">
         <div class="flex flex-col gap-4">
-          <UFormField :label="t('Roles')" name="roleIds">
+          <UFormField :label="$t('Roles')" name="roleIds">
             <USelectMenu
               v-model="state.roleIds"
               multiple
@@ -105,7 +105,7 @@ const addUserRole = async (event: FormSubmitEvent<Schema>) => {
             block
             variant="outline"
             type="submit"
-            :label="t('Add Role')"
+            :label="$t('Add Role')"
             size="xl"
             :loading="submitting"
             color="primary"

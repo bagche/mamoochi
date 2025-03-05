@@ -29,7 +29,7 @@ if (!localDbUrl) {
 export default {
   dialect: "sqlite",
   schema: "./server/utils/schema.ts",
-  out: "./migrations",
+  out: "./server/migrations",
   breakpoints: true,
   dbCredentials: {
     url: localDbUrl ?? "",

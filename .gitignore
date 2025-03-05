@@ -8,5 +8,4 @@ dist
 dist_build
 pnpm-lock.yaml
 .wrangler
-migrations
 .data

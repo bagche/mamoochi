@@ -5,7 +5,7 @@ set -e
 
 # Remove old database and migration files
 rm -rf .wrangler
-rm -rf ./migrations
+rm -rf ./server/migrations
 
 # Ensure wrangler starts D1 before running Drizzle commands
 # npx wrangler d1 execute inbox --command "SELECT 1;" --local > /dev/null 2>&1
@@ -20,4 +20,4 @@ npx drizzle-kit generate
 # npx drizzle-kit push --force
 
 # Apply the migrations cleanly
-npx wrangler d1 migrations apply inbox --local
+# npx wrangler d1 migrations apply inbox --local

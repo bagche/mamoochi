@@ -1,82 +1,169 @@
 <script setup lang="ts">
 const { t } = useI18n();
-const { stepper, nextDisabled, prevDisabled } = useInstaller();
+const {
+  dbConnected,
+  currentStep,
+  dbMigrated,
+  runMigrations,
+  isMigrating,
+  dbLoaded,
+  runDbLoading,
+  dbLoading,
+  adminLoaded,
+} = useInstaller();
+const stepper = useTemplateRef("stepper");
 
 const items = [
   {
-    title: t("Database"),
-    slot: "database",
-    description: t("Add D1 Database Details"),
+    title: t("D1 Database Connection"),
+    slot: "dbConnected",
+    description: t(
+      "Enter and verify your D1 Database connection details to begin the installation process."
+    ),
     icon: "i-lucide-database",
   },
   {
-    title: t("Initial Database"),
-    slot: "init",
-    description: t("Initializing Database Schema"),
+    title: t("Initialize Database Schema"),
+    slot: "migrationLoad",
+    description: t(
+      "Apply and validate your database schema migrations to set up all required tables."
+    ),
     icon: "i-lucide-database-zap",
   },
   {
-    title: t("Admin Register"),
+    title: t("Load Default Data"),
+    slot: "loadDatabase",
+    description: t(
+      "Import default configuration and sample data into your database."
+    ),
+    icon: "i-lucide-database",
+  },
+  {
+    title: t("Admin Account Setup"),
     slot: "admin",
-    description: t("Register Admin User"),
+    description: t(
+      "Create your first administrator account to manage your application."
+    ),
     icon: "i-lucide-shield-user",
   },
   {
-    title: t("Finish"),
+    title: t("Installation Complete"),
     slot: "finish",
-    description: t("App installed Successfully"),
+    description: t(
+      "Installation is complete. Your application is now fully configured and ready to use!"
+    ),
     icon: "i-lucide-list-checks",
   },
 ];
 </script>
 
 <template>
-  <div class="w-full">
-    <div
-      class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4 justify-center h-screen"
-    >
-      <UCard
-        :ui="{
-          root: 'md:min-h-160 min-h-full',
-        }"
+  <div
+    class="mx-auto flex flex-col items-center px-4 justify-center h-screen bg-gray-100 dark:bg-slate-700"
+  >
+    <UCard :ui="{ root: ' ' }">
+      <template #header>
+        <div class="flex justify-center items-center">
+          <h1 class="text-2xl">{{ t("Mamoochi Database  Installation") }}</h1>
+        </div>
+      </template>
+      <UStepper
+        ref="stepper"
+        v-model="currentStep"
+        orientation="vertical"
+        disabled
+        :items="items"
+        class="w-full max-w-5xl"
       >
-        <template #header>
-          <div class="flex justify-between items-center">
-            <h1 class="text-2xl">{{ $t("Installing App") }}</h1>
-            <UButtonGroup size="md" variant="outline">
-              <UButton
-                icon="i-lucide-arrow-right"
-                :label="t('Prev')"
-                variant="outline"
-                :disabled="prevDisabled"
-                @click="stepper?.prev()"
-              />
-              <UButton
-                class="cursor-pointer"
-                :label="t('Next')"
-                variant="outline"
-                icon="i-lucide-arrow-left"
-                :disabled="nextDisabled"
-                @click="stepper?.next()"
-              />
-            </UButtonGroup>
-          </div>
+        <template #dbConnected="{ item }">
+          <InstallerDatabaseConnected />
         </template>
-        <UStepper ref="stepper" disabled :items="items" class="w-full">
-          <template #database="{ item }">
-            <InstallerAddDatabase />
-          </template>
-          <template #init="{ item }">
-            <InstallerInitDatabase />
-          </template>
-          <template #admin="{ item }">
-            <InstallerAdminInit />
-          </template>
-          <template #finish="{ item }">
-            <InstallerFinish />
-          </template>
-        </UStepper>
-      </UCard>
-    </div>
+        <template #migrationLoad="{ item }">
+          <InstallerMigrationsInit />
+        </template>
+        <template #loadDatabase="{ item }">
+          <InstallerDatabaseLoading />
+        </template>
+        <template #admin="{ item }">
+          <InstallerAdminLoading />
+        </template>
+        <template #finish="{ item }">
+          <InstallerFinish />
+        </template>
+      </UStepper>
+      <div
+        v-if="currentStep !== 4"
+        class="flex gap-3 border-t pt-4 mt-4 border-gray-200 dark:border-slate-800"
+      >
+        <UButton
+          v-if="currentStep !== 0"
+          :block="currentStep === 4"
+          icon="i-lucide-arrow-right"
+          :label="$t('Previous')"
+          size="xl"
+          :disabled="!stepper?.hasPrev"
+          color="secondary"
+          @click="stepper?.prev()"
+        />
+        <UButton
+          v-if="currentStep === 0 && dbConnected"
+          color="success"
+          size="xl"
+          block
+          icon="i-lucide-wand-sparkles"
+          :label="$t('Start Installation')"
+          @click="stepper?.next()"
+        />
+        <UButton
+          v-else-if="currentStep === 1 && !dbMigrated"
+          color="success"
+          size="xl"
+          block
+          icon="i-lucide-database-zap"
+          :label="$t('Run Migrations')"
+          :loading="isMigrating"
+          @click="runMigrations()"
+        />
+        <UButton
+          v-else-if="currentStep === 1 && dbMigrated"
+          color="success"
+          size="xl"
+          block
+          icon="i-lucide-database"
+          :label="$t('Proceed to Defaults app Database')"
+          @click="stepper?.next()"
+        />
+        <UButton
+          v-else-if="currentStep === 2 && !dbLoaded"
+          color="success"
+          size="xl"
+          block
+          icon="i-lucide-gear"
+          :label="$t('Proceed to Defaults app Database')"
+          :loading="dbLoading"
+          @click="runDbLoading()"
+        />
+        <UButton
+          v-else-if="currentStep === 2 && dbLoaded"
+          color="success"
+          size="xl"
+          block
+          icon="i-lucide-shield-user"
+          :label="$t('Adding Admin User')"
+          @click="stepper?.next()"
+        />
+
+        <UButton
+          v-else-if="currentStep === 3"
+          color="success"
+          size="xl"
+          block
+          :disabled="!adminLoaded"
+          icon="i-lucide-shield-check"
+          :label="$t('Finish Installing')"
+          @click="stepper?.next()"
+        />
+      </div>
+    </UCard>
   </div>
 </template>

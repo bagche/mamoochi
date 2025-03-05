@@ -46,14 +46,14 @@ const login = async (event: FormSubmitEvent<Schema>) => {
     toast.add({
       title: t("Success"),
       description: t("User logged in successfully"),
-      color: "green",
+      color: "success",
     });
     modelIsOpen.value = false;
     reloadNuxtApp();
   } catch (error: any) {
     console.error(error.statusMessage);
     toast.add({
-      color: "red",
+      color: "error",
       title: t("Error"),
       description: error.statusMessage || t("Login failed"),
     });
@@ -63,24 +63,32 @@ const login = async (event: FormSubmitEvent<Schema>) => {
 </script>
 
 <template>
-  <UModal v-model:open="modelIsOpen" :title="t('Switch User')">
+  <UModal v-model:open="modelIsOpen" :title="$t('Switch User')">
     <template #body>
       <UForm ref="form" :schema="schema" :state="state" @submit="login">
         <div class="flex flex-col gap-4">
-          <UFormField :label="t('Username')" name="userName" class="basis-full">
+          <UFormField
+            :label="$t('Username')"
+            name="userName"
+            class="basis-full"
+          >
             <UInput
               v-model="state.userName"
               class="w-full"
-              :placeholder="t('Enter username')"
+              :placeholder="$t('Enter username')"
             />
           </UFormField>
 
-          <UFormField :label="t('Password')" name="password" class="basis-full">
+          <UFormField
+            :label="$t('Password')"
+            name="password"
+            class="basis-full"
+          >
             <UInput
               v-model="state.password"
               class="w-full"
               :type="showPassword ? 'text' : 'password'"
-              :placeholder="t('Enter password')"
+              :placeholder="$t('Enter password')"
               :ui="{ trailing: 'pr-0.5' }"
             >
               <template #trailing>
@@ -104,7 +112,7 @@ const login = async (event: FormSubmitEvent<Schema>) => {
             block
             variant="outline"
             type="submit"
-            :label="t('Login')"
+            :label="$t('Login')"
             size="xl"
             :loading="submitting"
             color="primary"

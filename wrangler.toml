@@ -4,13 +4,9 @@ compatibility_flags = [ "nodejs_compat" ]
 compatibility_date = "2024-09-23"
 
 [[d1_databases]]
-binding = "DB"                                       # available in your Worker on env.DB
-database_name = "inbox"
-database_id = "9a4c5463-2684-4973-8a04-6c3f5886924c"
-migrations_dir = "migrations"
-
-[[kv_namespaces]]
-binding = "inboxKV"
-id = "641b2dd1ff024c6d88da451bee969e54"
+binding = "DB"                                      
+database_name = "mamoochi"
+database_id = "1702648e-6998-4b67-bce2-281bb4622534"
+migrations_dir = "server/migrations"
 
  

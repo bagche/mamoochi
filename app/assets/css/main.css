@@ -69,8 +69,3 @@ code {
     white-space: pre-wrap;
   }
 }
-
-/* Buttons */
-button {
-  cursor: pointer;
-}

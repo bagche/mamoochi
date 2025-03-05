@@ -14,7 +14,7 @@ const modelIsOpen = computed({
 });
 
 const { t } = useI18n();
-const { fetch: fetchProfile, user } = useUserSession();
+const { fetch: fetchProfile } = useUserSession();
 const toast = useToast();
 const submitting = ref(false);
 const form = ref();
@@ -86,7 +86,7 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
 </script>
 
 <template>
-  <UModal v-model:open="modelIsOpen" :title="t('User Registration')">
+  <UModal v-model:open="modelIsOpen" :title="$t('User Registration')">
     <template #body>
       <UForm
         ref="form"
@@ -98,14 +98,14 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
           <div class="flex flex-col gap-10">
             <div class="flex gap-3">
               <UFormField
-                :label="t('Username')"
+                :label="$t('Username')"
                 name="userName"
                 class="basis-2/2"
               >
                 <UInput
                   v-model="state.userName"
                   class="w-full"
-                  :placeholder="t('Your username')"
+                  :placeholder="$t('Your username')"
                 />
               </UFormField>
             </div>
@@ -113,14 +113,14 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
             <!-- Password Fields with Show/Hide Toggle -->
             <div class="flex gap-3">
               <UFormField
-                :label="t('Password')"
+                :label="$t('Password')"
                 name="password"
                 class="basis-1/2"
               >
                 <UInput
                   v-model="state.password"
                   :type="showPassword ? 'text' : 'password'"
-                  :placeholder="t('Enter password')"
+                  :placeholder="$t('Enter password')"
                   class="w-full"
                   :ui="{ trailing: 'pr-0.5' }"
                 >
@@ -141,14 +141,14 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
               </UFormField>
 
               <UFormField
-                :label="t('Confirm Password')"
+                :label="$t('Confirm Password')"
                 name="confirmPassword"
                 class="basis-1/2"
               >
                 <UInput
                   v-model="state.confirmPassword"
                   :type="showConfirmPassword ? 'text' : 'password'"
-                  :placeholder="t('Confirm password')"
+                  :placeholder="$t('Confirm password')"
                   class="w-full"
                   :ui="{ trailing: 'pr-0.5' }"
                 >
@@ -176,38 +176,38 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
             </div>
           </div>
 
-          <USeparator :label="t('Personal Details')" class="mt-5" />
+          <USeparator :label="$t('Personal Details')" class="mt-5" />
 
           <div class="flex gap-3 w-full">
             <UFormField
-              :label="t('First Name')"
+              :label="$t('First Name')"
               name="firstName"
               class="basis-1/2"
             >
               <UInput
                 v-model="state.firstName"
                 class="w-full"
-                :placeholder="t('Your first name')"
+                :placeholder="$t('Your first name')"
               />
             </UFormField>
             <UFormField
-              :label="t('Last Name')"
+              :label="$t('Last Name')"
               name="lastName"
               class="basis-1/2"
             >
               <UInput
                 v-model="state.lastName"
                 class="w-full"
-                :placeholder="t('Your last name')"
+                :placeholder="$t('Your last name')"
               />
             </UFormField>
           </div>
 
-          <UFormField :label="t('About')" name="about" class="basis-2/2">
+          <UFormField :label="$t('About')" name="about" class="basis-2/2">
             <UTextarea
               v-model="state.about"
               class="w-full"
-              :placeholder="t('Ex: Developer Lead')"
+              :placeholder="$t('Ex: Developer Lead')"
             />
           </UFormField>
           <UButton
@@ -215,7 +215,7 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
             block
             variant="outline"
             type="submit"
-            :label="t('Register')"
+            :label="$t('Register')"
             :loading="submitting"
             color="primary"
             size="xl"

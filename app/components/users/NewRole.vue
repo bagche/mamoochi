@@ -72,7 +72,7 @@ const addRole = async (event: FormSubmitEvent<Schema>) => {
 </script>
 
 <template>
-  <UModal v-model:open="modelIsOpen" :title="t('Add New Role')">
+  <UModal v-model:open="modelIsOpen" :title="$t('Add New Role')">
     <template #body>
       <p class="mb-4 text-base text-gray-600">
         {{
@@ -83,21 +83,21 @@ const addRole = async (event: FormSubmitEvent<Schema>) => {
       </p>
       <UForm ref="form" :schema="schema" :state="state" @submit="addRole">
         <div class="flex flex-col gap-4">
-          <UFormField :label="t('Role Name')" name="roleName">
+          <UFormField :label="$t('Role Name')" name="roleName">
             <UInput
               v-model="state.roleName"
               class="w-full"
-              :placeholder="t('Enter role name')"
+              :placeholder="$t('Enter role name')"
             />
           </UFormField>
-          <UFormField :label="t('Description')" name="description">
+          <UFormField :label="$t('Description')" name="description">
             <UTextarea
               v-model="state.description"
               class="w-full"
-              :placeholder="t('Enter role description')"
+              :placeholder="$t('Enter role description')"
             />
           </UFormField>
-          <UFormField :label="t('Permissions')" name="permissions">
+          <UFormField :label="$t('Permissions')" name="permissions">
             <USelectMenu
               v-model="state.permissions"
               :ui="{
@@ -113,7 +113,7 @@ const addRole = async (event: FormSubmitEvent<Schema>) => {
             block
             variant="outline"
             type="submit"
-            :label="t('Add Role')"
+            :label="$t('Add Role')"
             size="xl"
             :loading="submitting"
             color="primary"
