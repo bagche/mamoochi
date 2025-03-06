@@ -1,22 +1,22 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
 const colorMode = useColorMode();
+
+const isDark = computed({
+  get: () => colorMode.preference === "dark",
+  set: (value: boolean) => {
+    colorMode.preference = value ? "dark" : "light";
+  },
+});
 </script>
 
 <template>
   <div>
-    <UButton
-      variant="ghost"
+    <USwitch
+      v-model="isDark"
       size="xs"
-      class="flex dark:hidden cursor-pointer"
-      icon="i-lucide-moon"
-      @click="colorMode.preference = 'dark'"
-    />
-    <UButton
-      variant="ghost"
-      size="xs"
-      class="hidden dark:flex cursor-pointer"
-      icon="i-lucide-sun"
-      @click="colorMode.preference = 'light'"
+      :label="isDark ? $t('Dark Mode') : $t('Light Mode')"
     />
   </div>
 </template>

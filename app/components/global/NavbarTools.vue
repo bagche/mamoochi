@@ -1,7 +1,6 @@
 <template>
   <div class="flex items-center gap-4">
     <LanguageSelector class="" />
-    <DarkMode class="" />
     <Bouncer :ability="readDashboard">
       <template #can>
         <SearchBox class="" />
@@ -12,6 +11,6 @@
         <SearchBox class="" />
       </template>
     </Bouncer>
-    <UsersAvatarMenu class="" />
+    <AvatarMenu class="" />
   </div>
 </template>

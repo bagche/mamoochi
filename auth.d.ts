@@ -3,12 +3,13 @@ declare module "#auth-utils" {
     id: number;
     username: string;
     permissions: string[];
+    displayName?: string | null;
   }
 
   interface UserSession {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     extended?: any;
-    loggedInAt: number;
+    loggedInAt: number | Date;
     secure?: Record<string, unknown>;
   }
 }

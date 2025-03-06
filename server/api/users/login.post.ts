@@ -71,6 +71,7 @@ export default defineEventHandler(async (event) => {
       user: {
         id: user.id,
         username: userName,
+        displayName: user.displayName,
         permissions,
       },
       loggedInAt: new Date(),

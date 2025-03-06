@@ -1,89 +1,96 @@
-import type { D1Database } from "@cloudflare/workers-types";
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { eq } from "drizzle-orm/sql";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
   try {
     const body = await readBody(event);
 
-    // Validate that the username is provided
-    if (!body.userName) {
+    // Validate required fields
+    if (!body.firstName || !body.lastName || !body.userName || !body.password) {
       throw createError({
         statusCode: 400,
-        statusMessage: t("Missing required field: userName"),
+        statusMessage: t(
+          "Missing required fields: firstName, lastName, userName, or password"
+        ),
       });
     }
+    const { DB } = event.context.cloudflare.env;
+    const drizzleDb = drizzle(DB);
 
-    const db: D1Database = event.context.env.DB;
-    const drizzleDb = drizzle(db);
-
-    // Look up the user by username
-    const user = await drizzleDb
+    // Check if the username is already registered
+    const existingUser = await drizzleDb
       .select()
       .from(users)
       .where(eq(users.username, body.userName))
       .get();
 
-    if (!user) {
+    if (existingUser) {
       throw createError({
-        statusCode: 404,
-        statusMessage: t("User not found. Please verify the username."),
-      });
-    }
-
-    // Retrieve the default "Admin" role from the roles table
-    const adminRole = await drizzleDb
-      .select()
-      .from(roles)
-      .where(eq(roles.name, "Admin"))
-      .get();
-
-    if (!adminRole) {
-      throw createError({
-        statusCode: 500,
+        statusCode: 409,
         statusMessage: t(
-          "Default Admin role is missing. Please complete the initial setup."
+          "Username is already taken. Please choose another one."
         ),
       });
     }
 
-    // Check if the user is already assigned the Admin role
-    const assignment = await drizzleDb
-      .select()
-      .from(user_roles)
-      .where(eq(user_roles.userId, user.id))
-      .where(eq(user_roles.roleId, adminRole.id))
-      .get();
+    // Generate a unique salt
+    const salt = generateSalt();
+    // Hash the password with the salt
+    const hashedPassword = await hashSaltPassword(body.password, salt);
 
-    if (assignment) {
-      return {
-        message: t("The user is already assigned to the Admin role."),
-      };
-    }
-
-    // Assign the user to the Admin role by inserting into the join table
+    // Insert the new user into the database
     await drizzleDb
-      .insert(user_roles)
+      .insert(users)
       .values({
-        userId: user.id,
-        roleId: adminRole.id,
+        firstName: body.firstName,
+        lastName: body.lastName,
+        displayName: `${body.firstName} ${body.lastName}`,
+        about: body.about || "",
+        avatar: body.avatar || "",
+        username: body.userName,
+        password: hashedPassword,
+        salt,
+        createdAt: new Date(),
+        lastLoginAt: new Date(),
       })
       .execute();
 
+    // Retrieve the inserted user based on the unique `username`
+    const insertedUser = await drizzleDb
+      .select()
+      .from(users)
+      .where(eq(users.username, body.userName))
+      .get();
+
+    if (!insertedUser) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: t("Failed to retrieve the newly created user"),
+      });
+    }
+
+    // Set the user session with their workspace permissions
+    await setUserSession(event, {
+      user: {
+        id: insertedUser.id,
+        username: insertedUser.username,
+        displayName: insertedUser.displayName ?? "",
+      },
+      loggedInAt: new Date(),
+    });
+
+    // Return success message
     return {
-      message: t("User has been successfully assigned the Admin role."),
-      user,
+      message: t("Registered successfully"),
     };
-  } catch (error: any) {
-    console.error("Error assigning admin role:", error);
+  } catch (e: any) {
+    console.error("Error creating user:", e);
+
     throw createError({
-      statusCode: error.statusCode || 500,
+      statusCode: e.statusCode || 500,
       statusMessage:
-        error.statusMessage ||
-        t(
-          "An error occurred while assigning the Admin role. Please try again later."
-        ),
+        e.statusMessage || t("Internal Server Error. Please try again later."),
     });
   }
 });
