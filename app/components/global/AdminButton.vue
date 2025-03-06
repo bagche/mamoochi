@@ -10,14 +10,14 @@ const route = useRoute();
       icon="i-lucide-home"
       variant="ghost"
       size="xs"
-      to="/"
+      :to="'/' + locale + '/'"
     />
     <UButton
       v-else
       icon="i-lucide-settings"
       variant="ghost"
       size="xs"
-      :to="locale + '/manage'"
+      :to="'/' + locale + '/manage'"
     />
   </div>
 </template>
