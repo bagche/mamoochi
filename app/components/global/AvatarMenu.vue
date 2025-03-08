@@ -81,7 +81,7 @@ const themeGroup = [
 const items = computed(() => {
   return loggedIn.value
     ? [accountGroup, loggedInItems, themeGroup, [exitItem]]
-    : [accountGroup, loggedOutItems, themeGroup, [exitItem]];
+    : [accountGroup, loggedOutItems, themeGroup];
 });
 </script>
 
