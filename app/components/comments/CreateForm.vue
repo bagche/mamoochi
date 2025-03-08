@@ -23,8 +23,7 @@ type Schema = z.infer<typeof schema>;
 const form = ref();
 const sending = ref(false);
 
-// const canSend = await allows(sendComment);
-const canSend = true;
+const canSend = await allows(sendComment);
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   sending.value = true;
