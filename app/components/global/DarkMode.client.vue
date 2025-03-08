@@ -2,11 +2,12 @@
 import { computed } from "vue";
 
 const colorMode = useColorMode();
-
 const isDark = computed({
-  get: () => colorMode.preference === "dark",
-  set: (value: boolean) => {
-    colorMode.preference = value ? "dark" : "light";
+  get() {
+    return colorMode.value === "dark";
+  },
+  set() {
+    colorMode.preference = colorMode.value === "dark" ? "light" : "dark";
   },
 });
 </script>
