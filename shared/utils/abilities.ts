@@ -5,3 +5,7 @@ export const readDashboard = defineAbility((user: any) => {
 export const editPage = defineAbility((user: any) => {
   return user?.permissions?.includes("page.edit") ?? false;
 });
+
+export const sendComment = defineAbility((user: any) => {
+  return user?.permissions?.includes("comment.create") ?? false;
+});

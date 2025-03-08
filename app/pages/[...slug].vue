@@ -26,7 +26,7 @@ useSeoMeta({
   <div class="w-full min-h-screen">
     <!-- If Content is Available -->
     <div v-if="pageData" class="w-full">
-      <template v-if="pageData.thumbnail" >
+      <template v-if="pageData.thumbnail">
         <div
           class="flex flex-col gap-6 text-center pt-10 pb-12 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100 min-h-[calc(100vh-2rem)] items-center justify-between"
         >
@@ -85,10 +85,10 @@ useSeoMeta({
       <UContainer>
         <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
           <ContentRenderer
-          :value="pageData"
-          class="prose prose-lg dark:prose-invert w-full max-w-4xl"
+            :value="pageData"
+            class="prose prose-lg dark:prose-invert w-full max-w-4xl"
           />
-          <Comments v-if="pageData.comments"/>
+          <Comments v-if="pageData.comments" />
         </div>
       </UContainer>
 

@@ -77,6 +77,11 @@ export default defineAppConfig({
     "roles.edit",
     "roles.delete",
 
+    "comment.create",
+    "comment.read",
+    "comment.edit",
+    "comment.delete",
+
     "item.create",
     "item.read",
     "item.edit",

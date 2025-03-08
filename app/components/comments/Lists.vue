@@ -1,37 +1,39 @@
 <script setup lang="ts">
-// const { currentComments } = useComments();
-const { $dexie } = useNuxtApp();
-
 const { profile } = useUser();
-const currentChannelId = ref("test");
-const currentComments = useLiveQuery(async () => {
-  return await $dexie.events
-    .orderBy("created_at")
-    // .filter(
-    //   (event: any) =>
-    //     event.kind === 42 &&
-    //     event.tags.some(
-    //       (tag: any) => tag[0] === "e" && tag[1] === currentChannelId.value
-    //     )
-    // )
-    .reverse()
-    .limit(20)
-    .toArray();
-}, [currentChannelId]);
+
+const page = ref(1);
+const pageSize = ref(10);
+const total = ref(0);
+
+const { data: commentsData, refresh: refreshComments } = useFetch(
+  "/api/comments/all",
+  {
+    query: { page, pageSize },
+  }
+);
+
+defineExpose({ refreshComments });
+
+const currentComments = computed(() => commentsData.value?.comments || []);
+
+watch(commentsData, () => {
+  if (commentsData.value?.total !== undefined) {
+    total.value = commentsData.value.total;
+  }
+});
 </script>
 
 <template>
-  <div class="flex w-full flex-col">
+  <div class="flex w-full flex-col mt-5">
     <UCard
       v-for="comment in currentComments"
       :key="comment.id"
       class="mb-10 w-full"
+      variant="soft"
       :ui="{
-        ring: 'ring-0',
-        shadow: 'shadow-none',
-        base: 'border-b',
-        rounded: 'rounded-sm',
-        body: { padding: 'px-5 py-2 sm:py-3 sm:px-5' },
+        root: 'p-0 rounded-sm dark:bg-slate-600 bg-gray-50',
+        body: ' border-none',
+        header: 'border-none',
       }"
     >
       <template #header>
@@ -50,18 +52,18 @@ const currentComments = useLiveQuery(async () => {
             </span>
           </div>
           <div class="flex gap-2 text-sm">
-            <span> {{ comment.status }}</span>
+            <span>{{ comment.status }}</span>
           </div>
         </div>
       </template>
 
       <span class="text-gray-500 dark:text-gray-400 text-base">
-        {{ comment.content }}
+        {{ comment.body }}
       </span>
 
       <template #footer>
         <div class="flex justify-between items-center text-sm">
-          <span> {{ eventFormatTimeAgo(comment.created_at) }}</span>
+          <span>{{ formatTimeAgo(comment.createdAt) }}</span>
           <UButton
             variant="outline"
             color="gray"
@@ -73,5 +75,11 @@ const currentComments = useLiveQuery(async () => {
         </div>
       </template>
     </UCard>
+    <UPagination
+      v-model:page="page"
+      :total="total"
+      :page-size="pageSize"
+      class="justify-center w-full flex"
+    />
   </div>
 </template>

@@ -3,49 +3,55 @@ import { z } from "zod";
 
 import type { FormSubmitEvent } from "#ui/types";
 
+const toast = useToast();
+const { t } = useI18n();
+const route = useRoute();
+
 const state = reactive({
   message: "",
 });
-const { $dexie } = useNuxtApp();
+
+const emit = defineEmits<{
+  (e: "commentPosted"): void;
+}>();
 
 const schema = z.object({
-  message: z.string().min(5),
+  message: z.string().min(5, t("Comment must be at least 5 characters")),
 });
-
 type Schema = z.infer<typeof schema>;
 
 const form = ref();
 const sending = ref(false);
+
+const canSend = await allows(sendComment);
+
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   sending.value = true;
-  console.log(event.data.message);
-  //   if (!certs.value?.pub) {
-  //     sending.value = false;
-  //     throw new Error("User profile is not loaded");
-  //   }
-  //   if (!currentChannelId.value) {
-  //     sending.value = false;
-  //     throw new Error("Channel ID is not loaded");
-  //   }
-
-  // const event: NostrEvent = finalizeEvent(
-  //   {
-  //     kind: 42,
-  //     created_at: Math.floor(Date.now()),
-  //     content: event.data.message,
-  //     tags: [["e", currentChannelId.value as string]],
-  //   },
-  //   hexToBytes(certs.value.priv)
-  // );
-
-  // $dexie.events.add({
-  //   ...event,
-  //   status: "Sending",
-  // });
-
-  sending.value = false;
-  // await sendComment(event.data.message);
-  state.message = "";
+  try {
+    await $fetch("/api/comments/new", {
+      method: "POST",
+      body: JSON.stringify({
+        routePath: route.path, // current route as the content reference
+        commentBody: event.data.message,
+      }),
+    });
+    toast.add({
+      title: t("Success"),
+      description: t("Comment posted successfully"),
+      color: "success",
+    });
+    state.message = "";
+  } catch (error: any) {
+    toast.add({
+      title: t("Error"),
+      description:
+        error.data?.message || error.message || t("Failed to post comment"),
+      color: "error",
+    });
+  } finally {
+    sending.value = false;
+    emit("commentPosted");
+  }
 };
 
 const handleKeyDown = (event: KeyboardEvent) => {
@@ -59,31 +65,31 @@ const handleKeyDown = (event: KeyboardEvent) => {
 <template>
   <UForm ref="form" :schema="schema" :state="state" @submit="onSubmit">
     <UCard
-      variant="outline"
+      variant="soft"
       :ui="{
         root: 'p-0 rounded-sm dark:bg-slate-600 bg-gray-50',
-        body: 'sm:p-1 p-2',
-        footer: 'sm:p-2 p-2',
+        body: ' border-none',
+        header: 'border-none',
       }"
     >
-      <UFormField name="textarea">
+      <UFormField name="message">
         <UTextarea
           v-model="state.message"
-          :ui="{
-            base: 'p-5 bg-transparent',
-          }"
-          :placeholder="$t('Write Your Comment ...')"
+          :ui="{ base: 'p-5 bg-transparent' }"
+          :placeholder="$t('Write your comment...')"
           :padded="false"
           variant="ghost"
           color="primary"
           class="w-full"
           autoresize
+          :disabled="!canSend"
           @keydown="handleKeyDown"
         />
       </UFormField>
       <template #footer>
         <div class="flex justify-end">
           <UButton
+            :disabled="!canSend"
             class="px-3 py-2"
             icon="i-lucide-message-square-plus"
             variant="outline"
