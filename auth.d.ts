@@ -2,6 +2,7 @@ declare module "#auth-utils" {
   interface User {
     id: number;
     username: string;
+    pub: string;
     permissions: string[];
     displayName?: string | null;
   }

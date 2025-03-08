@@ -1,13 +1,48 @@
-CREATE TABLE `edits` (
+CREATE TABLE `builds` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`build_name` text NOT NULL,
+	`created_at` integer NOT NULL,
+	`status` text DEFAULT 'pending'
+);
+--> statement-breakpoint
+CREATE TABLE `comments` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`route_path` text NOT NULL,
+	`author_id` integer NOT NULL,
+	`parent_comment_id` integer,
+	`body` text NOT NULL,
+	`status` text DEFAULT 'published',
 	`created_at` integer NOT NULL,
 	`updated_at` integer,
+	FOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`parent_comment_id`) REFERENCES `comments`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE TABLE `commits` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`build_id` integer NOT NULL,
 	`author_id` integer NOT NULL,
 	`path` text DEFAULT '',
 	`type` text DEFAULT '',
 	`status` text DEFAULT '',
-	`description` text DEFAULT '',
+	`message` text DEFAULT '',
+	`body` text DEFAULT '',
+	`created_at` integer NOT NULL,
+	`updated_at` integer,
+	FOREIGN KEY (`build_id`) REFERENCES `builds`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE TABLE `devices` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`user_id` integer NOT NULL,
+	`pub_key` text NOT NULL,
+	`ip_address` text DEFAULT '',
+	`device_name` text DEFAULT '',
+	`user_agent` text DEFAULT '',
+	`login_date` integer NOT NULL,
+	`last_activity` integer NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `roles` (
@@ -36,7 +71,6 @@ CREATE TABLE `users` (
 	`email` text,
 	`avatar` text DEFAULT '',
 	`password` text NOT NULL,
-	`salt` text NOT NULL,
 	`created_at` integer NOT NULL,
 	`last_login_at` integer,
 	`updated_at` integer

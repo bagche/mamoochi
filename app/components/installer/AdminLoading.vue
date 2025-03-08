@@ -12,6 +12,10 @@ const adminLoading = ref(false);
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
+// Get the current profile (which contains our device public key, etc.)
+const { profile } = useUser();
+
+// Initialize state with empty fields
 const adminState = reactive({
   firstName: "",
   lastName: "",
@@ -21,9 +25,17 @@ const adminState = reactive({
   confirmPassword: "",
 });
 
+// On mount, load initial values from the stored profile. Use the device name to generate a default "about" message if needed.
+onMounted(() => {
+  adminState.firstName = profile.value.firstName || "";
+  adminState.lastName = profile.value.lastName || "";
+  adminState.about = profile.value.about;
+});
+
+// Validation schema
 const schema = z
   .object({
-    firstName: z.string().min(3, t("Must be at least 3 characters")),
+    firstName: z.string().min(2, t("Must be at least 2 characters")),
     lastName: z.string().min(3, t("Must be at least 3 characters")),
     about: z.string().min(3, t("Must be at least 3 characters")),
     userName: z.string().min(3, t("Must be at least 3 characters")),
@@ -38,6 +50,7 @@ const schema = z
   });
 
 type Schema = z.output<typeof schema>;
+
 const runAdminLoading = async (event: FormSubmitEvent<Schema>) => {
   adminLoading.value = true;
   try {
@@ -49,6 +62,7 @@ const runAdminLoading = async (event: FormSubmitEvent<Schema>) => {
         about: event.data.about,
         userName: event.data.userName,
         password: event.data.password,
+        pub: profile.value.pub, // Include the device public key from useUser
       }),
     });
     adminLoaded.value = true;
@@ -64,12 +78,13 @@ const runAdminLoading = async (event: FormSubmitEvent<Schema>) => {
     adminLoading.value = false;
     toast.add({
       title: error.data?.message || error.message,
-      description: error.data?.data?.issues[0]?.message || error.data?.data,
+      description: error.data?.data?.issues?.[0]?.message || error.data?.data,
       color: "warning",
     });
   }
 };
 </script>
+
 <template>
   <div class="w-full min-h-50">
     <UForm
@@ -93,7 +108,6 @@ const runAdminLoading = async (event: FormSubmitEvent<Schema>) => {
               />
             </UFormField>
           </div>
-
           <!-- Password Fields with Show/Hide Toggle -->
           <div class="flex gap-3">
             <UFormField
@@ -123,7 +137,6 @@ const runAdminLoading = async (event: FormSubmitEvent<Schema>) => {
                 </template>
               </UInput>
             </UFormField>
-
             <UFormField
               :label="$t('Confirm Password')"
               name="confirmPassword"
@@ -157,9 +170,7 @@ const runAdminLoading = async (event: FormSubmitEvent<Schema>) => {
             </UFormField>
           </div>
         </div>
-
         <USeparator :label="$t('Personal Details')" class="mt-5" />
-
         <div class="flex gap-3 w-full">
           <UFormField
             :label="$t('First Name')"
@@ -184,7 +195,6 @@ const runAdminLoading = async (event: FormSubmitEvent<Schema>) => {
             />
           </UFormField>
         </div>
-
         <UFormField :label="$t('About')" name="about" class="basis-2/2">
           <UTextarea
             v-model="adminState.about"
@@ -193,7 +203,6 @@ const runAdminLoading = async (event: FormSubmitEvent<Schema>) => {
           />
         </UFormField>
       </div>
-
       <UButton
         :disabled="adminLoaded"
         class="mt-5"

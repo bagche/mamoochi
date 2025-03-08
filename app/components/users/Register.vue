@@ -19,14 +19,35 @@ const toast = useToast();
 const submitting = ref(false);
 const form = ref();
 
+// Get initial profile from useUser composable
+const { profile } = useUser();
+
 // Show/hide password toggles
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
+// Initialize form state with data from the profile
+const state = reactive({
+  firstName: "",
+  lastName: "",
+  about: "",
+  userName: "admin",
+  password: "123456",
+  confirmPassword: "123456",
+});
+
+// On mount, load initial values from useUser profile.
+// Use a fallback for the about field with the device name.
+onMounted(() => {
+  state.firstName = profile.value.firstName || "";
+  state.lastName = profile.value.lastName || "";
+  state.about = profile.value.about;
+});
+
 // Validation schema
 const schema = z
   .object({
-    firstName: z.string().min(3, t("Must be at least 3 characters")),
+    firstName: z.string().min(2, t("Must be at least 2 characters")),
     lastName: z.string().min(3, t("Must be at least 3 characters")),
     about: z.string().min(3, t("Must be at least 3 characters")),
     userName: z.string().min(3, t("Must be at least 3 characters")),
@@ -42,16 +63,7 @@ const schema = z
 
 type Schema = z.output<typeof schema>;
 
-const state = reactive({
-  firstName: "",
-  lastName: "",
-  about: "",
-  userName: "",
-  password: "",
-  confirmPassword: "",
-});
-
-// Handle form submission
+// Handle form submission: include the device public key from useUser profile.
 const profileActivate = async (event: FormSubmitEvent<Schema>) => {
   submitting.value = true;
   try {
@@ -63,6 +75,7 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
         about: event.data.about,
         userName: event.data.userName,
         password: event.data.password,
+        pub: profile.value.pub, // send public key from useUser
       }),
     });
     await fetchProfile();
@@ -70,16 +83,16 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
     toast.add({
       title: t("Success"),
       description: t("User registered successfully"),
-      color: "green",
+      color: "success",
     });
     modelIsOpen.value = false;
     reloadNuxtApp();
-  } catch (error) {
+  } catch (error: any) {
     submitting.value = false;
     toast.add({
       title: error.data?.message || error.message,
-      description: error.data?.data?.issues[0]?.message || error.data?.data,
-      color: "red",
+      description: error.data?.data?.issues?.[0]?.message || error.data?.data,
+      color: "warning",
     });
   }
 };

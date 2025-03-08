@@ -30,16 +30,31 @@ const state = reactive<Schema>({
   password: "",
 });
 
+// Import the new useUser methods
+const { profile, login: userLogin } = useUser();
+
+// Updated login function: include the public key from useUser and update the profile after API call
 const login = async (event: FormSubmitEvent<Schema>) => {
   try {
     submitting.value = true;
 
-    await $fetch("/api/users/login", {
+    // Send the public key from our useUser profile along with the credentials
+    const response = await $fetch("/api/users/login", {
       method: "POST",
       body: JSON.stringify({
         userName: event.data.userName,
         password: event.data.password,
+        pub: profile.value.pub, // Include public key from device profile
       }),
+    });
+
+    // Update the profile via our useUser hook.
+    // We assume the API returns new profile fields (firstName, lastName, displayName, about, etc.)
+    userLogin({
+      firstName: response.firstName,
+      lastName: response.lastName,
+      displayName: response.displayName ?? "",
+      about: response.about ?? "",
     });
 
     submitting.value = false;

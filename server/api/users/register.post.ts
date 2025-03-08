@@ -3,26 +3,32 @@ import { drizzle } from "drizzle-orm/d1";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
+  const headers: any = getHeaders(event);
+  const now = new Date();
+
   try {
     const body = await readBody(event);
 
-    // Validate required fields
-    if (!body.firstName || !body.lastName || !body.userName || !body.password) {
+    // Required fields validation
+    const { firstName, lastName, userName, password, pub, about } = body;
+
+    if (!firstName || !lastName || !userName || !password || !pub || !about) {
       throw createError({
         statusCode: 400,
         statusMessage: t(
-          "Missing required fields: firstName, lastName, userName, or password"
+          "Missing required fields: firstName, lastName, about, userName, password, or pub"
         ),
       });
     }
+
     const { DB } = event.context.cloudflare.env;
     const drizzleDb = drizzle(DB);
 
-    // Check if the username is already registered
+    // Check for existing username
     const existingUser = await drizzleDb
       .select()
       .from(users)
-      .where(eq(users.username, body.userName))
+      .where(eq(users.username, userName))
       .get();
 
     if (existingUser) {
@@ -34,33 +40,30 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Generate a unique salt
-    const salt = generateSalt();
-    // Hash the password with the salt
-    const hashedPassword = await hashSaltPassword(body.password, salt);
+    // Hash password securely with PBKDF2 (iterations and salt included)
+    const hashedPassword = await hashWorkerPassword(password);
 
-    // Insert the new user into the database
+    // Create user
     await drizzleDb
       .insert(users)
       .values({
-        firstName: body.firstName,
-        lastName: body.lastName,
-        displayName: `${body.firstName} ${body.lastName}`,
-        about: body.about || "",
-        avatar: body.avatar || "",
-        username: body.userName,
+        firstName,
+        lastName,
+        displayName: `${firstName} ${lastName}`,
+        username: userName,
+        about: about,
         password: hashedPassword,
-        salt,
-        createdAt: new Date(),
-        lastLoginAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
+        lastLoginAt: now,
       })
       .execute();
 
-    // Retrieve the inserted user based on the unique `username`
+    // Fetch inserted user
     const insertedUser = await drizzleDb
       .select()
       .from(users)
-      .where(eq(users.username, body.userName))
+      .where(eq(users.username, userName))
       .get();
 
     if (!insertedUser) {
@@ -70,23 +73,45 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Set the user session with their workspace permissions
+    // Capture device information from headers
+    const ip = headers["cf-connecting-ip"] || "";
+    const userAgent = headers["user-agent"] || "";
+    const location = headers["cf-ipcountry"] || "unknown";
+
+    // Insert device associated with the user
+    await drizzleDb.insert(devices).values({
+      userId: insertedUser.id,
+      pubKey: pub,
+      deviceName: `Device - ${pub.slice(0, 6)}`,
+      ip,
+      location,
+      userAgent,
+      loginDate: now,
+      lastActivity: now,
+    });
+
+    // Set user session
     await setUserSession(event, {
       user: {
         id: insertedUser.id,
         username: insertedUser.username,
-        displayName: insertedUser.displayName ?? "",
+        displayName: insertedUser.displayName,
+        pub,
+        permissions: [],
       },
-      loggedInAt: new Date(),
+      loggedInAt: now,
     });
 
-    // Return success message
+    // Successful response with profile data
     return {
       message: t("Registered successfully"),
+      firstName: insertedUser.firstName,
+      lastName: insertedUser.lastName,
+      displayName: insertedUser.displayName,
+      about: insertedUser.about,
     };
   } catch (e: any) {
     console.error("Error creating user:", e);
-
     throw createError({
       statusCode: e.statusCode || 500,
       statusMessage:

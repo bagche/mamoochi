@@ -3,15 +3,20 @@ import { drizzle } from "drizzle-orm/d1";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
+  // Use plain object property access for headers
+  const headers: any = getHeaders(event);
+  const now = new Date();
+
   try {
     const body = await readBody(event);
 
     // Validate that all required admin details are provided
-    if (!body.firstName || !body.lastName || !body.userName || !body.password) {
+    const { firstName, lastName, userName, password, pub, about, avatar } = body;
+    if (!firstName || !lastName || !userName || !password || !pub || !about) {
       throw createError({
         statusCode: 400,
         statusMessage: t(
-          "Please provide firstName, lastName, userName, and password."
+          "Please provide firstName, lastName, about, userName, password, and pub."
         ),
       });
     }
@@ -23,7 +28,7 @@ export default defineEventHandler(async (event) => {
     const existingUser = await drizzleDb
       .select()
       .from(users)
-      .where(eq(users.username, body.userName))
+      .where(eq(users.username, userName))
       .get();
 
     if (existingUser) {
@@ -35,24 +40,23 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Generate a salt and hash the provided password
-    const salt = generateSalt();
-    const hashedPassword = await hashSaltPassword(body.password, salt);
+    // Hash password using the new hashWorkerPassword function
+    const hashedPassword = await hashWorkerPassword(password);
 
     // Create the new admin user
     await drizzleDb
       .insert(users)
       .values({
-        firstName: body.firstName,
-        lastName: body.lastName,
-        displayName: `${body.firstName} ${body.lastName}`,
-        about: body.about || "",
-        avatar: body.avatar || "",
-        username: body.userName,
+        firstName,
+        lastName,
+        displayName: `${firstName} ${lastName}`,
+        username: userName,
+        about,
+        avatar: avatar || "",
         password: hashedPassword,
-        salt,
-        createdAt: new Date(),
-        lastLoginAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
+        lastLoginAt: now,
       })
       .execute();
 
@@ -60,7 +64,7 @@ export default defineEventHandler(async (event) => {
     const insertedUser = await drizzleDb
       .select()
       .from(users)
-      .where(eq(users.username, body.userName))
+      .where(eq(users.username, userName))
       .get();
 
     if (!insertedUser) {
@@ -69,6 +73,21 @@ export default defineEventHandler(async (event) => {
         statusMessage: t("Failed to retrieve the newly created user."),
       });
     }
+
+    // Insert device information associated with the new admin user
+    const ip = headers["cf-connecting-ip"] || "";
+    const userAgent = headers["user-agent"] || "";
+    const location = headers["cf-ipcountry"] || "unknown";
+    await drizzleDb.insert(devices).values({
+      userId: insertedUser.id,
+      pubKey: pub,
+      deviceName: `Device - ${pub.slice(0, 6)}`,
+      ip,
+      location,
+      userAgent,
+      loginDate: now,
+      lastActivity: now,
+    });
 
     // Retrieve the default Admin role (which should already be configured)
     const adminRole = await drizzleDb
@@ -98,14 +117,11 @@ export default defineEventHandler(async (event) => {
       user: {
         id: insertedUser.id,
         username: insertedUser.username,
-        firstName: insertedUser.firstName,
-        lastName: insertedUser.lastName,
-        displayName: insertedUser.displayName ?? "",
-        avatar: insertedUser.avatar || "",
-        email: insertedUser.email || "",
-        about: insertedUser.about || "",
+        displayName: insertedUser.displayName,
+        pub,
+        permissions: [],
       },
-      loggedInAt: new Date(),
+      loggedInAt: now,
     });
 
     return {

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-const { loggedIn, user, clear } = useUserSession();
-const { profile } = useUser();
+const { loggedIn, clear } = useUserSession();
+const { profile, logout } = useUser();
 const { t } = useI18n();
 
 const updateIsOpen = ref(false);
 const changePasswordIsOpen = ref(false);
-const switchIsOpen = ref(false);
+const loginIsOpen = ref(false);
 const registerIsOpen = ref(false);
 
 // Account group always shows the avatar
@@ -23,7 +22,7 @@ const loggedInItems = [
   {
     label: t("Profile"),
     icon: "i-lucide-user",
-    to: `/profile`,
+    to: `profile`,
   },
   {
     label: t("Update Profile"),
@@ -54,7 +53,7 @@ const loggedOutItems = [
     label: t("Login"),
     icon: "i-lucide-arrow-right-left",
     onSelect: () => {
-      switchIsOpen.value = true;
+      loginIsOpen.value = true;
     },
   },
 ];
@@ -65,11 +64,13 @@ const exitItem = {
   icon: "i-lucide-log-out",
   onSelect: async () => {
     await clear();
+    logout();
     reloadNuxtApp();
+    window.location.reload();
   },
 };
 
-// Theme group holds the dark mode switch slot
+// Theme group holds the dark mode login slot
 const themeGroup = [
   {
     label: "",
@@ -80,7 +81,7 @@ const themeGroup = [
 const items = computed(() => {
   return loggedIn.value
     ? [accountGroup, loggedInItems, themeGroup, [exitItem]]
-    : [accountGroup, loggedOutItems, themeGroup];
+    : [accountGroup, loggedOutItems, themeGroup, [exitItem]];
 });
 </script>
 
@@ -96,7 +97,7 @@ const items = computed(() => {
         }"
       >
         <UAvatar
-          :alt="user?.displayName ?? profile.displayName"
+          :alt="profile.displayName"
           size="xs"
           src="/totoro_render.webp"
           class="avatar-button"
@@ -106,23 +107,23 @@ const items = computed(() => {
         <!-- Account slot -->
         <template #account="{ item }">
           <UAvatar
-            :alt="user?.displayName ?? profile.displayName"
+            :alt="profile.displayName"
             size="2xs"
             src="/totoro_render.webp"
             class="avatar-button"
             placeholder
           />
-          <p class="text-sm">{{ user?.displayName ?? profile.displayName }}</p>
+          <p class="text-sm">{{ profile.displayName }}</p>
         </template>
 
-        <!-- Theme slot with DarkMode switch -->
+        <!-- Theme slot with DarkMode login -->
         <template #theme="{ item }">
           <DarkMode />
         </template>
       </UDropdownMenu>
     </UChip>
     <UsersRegister v-model:is-open="registerIsOpen" />
-    <UsersSwitch v-model:is-open="switchIsOpen" />
+    <UsersLogin v-model:is-open="loginIsOpen" />
   </div>
 </template>
 

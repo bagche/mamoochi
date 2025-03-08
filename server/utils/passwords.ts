@@ -1,64 +1,133 @@
-import { scryptAsync } from "@noble/hashes/scrypt";
-import { bytesToHex, hexToBytes, randomBytes } from "@noble/hashes/utils";
+/** Default number of iterations for PBKDF2. Adjust based on performance needs. */
+const PBKDF2_ITERATIONS = 100000;
+
+/** Hash algorithm used in PBKDF2. */
+const HASH_ALGORITHM = "SHA-256";
 
 /**
- * Scrypt options optimized for serverless (Cloudflare Workers).
- * Work factor N is reduced to 2^12 (4096) to lower CPU consumption.
- * Adjust these values as needed to balance security and performance.
+ * Converts an ArrayBuffer to a hexadecimal string.
+ * Replaces bytesToHex functionality.
+ * @param buffer The ArrayBuffer to convert.
+ * @returns A hexadecimal string.
  */
-const scryptOptions = {
-  N: 2 ** 12, // Lowered work factor for reduced CPU usage in Workers.
-  r: 8,
-  p: 1,
-  dkLen: 32,
-};
+function bufferToHex(buffer: ArrayBuffer): string {
+  return [...new Uint8Array(buffer)]
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
 
 /**
- * Generate a random salt.
- * @returns A random salt as a hex-encoded string.
+ * Converts a hexadecimal string to an ArrayBuffer.
+ * Replaces hexToBytes functionality.
+ * @param hex The hexadecimal string to convert.
+ * @returns An ArrayBuffer.
  */
-export const generateSalt = (): string => {
-  const saltBytes = randomBytes(16);
-  return bytesToHex(saltBytes);
-};
+function hexToBuffer(hex: string): ArrayBuffer {
+  const byteArray = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < byteArray.length; i++) {
+    byteArray[i] = parseInt(hex.substr(i * 2, 2), 16);
+  }
+  return byteArray.buffer;
+}
 
 /**
- * Hash a password using scrypt with a provided salt.
- *
- * This function derives a key using the given plain password and salt,
- * and returns a string formatted as "salt:hash" (both in hex).
- *
- * @param password - The plain text password.
- * @param salt - The salt to use (hex-encoded string).
- * @returns A promise that resolves to the salted hash string.
+ * Generates a random salt as a hex string.
+ * Replaces randomBytes functionality.
+ * @param length Number of bytes for the salt (default: 16).
+ * @returns A hexadecimal string representing the salt.
  */
-export const hashSaltPassword = async (
+function generateSalt(length = 16): string {
+  const salt = crypto.getRandomValues(new Uint8Array(length));
+  return bufferToHex(salt.buffer);
+}
+
+/**
+ * Hashes a password using PBKDF2 with a random salt.
+ * Returns a string in the format "iterations,salt,hashHex".
+ * @param password The password to hash.
+ * @returns A promise resolving to the hash string.
+ */
+export async function hashWorkerPassword(password: string): Promise<string> {
+  const salt = generateSalt();
+  const encoder = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(password),
+    { name: "PBKDF2" },
+    false,
+    ["deriveBits"]
+  );
+  const saltBuffer = hexToBuffer(salt);
+  const derivedBits = await crypto.subtle.deriveBits(
+    {
+      name: "PBKDF2",
+      salt: saltBuffer,
+      iterations: PBKDF2_ITERATIONS,
+      hash: HASH_ALGORITHM,
+    },
+    keyMaterial,
+    256 // Derive 32 bytes (256 bits)
+  );
+  const hashHex = bufferToHex(derivedBits);
+  return `${PBKDF2_ITERATIONS},${salt},${hashHex}`;
+}
+
+/**
+ * Verifies a password against a stored hash.
+ * Supports formats: "iterations,salt,hashHex" (new) and "salt:hashHex" (old).
+ * @param password The password to verify.
+ * @param storedHash The stored hash string.
+ * @returns A promise resolving to true if the password matches, false otherwise.
+ */
+export async function verifyWorkerPassword(
   password: string,
-  salt: string
-): Promise<string> => {
-  const saltBytes = hexToBytes(salt);
-  const hashBytes = await scryptAsync(password, saltBytes, scryptOptions);
-  const hashHex = bytesToHex(hashBytes);
-  return `${salt}:${hashHex}`;
-};
+  storedHash: string
+): Promise<boolean> {
+  let iterations: number;
+  let salt: string;
+  let hash: string;
 
-/**
- * Verify a plain text password against a stored salted hash.
- *
- * The stored hashed password is expected to be in the format "salt:hash".
- *
- * @param hashedPassword - The stored salted hash.
- * @param plainPassword - The plain text password to verify.
- * @param salt - The stored salt (hex-encoded string) used when hashing the original password.
- * @returns A promise that resolves to true if the password is valid, false otherwise.
- */
-export const verifySaltPassword = async (
-  hashedPassword: string,
-  plainPassword: string,
-  salt: string
-): Promise<boolean> => {
-  // Recompute the salted hash using the provided plain password and salt.
-  const computed = await hashSaltPassword(plainPassword, salt);
-  // Compare the recomputed salted hash with the stored value.
-  return computed === hashedPassword;
-};
+  // Parse the stored hash
+  if (storedHash.includes(",")) {
+    const parts = storedHash.split(",");
+    if (parts.length !== 3) {
+      throw new Error("Invalid stored hash format");
+    }
+    iterations = parseInt(parts[0]);
+    salt = parts[1];
+    hash = parts[2];
+  } else {
+    const parts = storedHash.split(":");
+    if (parts.length !== 2) {
+      throw new Error("Invalid stored hash format");
+    }
+    salt = parts[0];
+    hash = parts[1];
+    iterations = PBKDF2_ITERATIONS; // Default for old format
+  }
+
+  // Derive the hash from the provided password
+  const encoder = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(password),
+    { name: "PBKDF2" },
+    false,
+    ["deriveBits"]
+  );
+  const saltBuffer = hexToBuffer(salt);
+  const derivedBits = await crypto.subtle.deriveBits(
+    {
+      name: "PBKDF2",
+      salt: saltBuffer,
+      iterations: iterations,
+      hash: HASH_ALGORITHM,
+    },
+    keyMaterial,
+    256 // Derive 32 bytes (256 bits)
+  );
+  const computedHash = bufferToHex(derivedBits);
+
+  // Compare the computed hash with the stored hash
+  return computedHash === hash;
+}
