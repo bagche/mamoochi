@@ -61,15 +61,11 @@ const handleKeyDown = (event: KeyboardEvent) => {
     <UCard
       variant="outline"
       :ui="{
-        root: 'p-0 rounded-sm',
-        body: 'sm:p-1 p-2 border-none',
-        header: '  border-none',
-        footer: ' border-none',
+        root: 'p-0 rounded-sm dark:bg-slate-600 bg-gray-50',
+        body: 'sm:p-1 p-2',
+        footer: 'sm:p-2 p-2',
       }"
     >
-      <template #header>
-        <h2 class="text-2xl font-semibold">{{ $t("Comments") }}</h2>
-      </template>
       <UFormField name="textarea">
         <UTextarea
           v-model="state.message"
