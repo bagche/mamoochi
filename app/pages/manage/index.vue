@@ -1,11 +1,20 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: "manage",
+  middleware: 'permissions',
+  permission: 'dashboard.read'
 });
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="min-h-40">body</div>
+  <div class="w-full min-h-screen flex-col">
+    <UContainer>
+      <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4 gap-7">
+        <div class="w-full   flex  h-[calc(100vh-35rem)] ">
+          <ManageCostsChart class="basis-1/2" />
+          <ManageVisitorChart class="basis-1/2" />
+        </div>
+        <ManageDashboardTabs />
+      </div>
+    </UContainer>
   </div>
 </template>

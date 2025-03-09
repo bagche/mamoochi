@@ -13,7 +13,9 @@
   "All pending migrations applied successfully.": "All pending migrations applied successfully.",
   "An error occurred while setting up default database data: ": "An error occurred while setting up default database data: ",
   "An unexpected error occurred. Please try again later.": "An unexpected error occurred. Please try again later.",
+  "App Cost Monitor": "App Cost Monitor",
   "App Successfully installed": "App Successfully installed",
+  "App Visitor Monitor": "App Visitor Monitor",
   "Apply and validate your database schema migrations to set up all required tables.": "Apply and validate your database schema migrations to set up all required tables.",
   "Approve": "Approve",
   "At least one permission must be selected": "At least one permission must be selected",
@@ -72,7 +74,6 @@
   "Failed to add role": "Failed to add role",
   "Failed to add roles to user": "Failed to add roles to user",
   "Failed to change password": "Failed to change password",
-  "Failed to fetch comments": "Failed to fetch comments",
   "Failed to post comment": "Failed to post comment",
   "Failed to retrieve the newly created user": "Failed to retrieve the newly created user",
   "Failed to retrieve the newly created user.": "Failed to retrieve the newly created user.",
@@ -124,6 +125,7 @@
   "Password changed successfully": "Password changed successfully",
   "Password must be at least 6 characters": "Password must be at least 6 characters",
   "Passwords do not match": "Passwords do not match",
+  "Permission Denied": "Permission Denied",
   "Permissions": "Permissions",
   "Persian": "Persian",
   "Personal Details": "Personal Details",
@@ -193,6 +195,7 @@
   "books": "books",
   "build_name": "build_name",
   "cccc": "cccc",
+  "commentPosted": "commentPosted",
   "description": "Web Developer",
   "device_name": "device_name",
   "displayName": "Display Name",
@@ -217,6 +220,5 @@
   "title": "title",
   "type": "type",
   "user_agent": "user_agent",
-  "username": "username",
-  "vue": "vue"
+  "username": "username"
 }

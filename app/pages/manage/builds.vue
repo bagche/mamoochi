@@ -4,9 +4,7 @@ import type { Row } from "@tanstack/vue-table";
 import { getPaginationRowModel } from "@tanstack/vue-table";
 
 // Define page meta to use the "manage" layout
-definePageMeta({
-  layout: "manage",
-});
+ 
 
 // Resolve Nuxt UI components
 const UTable = resolveComponent("UTable");

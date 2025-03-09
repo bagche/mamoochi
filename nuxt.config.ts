@@ -16,10 +16,16 @@ export default defineNuxtConfig({
     "nuxt-tiptap-editor",
     "@nuxtjs/i18n",
     "nuxt-authorization",
+    "nuxt-echarts",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
+  build: { transpile: ["echarts-liquidfill"] },
+
   vite: {
+    resolve: {
+      alias: { "echarts/lib/util/number": "echarts/lib/util/number.js" },
+    },
     css: {
       preprocessorOptions: {
         scss: {
@@ -83,5 +89,19 @@ export default defineNuxtConfig({
       type: "d1",
       bindingName: "DB",
     },
+  },
+  unocss: { preflight: true },
+  echarts: {
+    ssr: true,
+    renderer: ["canvas", "svg"],
+    charts: ["BarChart", "LineChart"],
+    components: [
+      "DatasetComponent",
+      "GridComponent",
+      "TooltipComponent",
+      "ToolboxComponent",
+      "GeoComponent",
+      "VisualMapComponent",
+    ],
   },
 });

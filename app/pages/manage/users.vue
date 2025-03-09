@@ -1,7 +1,5 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: "manage",
-});
+ 
 const addRoleIsOpen = ref(false);
 </script>
 

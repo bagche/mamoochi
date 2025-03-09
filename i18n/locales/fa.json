@@ -13,7 +13,9 @@
   "All pending migrations applied successfully.": "تمام مهاجرت‌های در انتظار با موفقیت اعمال شدند.",
   "An error occurred while setting up default database data: ": "هنگام راه‌اندازی داده‌های پیش‌فرض پایگاه داده خطایی رخ داد: ",
   "An unexpected error occurred. Please try again later.": "خطای غیرمنتظره‌ای رخ داد. لطفاً بعداً دوباره امتحان کنید.",
+  "App Cost Monitor": "App Cost Monitor",
   "App Successfully installed": "برنامه با موفقیت نصب شد",
+  "App Visitor Monitor": "App Visitor Monitor",
   "Apply and validate your database schema migrations to set up all required tables.": "مهاجرت‌های طرح پایگاه داده را اعمال و اعتبارسنجی کنید تا جداول مورد نیاز راه‌اندازی شوند.",
   "Approve": "تأیید",
   "At least one permission must be selected": "حداقل یک مجوز باید انتخاب شود",
@@ -72,7 +74,6 @@
   "Failed to add role": "افزودن نقش با شکست مواجه شد",
   "Failed to add roles to user": "افزودن نقش‌ها به کاربر با شکست مواجه شد",
   "Failed to change password": "تغییر رمز عبور با شکست مواجه شد",
-  "Failed to fetch comments": "دریافت نظرات با شکست مواجه شد",
   "Failed to post comment": "ارسال نظر با شکست مواجه شد",
   "Failed to retrieve the newly created user": "دریافت کاربر تازه ایجاد شده با شکست مواجه شد",
   "Failed to retrieve the newly created user.": "دریافت کاربر تازه ایجاد شده با شکست مواجه شد.",
@@ -124,6 +125,7 @@
   "Password changed successfully": "رمز عبور با موفقیت تغییر کرد",
   "Password must be at least 6 characters": "رمز عبور باید حداقل 6 کاراکتر باشد",
   "Passwords do not match": "رمزهای عبور مطابقت ندارند",
+  "Permission Denied": "Permission Denied",
   "Permissions": "مجوزها",
   "Persian": "فارسی",
   "Personal Details": "اطلاعات شخصی",
@@ -193,6 +195,7 @@
   "books": "کتاب‌ها",
   "build_name": "build_name",
   "cccc": "cccc",
+  "commentPosted": "commentPosted",
   "description": "توضیحات",
   "device_name": "device_name",
   "displayName": "نام نمایشی",
@@ -217,6 +220,5 @@
   "title": "عنوان",
   "type": "نوع",
   "user_agent": "user_agent",
-  "username": "نام کاربری",
-  "vue": "ویو"
+  "username": "نام کاربری"
 }

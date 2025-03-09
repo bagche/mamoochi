@@ -3,9 +3,7 @@ import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 import { h, resolveComponent } from "vue";
 
-definePageMeta({
-  layout: "manage",
-});
+ 
 const UButton = resolveComponent("UButton");
 const UBadge = resolveComponent("UBadge");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
