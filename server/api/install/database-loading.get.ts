@@ -4,10 +4,11 @@ import { eq } from "drizzle-orm/sql";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
-  
+
   try {
     const db: D1Database = event.context.cloudflare.env.DB;
     const drizzleDb = drizzle(db);
+    const appConfig = useAppConfig(event);
 
     // Check if the default Admin role exists
     const adminRole = await drizzleDb
@@ -18,36 +19,12 @@ export default defineEventHandler(async (event) => {
 
     // Create the Admin role with full permissions if it doesn't exist
     if (!adminRole) {
-      const fullPermissions = [
-        "dashboard.read",
-        "dashboard.edit",
-        "users.all",
-        "users.edit",
-        "users.delete",
-        "roles.read",
-        "roles.edit",
-        "roles.delete",
-        "item.create",
-        "item.read",
-        "item.edit",
-        "item.delete",
-        "page.create",
-        "page.read",
-        "page.edit",
-        "page.delete",
-        "media.upload",
-        "media.read",
-        "media.delete",
-        "cdn.update",
-        "config.manage",
-      ];
-
       await drizzleDb
         .insert(roles)
         .values({
           name: "Admin",
           description: "Default admin role with full permissions.",
-          permissions: JSON.stringify(fullPermissions),
+          permissions: JSON.stringify(appConfig.corePermissions),
         })
         .execute();
       console.log(t("Admin role created successfully."));
