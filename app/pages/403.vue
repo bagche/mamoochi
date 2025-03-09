@@ -1,5 +1,5 @@
 <template>
-  <div class=" flex items-center h-screen  dark:bg-slate-600 bg-gray-100 ">
+  <div class=" flex items-center h-[calc(100vh-7rem)]   ">
     <UContainer class="flex flex-col items-center max-w-7xl mx-auto gap-6 text-center ">
       <UIcon name="i-lucide-shield-off" class="text-red-500 size-40"  />
       <h2 class="text-3xl font-semibold">{{ $t('Permission Denied') }}</h2>

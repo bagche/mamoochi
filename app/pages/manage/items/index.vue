@@ -167,5 +167,11 @@ function getRowItems(row: Row<Payment>) {
 </script>
 
 <template>
-  <UTable :data="data" :columns="columns" class="flex-1" />
+    <div class="w-full min-h-screen flex-col">
+    <UContainer>
+      <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4 gap-7">
+        <UTable :data="data" :columns="columns" class="flex-1 w-full" />
+      </div>
+    </UContainer>
+  </div>
 </template>

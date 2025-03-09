@@ -86,6 +86,7 @@
   "Hide password": "Hide password",
   "Home": "Home",
   "Horizontal Line": "Horizontal Line",
+  "If you believe this is an error, please contact the administrator.": "If you believe this is an error, please contact the administrator.",
   "Import default configuration and sample data into your database.": "Import default configuration and sample data into your database.",
   "Initialize Database Schema": "Initialize Database Schema",
   "Installation Complete": "Installation Complete",
@@ -139,6 +140,7 @@
   "Register": "Register",
   "Registered successfully": "Registered successfully",
   "Reply": "Reply",
+  "Return to Homepage": "Return to Homepage",
   "Role Name": "Role Name",
   "Role added successfully": "Role added successfully",
   "Role name is already taken. Please choose another one.": "Role name is already taken. Please choose another one.",
@@ -179,6 +181,7 @@
   "Visual": "Visual",
   "We are setting up the necessary configurations. This may take a moment...": "We are setting up the necessary configurations. This may take a moment...",
   "Write your comment...": "Write your comment...",
+  "You do not have the necessary permissions to access this page.": "You do not have the necessary permissions to access this page.",
   "Your Current Password": "Your Current Password",
   "Your application is successfully connected to the D1 database. You can now proceed with the installation process.": "Your application is successfully connected to the D1 database. You can now proceed with the installation process.",
   "Your application is successfully installed, please update installed value in app.config.ts.": "Your application is successfully installed, please update installed value in app.config.ts.",
@@ -220,5 +223,6 @@
   "title": "title",
   "type": "type",
   "user_agent": "user_agent",
-  "username": "username"
+  "username": "username",
+  "vue": "vue"
 }

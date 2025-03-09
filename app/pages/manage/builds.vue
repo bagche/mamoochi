@@ -4,7 +4,6 @@ import type { Row } from "@tanstack/vue-table";
 import { getPaginationRowModel } from "@tanstack/vue-table";
 
 // Define page meta to use the "manage" layout
- 
 
 // Resolve Nuxt UI components
 const UTable = resolveComponent("UTable");
@@ -138,28 +137,35 @@ function getRowItems(row: Row<Edit>) {
 </script>
 
 <template>
-  <div class="w-full space-y-4 pb-4">
-    <!-- Table component with pagination -->
-    <UTable
-      v-model:pagination="pagination"
-      :data="data?.edits ?? []"
-      :columns="columns"
-      :pagination-options="{ getPaginationRowModel: getPaginationRowModel() }"
-      class="flex-1"
-    />
+  <div class="w-full min-h-screen flex-col">
+    <UContainer>
+      <div
+        class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4 gap-7"
+      >
+        <UTable
+          v-model:pagination="pagination"
+          :data="data?.edits ?? []"
+          :columns="columns"
+          :pagination-options="{
+            getPaginationRowModel: getPaginationRowModel(),
+          }"
+          class="flex-1 w-full"
+        />
 
-    <!-- Pagination controls -->
-    <div class="flex justify-center border-t border-(--ui-border) pt-4">
-      <UPagination
-        v-if="data?.total > pagination.pageSize"
-        :default-page="pagination.pageIndex + 1"
-        :items-per-page="pagination.pageSize"
-        :total="data?.total ?? 0"
-        @update:page="(p) => (pagination.pageIndex = p - 1)"
-      />
-    </div>
+        <!-- Pagination controls -->
+        <div class="flex justify-center border-t border-(--ui-border) pt-4">
+          <UPagination
+            v-if="data?.total > pagination.pageSize"
+            :default-page="pagination.pageIndex + 1"
+            :items-per-page="pagination.pageSize"
+            :total="data?.total ?? 0"
+            @update:page="(p) => (pagination.pageIndex = p - 1)"
+          />
+        </div>
 
-    <!-- Display error if the fetch fails -->
-    <div v-if="error" class="mt-4 text-red-500">Failed to load edits.</div>
+        <!-- Display error if the fetch fails -->
+        <div v-if="error" class="mt-4 text-red-500">Failed to load edits.</div>
+      </div>
+    </UContainer>
   </div>
 </template>
