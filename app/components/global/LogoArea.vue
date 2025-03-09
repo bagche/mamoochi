@@ -52,7 +52,7 @@ const titleSecond = computed(() => {
 
 <template>
   <div class="flex items-center justify-center whitespace-nowrap text-2xl">
-    <NuxtLinkLocale
+    <NuxtLink
       :to="
         route.path.includes('manage')
           ? '/' + locale + '/manage/'
@@ -71,6 +71,6 @@ const titleSecond = computed(() => {
         <span class="mx-1 font-thin">/</span>
         <span class="font-thin text-lg">{{ description }}</span>
       </template>
-    </NuxtLinkLocale>
+    </NuxtLink>
   </div>
 </template>
