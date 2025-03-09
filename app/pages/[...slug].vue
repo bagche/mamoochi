@@ -1,13 +1,14 @@
 <script lang="ts" setup>
-const route = useRoute();
-const { locale } = useI18n();
+const { defaultLocale } = useI18n();
 
-// Fetch page content dynamically
+const route = useRoute();
 const { data: pageData }: any = await useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
-      return await queryCollection("content").path(route.path).first();
+      return await queryCollection("content")
+        .path(route.path === "/" ? "/" + defaultLocale + "/" : route.path)
+        .first();
     } catch (error) {
       console.error("Error fetching page content:", error);
     }

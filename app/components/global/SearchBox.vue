@@ -114,7 +114,7 @@ function onSelect() {
             :key="item.to"
             class="flex items-center border-b last:border-none border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700"
           >
-            <NuxtLink
+            <NuxtLinkLocale
               :to="item.to"
               class="flex items-center py-3"
               @click="onSelect"
@@ -133,7 +133,7 @@ function onSelect() {
                 </div>
                 <div class="text-xs">{{ item.description }}</div>
               </div>
-            </NuxtLink>
+            </NuxtLinkLocale>
           </li>
           <!-- Optionally, show a message if no results are found -->
           <li v-if="results.length === 0" class="text-center py-4">

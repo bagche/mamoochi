@@ -19,21 +19,21 @@ const { data } = useAsyncData(`home-intro-${route.path}`, () =>
         <h2
           class="text-2xl md:text-3xl hover:underline transition-colors duration-300"
         >
-          <NuxtLink :to="data?.path" class="">
+          <NuxtLinkLocale :to="data?.path" class="">
             {{ data?.title }}
-          </NuxtLink>
+          </NuxtLinkLocale>
         </h2>
         <p class="mt-4 text-base md:text-lg text-justify">
           {{ data?.description }}
         </p>
-        <NuxtLink
+        <NuxtLinkLocale
           :to="data?.path"
           class="mt-4 hover:underline transition-colors duration-300"
         >
           <span class="hover:underline transition-colors duration-300">
             {{ $t("more") }}...
           </span>
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
 
       <!-- Image Section -->

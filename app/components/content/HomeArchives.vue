@@ -18,9 +18,9 @@ const { data } = useAsyncData(`home-archives-${route.path}`, () =>
       <ol>
         <li v-for="item in data" :key="item.id" class="mb-2">
           <div class="flex justify-start gap-2">
-            <NuxtLink :to="item.path" class="hover:underline">
+            <NuxtLinkLocale :to="item.path" class="hover:underline">
               {{ item.title }}
-            </NuxtLink>
+            </NuxtLinkLocale>
             <span class="font-thin text-">
               / {{ formatDateTime(item.date) }}
             </span>
