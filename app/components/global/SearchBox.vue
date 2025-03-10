@@ -38,7 +38,7 @@ watchEffect(() => {
   }
 });
 
-// Default items: only include items with no "notes" and no hash (i.e., regular pages)
+// Default items: only include items with no "blogs" and no hash (i.e., regular pages)
 const defaultItems = computed(() => {
   return data.value.filter(
     (item: any) => item.id.includes(locale.value) && !item.id.includes("#")
@@ -47,11 +47,11 @@ const defaultItems = computed(() => {
 
 // Helper function to return the correct icon and label based on the URL
 function getIconAndLabel(url: string): { icon: string; label: string } {
-  if (url.includes("notes")) {
+  if (url.includes("blogs")) {
     if (url.includes("#")) {
       return { icon: "i-lucide-hash", label: t("Note Section") };
     }
-    return { icon: "i-lucide-notepad-text", label: t("Notes") };
+    return { icon: "i-lucide-notepad-text", label: t("blogs") };
   }
   if (url.includes("#")) {
     return { icon: "i-lucide-book-open-check", label: t("Pages Section") };
@@ -87,7 +87,7 @@ function onSelect() {
 </script>
 
 <template>
-  <UModal v-model:open="open"  >
+  <UModal v-model:open="open">
     <UTooltip :text="$t('Search')">
       <UButton
         icon="i-lucide-search"

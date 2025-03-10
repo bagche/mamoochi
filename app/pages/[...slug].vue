@@ -84,7 +84,7 @@ useSeoMeta({
 
       <!-- Main Content -->
       <UContainer>
-        <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col items-center py-10 px-4">
           <ContentRenderer
             :value="pageData"
             class="prose prose-lg dark:prose-invert w-full max-w-4xl"

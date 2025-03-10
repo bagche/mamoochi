@@ -3,7 +3,7 @@ const { locale, defaultLocale } = useI18n();
 const route = useRoute();
 
 const { data } = useAsyncData(`home-intro-${route.path}`, () =>
-  queryCollection("notes")
+  queryCollection("blogs")
     .where("intro", "=", true)
     .andWhere((query) => {
       return query.where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`);
