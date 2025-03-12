@@ -31,7 +31,7 @@ const { data } = useAsyncData(`home-archives-${route.path}`, () => {
 <template>
   <div class="w-full">
     <h2 class="mt-0">
-      {{ cat ? "Latest " + $t(cat) : $t("Latest Incoming") }}
+      {{ cat ? $t("Latest ") + $t(cat) : $t("Latest Incoming") }}
     </h2>
 
     <div v-if="data" class="px-5 md:m-0">

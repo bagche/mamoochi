@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "nuxt-authorization",
     "nuxt-echarts",
+    "@nuxtjs/seo",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
