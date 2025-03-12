@@ -10,4 +10,4 @@ title: Home
 
 <hr >
 
-<HomeArchives />
+<LogsArchives />

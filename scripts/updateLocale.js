@@ -148,16 +148,16 @@ const main = () => {
   const menuTitles = extractMenuTitles(appConfigPath);
   menuTitles.forEach((title) => allKeys.add(title));
 
-  // Extract category items from app.config.ts.
+  // Extract cats items from app.config.ts.
   const appConfigContent = fs.readFileSync(appConfigPath, "utf-8");
-  const categoryRegex = /category\s*:\s*\[([^\]]+)\]/;
-  const categoryMatch = appConfigContent.match(categoryRegex);
-  if (categoryMatch) {
-    const categoryItems = categoryMatch[1]
+  const catsRegex = /cats\s*:\s*\[([^\]]+)\]/;
+  const catsMatch = appConfigContent.match(catsRegex);
+  if (catsMatch) {
+    const catsItems = catsMatch[1]
       .split(',')
       .map((item) => item.replace(/['"]/g, '').trim())
       .filter((item) => item);
-    categoryItems.forEach((item) => allKeys.add(item));
+    catsItems.forEach((item) => allKeys.add(item));
   }
 
   // Read, update, and sort locale JSON files.

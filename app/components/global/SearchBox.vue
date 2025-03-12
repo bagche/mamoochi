@@ -38,7 +38,7 @@ watchEffect(() => {
   }
 });
 
-// Default items: only include items with no "blogs" and no hash (i.e., regular pages)
+// Default items: only include items with no "logs" and no hash (i.e., regular pages)
 const defaultItems = computed(() => {
   return data.value.filter(
     (item: any) => item.id.includes(locale.value) && !item.id.includes("#")
@@ -47,11 +47,11 @@ const defaultItems = computed(() => {
 
 // Helper function to return the correct icon and label based on the URL
 function getIconAndLabel(url: string): { icon: string; label: string } {
-  if (url.includes("blogs")) {
+  if (url.includes("logs")) {
     if (url.includes("#")) {
       return { icon: "i-lucide-hash", label: t("Note Section") };
     }
-    return { icon: "i-lucide-notepad-text", label: t("blogs") };
+    return { icon: "i-lucide-notepad-text", label: t("logs") };
   }
   if (url.includes("#")) {
     return { icon: "i-lucide-book-open-check", label: t("Pages Section") };

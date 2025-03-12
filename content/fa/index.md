@@ -10,4 +10,4 @@ title: صفحه نخست
 
 <hr >
 
-<HomeArchives />
+<LogsArchives />

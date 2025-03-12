@@ -12,9 +12,9 @@ export default defineAppConfig({
       to: "/",
     },
     {
-      label: "Blogs",
+      label: "logs",
       // icon: "i-lucide-search",
-      to: "/blogs",
+      to: "/logs",
     },
     {
       label: "About",
@@ -109,5 +109,5 @@ export default defineAppConfig({
     footer_fa: "همه چیز به شکل شگفت انگیزی خوب باید باشد",
     footer_en: "Everything must be wonderful in every shape and form ",
   },
-  category: ["books", "blogs", "projects"],
+  cats: ["books", "notes", "projects"],
 });

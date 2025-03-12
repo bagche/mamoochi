@@ -47,13 +47,10 @@ useSeoMeta({
                 {{ $t("Author:") }}
                 <span class="normal-case">{{ pageData.author }}</span>
               </span>
-              <span
-                v-if="pageData?.category"
-                class="font-medium whitespace-nowrap"
-              >
+              <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
                 {{ $t("Category:") }}
                 <span class="normal-case">
-                  {{ $t(pageData.category) ?? pageData.category }}
+                  {{ $t(pageData.cat) ?? pageData.cat }}
                 </span>
               </span>
               <span v-if="pageData?.date" class="font-medium whitespace-nowrap">

@@ -1,7 +1,6 @@
 ---
 title: About
 description: "About ME"
-date: 2025-01-01T00:00:00.294Z
 thumbnail: /content/totoro-image-6.webp
 ---
 
