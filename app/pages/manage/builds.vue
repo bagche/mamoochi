@@ -134,6 +134,10 @@ function getRowItems(row: Row<Edit>) {
     },
   ];
 }
+definePageMeta({
+  middleware: "permissions",
+  permission: "dashboard.read",
+});
 </script>
 
 <template>

@@ -1,3 +1,9 @@
+<script setup lang="ts">
+definePageMeta({
+  middleware: "permissions",
+  permission: "dashboard.read",
+});
+</script>
 <template>
   <div class="w-full min-h-screen flex-col">
     <UContainer>

@@ -2,7 +2,7 @@
 const { defaultLocale } = useI18n();
 
 const route = useRoute();
-const { data: pageData }: any = await useAsyncData(
+const { data: pageData }: any = useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
@@ -21,6 +21,7 @@ useSeoMeta({
   title: pageData.value?.title,
   description: pageData.value?.description,
 });
+console.log(pageData.value);
 </script>
 
 <template>
@@ -49,9 +50,12 @@ useSeoMeta({
               </span>
               <span v-if="pageData?.cat" class="font-medium whitespace-nowrap">
                 {{ $t("Category:") }}
-                <span class="normal-case">
+                <NuxtLinkLocale
+                  :to="`/cats/${pageData.cat}`"
+                  class="hover:!underline transition-colors duration-300"
+                >
                   {{ $t(pageData.cat) ?? pageData.cat }}
-                </span>
+                </NuxtLinkLocale>
               </span>
               <span v-if="pageData?.date" class="font-medium whitespace-nowrap">
                 {{ $t("Date:") }}
@@ -81,11 +85,11 @@ useSeoMeta({
 
       <!-- Main Content -->
       <UContainer>
-        <div class="max-w-7xl mx-auto flex flex-col items-center py-10 px-4">
-          <ContentRenderer
-            :value="pageData"
-            class="prose prose-lg dark:prose-invert w-full max-w-4xl"
-          />
+        <div
+          class="max-w-7xl mx-auto flex flex-col items-center py-10 px-4 prose prose-lg dark:prose-invert"
+        >
+          <PageToc v-if="pageData.toc" :body="pageData.body" />
+          <ContentRenderer :value="pageData" class="w-full" />
           <Comments v-if="pageData.comments" />
         </div>
       </UContainer>

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 const addRoleIsOpen = ref(false);
+definePageMeta({
+  middleware: "permissions",
+  permission: "dashboard.read",
+});
 </script>
-
 <template>
   <div class="w-full min-h-screen flex-col">
     <UContainer>
@@ -27,7 +30,7 @@ const addRoleIsOpen = ref(false);
         /> -->
           </UButtonGroup>
         </div>
-        <div class="  flex gap-3 w-full">
+        <div class="flex gap-3 w-full">
           <div class="basis-4/6"><UsersAll /></div>
           <div class="basis-2/6"><UsersRoles /></div>
         </div>

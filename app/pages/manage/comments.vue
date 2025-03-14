@@ -163,6 +163,11 @@ function getRowItems(row: Row<Payment>) {
     },
   ];
 }
+
+definePageMeta({
+  middleware: "permissions",
+  permission: "dashboard.read",
+});
 </script>
 
 <template>

@@ -2,13 +2,19 @@
 const { locale, defaultLocale } = useI18n();
 const route = useRoute();
 
-const { data } = useAsyncData(`home-intro-${route.path}`, () =>
-  queryCollection("logs")
-    .where("intro", "=", true)
-    .andWhere((query) => {
-      return query.where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`);
-    })
-    .first()
+const { data } = useAsyncData(
+  `home-intro-${route.path}`,
+  async () =>
+    await queryCollection("logs")
+      .where("intro", "=", true)
+      .andWhere((query) => {
+        return query.where(
+          "path",
+          "LIKE",
+          `/${locale.value ?? defaultLocale}/%`
+        );
+      })
+      .first()
 );
 </script>
 <template>

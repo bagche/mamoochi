@@ -8,6 +8,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: [
     "@nuxt/ui",
+    "@nuxtjs/seo",
     "@nuxt/content",
     "@nuxt/image",
     "@nuxt/eslint",
@@ -17,7 +18,6 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "nuxt-authorization",
     "nuxt-echarts",
-    "@nuxtjs/seo",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -80,6 +80,23 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
+    // Disable prerender (and SSR) for any manage routes:
+    "/manage": { prerender: false, ssr: false, robots: false },
+    "/manage/**": { prerender: false, ssr: false, robots: false },
+    "/:locale/manage": { prerender: false, ssr: false, robots: false },
+    "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
+
+    // ISR rules for logs (all locales)
+    "/:locale/logs": { isr: 3600 },
+    "/:locale/logs/**": { isr: true },
+
+    // ISR rules for cats (all locales)
+    "/:locale/cats/**": { isr: true },
+
+    // Profile routes: disable robots indexing (all locales)
+    "/:locale/profile/**": { robots: false },
+
+    // Default: prerender everything else
     "/**": { prerender: true },
   },
   experimental: {
@@ -91,7 +108,6 @@ export default defineNuxtConfig({
       bindingName: "DB",
     },
   },
-  unocss: { preflight: true },
   echarts: {
     ssr: true,
     renderer: ["canvas", "svg"],

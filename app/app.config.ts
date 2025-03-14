@@ -38,7 +38,7 @@ export default defineAppConfig({
       label: "Items",
       // icon: "i-lucide-book-open",
       // active: true,
-      defaultOpen: true,
+      // defaultOpen: true,
       to: "/manage/items",
     },
     {
@@ -50,7 +50,7 @@ export default defineAppConfig({
       label: "Users",
       // icon: "i-lucide-box",
       to: "/manage/users",
-      defaultOpen: true,
+      // defaultOpen: true,
     },
     {
       label: "Builds",

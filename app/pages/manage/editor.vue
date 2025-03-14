@@ -67,6 +67,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 const isTyping = (data: string) => {
   state.body = data;
 };
+
+definePageMeta({
+  middleware: "permissions",
+  permission: "dashboard.read",
+});
 </script>
 
 <template>

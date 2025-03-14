@@ -19,7 +19,7 @@
     "@noble/hashes": "^1.7.1",
     "@nuxt/image": "npm:@nuxt/image-nightly@latest",
     "@nuxt/ui": "3.0.0",
-    "@nuxtjs/seo": "3.0.0-beta.3",
+    "@nuxtjs/seo": "3.0.1",
     "@tiptap/extension-bubble-menu": "^2.11.5",
     "@tiptap/extension-floating-menu": "^2.11.5",
     "@tiptap/extension-placeholder": "^2.11.5",
@@ -41,7 +41,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250311.0",
+    "@cloudflare/workers-types": "^4.20250313.0",
     "@iconify-json/lucide": "^1.2.29",
     "@nuxt/content": "^3.3.0",
     "@nuxt/eslint": "^1.2.0",
@@ -57,16 +57,11 @@
     "typescript": "^5.8.2",
     "vite-plugin-compression": "^0.5.1",
     "vue-router": "^4.5.0",
-    "wrangler": "^3.114.1"
+    "wrangler": "^4.0.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "better-sqlite3",
-      "esbuild",
-      "workerd",
-      "@parcel/watcher",
-      "sharp",
-      "vue-demi"
+      "better-sqlite3"
     ],
     "overrides": {},
     "ignoredBuiltDependencies": []
