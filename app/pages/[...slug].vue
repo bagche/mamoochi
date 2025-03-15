@@ -21,7 +21,6 @@ useSeoMeta({
   title: pageData.value?.title,
   description: pageData.value?.description,
 });
-console.log(pageData.value);
 </script>
 
 <template>
