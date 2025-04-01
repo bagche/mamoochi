@@ -57,7 +57,7 @@ export const builds = sqliteTable("builds", {
   status: text("status").default("pending"), // Example: pending, success, failed
 });
 
-// ===================== Commits (Previously Edits) =====================
+// ===================== Commits  =====================
 export const commits = sqliteTable("commits", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   buildId: integer("build_id")
@@ -84,7 +84,7 @@ export const comments = sqliteTable("comments", {
     .references(() => users.id),
   parentCommentId: integer("parent_comment_id").references(() => comments.id), // For threaded replies, nullable
   body: text("body").notNull(),
-  status: text("status").default("published"), // Example: published, hidden, deleted
+  status: text("status").default("draft").notNull(),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
   updatedAt: integer("updated_at", { mode: "timestamp" }),
 });

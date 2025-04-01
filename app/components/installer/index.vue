@@ -89,7 +89,7 @@ const items = [
           <InstallerFinish />
         </template>
       </UStepper>
-      <div v-if="currentStep !== 4" class="flex gap-3 border-t pt-4 mt-4">
+      <div v-if="currentStep !== 4" class="flex gap-3 pt-4 mt-4">
         <UButton
           v-if="currentStep !== 0"
           :block="currentStep === 4"

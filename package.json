@@ -30,7 +30,7 @@
     "luxon": "^3.6.1",
     "minisearch": "^7.1.2",
     "nostr-tools": "^2.11.0",
-    "nuxt": "^3.16.1",
+    "nuxt": "^3.16.2",
     "nuxt-auth-utils": "0.5.17",
     "nuxt-authorization": "0.3.3",
     "nuxt-tiptap-editor": "^2.1.4",
@@ -60,10 +60,6 @@
     "wrangler": "^4.6.0"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "better-sqlite3",
-      "sharp"
-    ],
     "overrides": {
       "sharp": "0.33.4"
     },

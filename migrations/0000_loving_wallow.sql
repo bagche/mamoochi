@@ -11,7 +11,7 @@ CREATE TABLE `comments` (
 	`author_id` integer NOT NULL,
 	`parent_comment_id` integer,
 	`body` text NOT NULL,
-	`status` text DEFAULT 'published',
+	`status` text DEFAULT 'draft' NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer,
 	FOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,

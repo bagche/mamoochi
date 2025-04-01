@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
         .values({
           name: "Admin",
           description: "Default admin role with full permissions.",
-          permissions: JSON.stringify(appConfig.corePermissions),
+          permissions: JSON.stringify(corePermissions),
         })
         .execute();
       console.log(t("Admin role created successfully."));

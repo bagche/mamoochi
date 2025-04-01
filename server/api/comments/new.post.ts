@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
   const now = new Date();
 
-  if (await denies(event, sendComment)) {
+  if (await denies(event, createComment)) {
     throw createError({
       statusCode: 403,
       statusMessage: t(
@@ -12,31 +12,7 @@ export default defineEventHandler(async (event) => {
       ),
     });
   }
-  const session = await getUserSession(event);
 
-  // Retrieve the current session
-  //   if (!session || !session.user) {
-  //     throw createError({
-  //       statusCode: 401,
-  //       statusMessage: t("Unauthorized: Please log in to comment."),
-  //     });
-  //   }
-  //   const user = session.user;
-
-  //   // Check permission: user must have "comment.create" to post comments
-  //   if (!user.permissions || !user.permissions.includes("comment.create")) {
-  //     throw createError({
-  //       statusCode: 403,
-  //       statusMessage: t(
-  //         "Forbidden: You do not have permission to post comments."
-  //       ),
-  //     });
-  //   }
-
-  // Read and validate request body. We expect:
-  //   - routePath: string (the path of the content to which the comment belongs)
-  //   - commentBody: string (the comment text)
-  //   - parentCommentId (optional): number (for replies)
   const payload = await readBody(event);
   const { routePath, commentBody, parentCommentId } = payload;
   if (!routePath || !commentBody) {
@@ -51,6 +27,7 @@ export default defineEventHandler(async (event) => {
   const { DB } = event.context.cloudflare.env;
   const drizzleDb = drizzle(DB);
 
+  const session = await getUserSession(event);
   // Insert new comment into the database
   const insertedComment = await drizzleDb
     .insert(comments)
@@ -59,7 +36,7 @@ export default defineEventHandler(async (event) => {
       authorId: session.user.id,
       parentCommentId: parentCommentId || null,
       body: commentBody,
-      status: "published",
+      status: CommentStatus.Draft,
       createdAt: now,
       updatedAt: now,
     })

@@ -21,7 +21,7 @@ const submitting = ref(false);
 const form = ref();
 
 // Define a static list of permission items.
-const permissionItems = ref(appConfig.corePermissions);
+const permissionItems = ref(corePermissions);
 
 // Zod schema including the permissions field.
 const schema = z.object({

@@ -65,40 +65,6 @@ export default defineAppConfig({
       to: "/manage/settings",
     },
   ],
-  corePermissions: [
-    "dashboard.read",
-    "dashboard.edit",
-
-    "users.all",
-    "users.edit",
-    "users.delete",
-
-    "roles.read",
-    "roles.edit",
-    "roles.delete",
-
-    "comment.create",
-    "comment.read",
-    "comment.edit",
-    "comment.delete",
-
-    "item.create",
-    "item.read",
-    "item.edit",
-    "item.delete",
-
-    "page.create",
-    "page.read",
-    "page.edit",
-    "page.delete",
-
-    "media.upload",
-    "media.read",
-    "media.delete",
-
-    "cdn.update",
-    "config.manage",
-  ],
   app: {
     site_name_fa: "مَموچی",
     title_fa: "مَـ موچیــ",

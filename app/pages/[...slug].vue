@@ -90,7 +90,7 @@ useSeoMeta({
       </UContainer>
 
       <!-- Edit Button (If User Has Permission) -->
-      <Can :ability="editPage">
+      <Can :ability="createCommit">
         <UButton
           :to="'/manage/editor' + route.path"
           :label="$t('Edit This page')"

@@ -74,7 +74,7 @@ export default defineNuxtConfig({
     ],
     langDir: "locales",
     defaultLocale: "fa",
-    strategy: "prefix",
+    strategy: "prefix_and_default",
     experimental: {
       localeDetector: "localeDetector.ts",
     },

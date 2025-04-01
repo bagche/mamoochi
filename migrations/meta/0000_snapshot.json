@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "8408e531-1495-4d87-b622-8bbdcae0b965",
+  "id": "46d9c774-7706-41fe-831a-79afafa52c38",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "builds": {
@@ -85,9 +85,9 @@
           "name": "status",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false,
-          "default": "'published'"
+          "default": "'draft'"
         },
         "created_at": {
           "name": "created_at",

@@ -23,7 +23,7 @@ type Schema = z.infer<typeof schema>;
 const form = ref();
 const sending = ref(false);
 
-const canSend = await allows(sendComment);
+const canCreate = await allows(createComment);
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   sending.value = true;
@@ -82,14 +82,14 @@ const handleKeyDown = (event: KeyboardEvent) => {
           color="primary"
           class="w-full"
           autoresize
-          :disabled="!canSend"
+          :disabled="!canCreate"
           @keydown="handleKeyDown"
         />
       </UFormField>
       <template #footer>
         <div class="flex justify-end">
           <UButton
-            :disabled="!canSend"
+            :disabled="!canCreate"
             class="px-3 py-2"
             icon="i-lucide-message-square-plus"
             variant="outline"
