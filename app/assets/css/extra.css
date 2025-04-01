@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+/* custom themes  */
+
 @font-face {
   font-family: "Vazirmatn";
   font-style: normal;
@@ -19,3 +21,15 @@
 [dir="rtl"] .navbar span {
   @apply text-lg;
 }
+
+.dark .page-header {
+  @apply text-gray-300 border-slate-700 bg-slate-600;
+}
+.dark header {
+  @apply bg-slate-800 border-slate-900;
+}
+.dark {
+  --ui-bg: var(--color-slate-700);
+}
+
+/* custom themes  */

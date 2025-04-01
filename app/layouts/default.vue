@@ -1,5 +1,5 @@
 <template>
-  <div :class="$colorMode.value === 'dark' ? 'bg-slate-700' : 'bg-white'">
+  <div>
     <Header />
     <div>
       <slot />

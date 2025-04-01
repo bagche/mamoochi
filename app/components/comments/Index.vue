@@ -9,7 +9,7 @@ const handleCommentPosted = () => {
 </script>
 
 <template>
-  <section class="w-full mt-10">
+  <section class="w-full">
     <div class="flex justify-between items-center my-5">
       <h2 class="text-3xl font-semibold">{{ $t("Comments") }}</h2>
     </div>
