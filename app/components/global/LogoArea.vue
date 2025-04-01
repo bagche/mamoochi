@@ -51,7 +51,7 @@ const titleSecond = computed(() => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center whitespace-nowrap text-2xl">
+  <div class="flex items-center justify-center whitespace-nowrap text-2xl logo">
     <NuxtLink
       :to="
         route.path.includes('manage')
@@ -63,13 +63,15 @@ const titleSecond = computed(() => {
       <template v-if="route.path.includes('manage')">
         <span class="font-normal">{{ formattedDay }}</span>
         <span class="mx-2 font-thin">/</span>
-        <span class="mr-1 font-thin text-lg">{{ formattedDate }}</span>
+        <span class="mr-1 font-thin text-lg description">{{
+          formattedDate
+        }}</span>
       </template>
       <template v-else>
         <span class="font-extrabold">{{ titleFirst }}</span>
         <span class="font-thin">{{ titleSecond }}</span>
         <span class="mx-1 font-thin">/</span>
-        <span class="font-thin text-lg">{{ description }}</span>
+        <span class="font-thin text-lg description">{{ description }}</span>
       </template>
     </NuxtLink>
   </div>

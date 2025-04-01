@@ -29,17 +29,18 @@ useSeoMeta({
     <div v-if="pageData" class="w-full">
       <template v-if="pageData.thumbnail">
         <div
-          class="flex flex-col gap-6 text-center pt-10 pb-12 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100 min-h-[calc(100vh-2rem)] items-center justify-between"
+          :class="
+            $colorMode.value === 'dark'
+              ? 'text-gray-300 border-slate-700bg-slate-600'
+              : 'text-gray-600 border-gray-200 bg-gray-100'
+          "
+          class="flex flex-col gap-6 text-center pt-10 pb-12 border-b min-h-[calc(100vh-2rem)] items-center justify-between"
         >
           <div class="max-w-7xl mx-auto px-6">
-            <h1
-              class="text-4xl sm:text-5xl font-bold text-gray-800 dark:text-white mb-4"
-            >
+            <h1 class="text-4xl sm:text-5xl font-bold mb-4">
               {{ pageData.title }}
             </h1>
-            <div
-              class="flex flex-wrap justify-center gap-6 text-sm text-gray-600 dark:text-gray-300"
-            >
+            <div class="flex flex-wrap justify-center gap-6 text-sm">
               <span
                 v-if="pageData?.author"
                 class="font-medium whitespace-nowrap"
@@ -63,7 +64,7 @@ useSeoMeta({
                 }}</span>
               </span>
             </div>
-            <p class="mt-5 text-xl text-gray-600 dark:text-gray-300">
+            <p class="mt-5 text-xl">
               {{ pageData.description }}
             </p>
           </div>
@@ -98,7 +99,7 @@ useSeoMeta({
         <UButton
           :to="'/manage/editor' + route.path"
           :label="$t('Edit This page')"
-          class="fixed left-10 bottom-10 shadow-md rounded-full cursor-pointer text-4xl z-100 p-3 transition-all dark:text-white text-black bg-gray-200 dark:bg-slate-700 border-gray-300 dark:border-slate-800"
+          class="fixed left-10 bottom-10 shadow-md rounded-full cursor-pointer text-4xl z-100 p-3 transition-all"
         >
           <UIcon name="i-lucide-square-pen" />
         </UButton>
@@ -108,39 +109,31 @@ useSeoMeta({
     <!-- **Skeleton Loader (Better Matched to UI)** -->
     <div v-else class="w-full">
       <div
-        class="flex flex-col gap-6 text-center pt-10 pb-12 border-b border-gray-200 dark:border-slate-700 dark:bg-slate-600 bg-gray-100 min-h-[calc(100vh-2rem)] items-center justify-around"
+        class="flex flex-col gap-6 text-center pt-10 pb-12 border-bmin-h-[calc(100vh-2rem)] items-center justify-around"
       >
         <div class="max-w-7xl mx-auto px-5 w-full">
           <!-- Skeleton Title -->
-          <USkeleton
-            class="h-10 sm:h-12 w-3/4 mx-auto rounded-md bg-gray-300 dark:bg-slate-800"
-          />
+          <USkeleton class="h-10 sm:h-12 w-3/4 mx-auto rounded-md" />
 
           <!-- Metadata Skeleton -->
           <div class="flex justify-center gap-6 mt-4">
             <USkeleton
               v-for="i in 3"
               :key="i"
-              class="h-4 w-28 sm:w-32 rounded-md bg-gray-300 dark:bg-slate-800"
+              class="h-4 w-28 sm:w-32 rounded-md"
             />
           </div>
 
           <!-- Description Skeleton -->
           <div class="mt-6 space-y-3">
-            <USkeleton
-              v-for="i in 2"
-              :key="i"
-              class="h-4 w-full rounded-md bg-gray-300 dark:bg-slate-800"
-            />
-            <USkeleton
-              class="h-4 w-3/4 rounded-md bg-gray-300 dark:bg-slate-800"
-            />
+            <USkeleton v-for="i in 2" :key="i" class="h-4 w-full rounded-md" />
+            <USkeleton class="h-4 w-3/4 rounded-md" />
           </div>
         </div>
 
         <!-- Image Skeleton (Now Matches the Loaded Image) -->
         <USkeleton
-          class="w-full max-h-[450px] sm:max-h-[550px] md:max-h-[600px] max-w-5xl rounded-lg shadow-md min-h-[200px] sm:min-h-[300px] md:min-h-[400px] bg-gray-300 dark:bg-slate-800"
+          class="w-full max-h-[450px] sm:max-h-[550px] md:max-h-[600px] max-w-5xl rounded-lg shadow-md min-h-[200px] sm:min-h-[300px] md:min-h-[400px]"
         />
       </div>
 
@@ -148,19 +141,9 @@ useSeoMeta({
       <UContainer>
         <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
           <div class="w-full space-y-5">
-            <USkeleton
-              v-for="i in 5"
-              :key="i"
-              class="h-5 w-full rounded-md bg-gray-300 dark:bg-slate-800"
-            />
-            <USkeleton
-              class="h-5 w-3/4 rounded-md bg-gray-300 dark:bg-slate-800"
-            />
-            <USkeleton
-              v-for="i in 5"
-              :key="i"
-              class="h-5 w-full rounded-md bg-gray-300 dark:bg-slate-800"
-            />
+            <USkeleton v-for="i in 5" :key="i" class="h-5 w-full rounded-md" />
+            <USkeleton class="h-5 w-3/4 rounded-md" />
+            <USkeleton v-for="i in 5" :key="i" class="h-5 w-full rounded-md" />
             <USkeleton class="h-5 w-3/4 rounded-md" />
           </div>
         </div>

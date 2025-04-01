@@ -40,6 +40,6 @@ const items = computed(() => {
     highlight-color="primary"
     orientation="horizontal"
     :items="items"
-    class="data-[orientation=horizontal]:w-full flex"
+    class="navbar data-[orientation=horizontal]:w-full flex"
   />
 </template>

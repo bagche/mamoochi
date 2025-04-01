@@ -14,6 +14,7 @@ const { data } = useAsyncData(
           `/${locale.value ?? defaultLocale}/%`
         );
       })
+      .order("date", "DESC")
       .first()
 );
 </script>

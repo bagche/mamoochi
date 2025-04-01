@@ -60,7 +60,7 @@ initDevice();
 
 <template>
   <UApp :locale="appLocales">
-    <NuxtLayout class="dark:bg-slate-700">
+    <NuxtLayout>
       <NuxtLoadingIndicator />
       <Installer v-if="!appConfig.installed" />
       <NuxtPage v-else />

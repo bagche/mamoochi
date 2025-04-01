@@ -58,9 +58,7 @@ const items = [
 </script>
 
 <template>
-  <div
-    class="mx-auto flex flex-col items-center px-4 justify-center h-screen bg-gray-100 dark:bg-slate-700"
-  >
+  <div class="mx-auto flex flex-col items-center px-4 justify-center h-screen">
     <UCard :ui="{ root: ' ' }">
       <template #header>
         <div class="flex justify-center items-center">
@@ -91,10 +89,7 @@ const items = [
           <InstallerFinish />
         </template>
       </UStepper>
-      <div
-        v-if="currentStep !== 4"
-        class="flex gap-3 border-t pt-4 mt-4 border-gray-200 dark:border-slate-800"
-      >
+      <div v-if="currentStep !== 4" class="flex gap-3 border-t pt-4 mt-4">
         <UButton
           v-if="currentStep !== 0"
           :block="currentStep === 4"

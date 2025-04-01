@@ -58,10 +58,7 @@ onBeforeUnmount(() => {
 
     <!-- Floating Menu -->
     <FloatingMenu :editor="editor" :tippy-options="{ duration: 100 }">
-      <UButtonGroup
-        class="flex justify-center rounded-none bg-gray-100 dark:bg-slate-800 p-1"
-        size="md"
-      >
+      <UButtonGroup class="flex justify-center rounded-none p-1" size="md">
         <UTooltip :text="$t('Horizontal Line')">
           <UButton
             icon="i-lucide-minus"
@@ -129,10 +126,7 @@ onBeforeUnmount(() => {
 
     <!-- Bubble Menu -->
     <BubbleMenu :editor="editor" :tippy-options="{ duration: 100 }">
-      <UButtonGroup
-        class="flex justify-center rounded-none bg-gray-100 dark:bg-slate-800 p-1"
-        size="md"
-      >
+      <UButtonGroup class="flex justify-center rounded-none p-1" size="md">
         <UTooltip :text="$t('Blockquote')">
           <UButton
             icon="i-lucide-quote"

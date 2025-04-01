@@ -67,7 +67,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
     <UCard
       variant="soft"
       :ui="{
-        root: 'p-0 rounded-sm dark:bg-slate-600 bg-gray-50',
+        root: 'p-0 rounded-sm',
         body: ' border-none',
         header: 'border-none',
       }"

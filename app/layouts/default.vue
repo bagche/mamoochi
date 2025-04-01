@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col justify-start">
+  <div :class="$colorMode.value === 'dark' ? 'bg-slate-700' : 'bg-white'">
     <Header />
-    <div class="min-h- ">
+    <div>
       <slot />
     </div>
     <Footer />

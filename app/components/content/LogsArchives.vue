@@ -17,6 +17,7 @@ const { data } = useAsyncData(`home-archives-${route.path}`, async () => {
       return query.where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`);
     })
     .limit(10)
+    .order("date", "DESC")
     .all();
 });
 </script>

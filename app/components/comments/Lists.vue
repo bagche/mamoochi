@@ -31,7 +31,7 @@ watch(commentsData, () => {
       class="mb-10 w-full"
       variant="soft"
       :ui="{
-        root: 'p-0 rounded-sm dark:bg-slate-600 bg-gray-50',
+        root: 'p-0 rounded-sm  ',
         body: ' border-none',
         header: 'border-none',
       }"
@@ -57,7 +57,7 @@ watch(commentsData, () => {
         </div>
       </template>
 
-      <span class="text-gray-500 dark:text-gray-400 text-base">
+      <span class="text-base">
         {{ comment.body }}
       </span>
 

@@ -223,8 +223,8 @@
   "route_path": "route_path",
   "status": "status",
   "title": "title",
+  "tuts": "tuts",
   "type": "type",
   "user_agent": "user_agent",
-  "username": "username",
-  "vue": "vue"
+  "username": "username"
 }

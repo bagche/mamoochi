@@ -112,7 +112,7 @@ function onSelect() {
           <li
             v-for="item in results"
             :key="item.to"
-            class="flex items-center border-b last:border-none border-gray-200 dark:border-slate-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700"
+            class="flex items-center border-b last:border-none"
           >
             <NuxtLink
               :to="item.to"
