@@ -31,7 +31,7 @@ const submitting = ref(false);
 const codeEditor = ref(false);
 
 const schema = z.object({
-  title: z.string().min(5),
+  title: z.string().min(1),
   body: z.string().min(5),
 });
 type Schema = z.infer<typeof schema>;
@@ -39,9 +39,10 @@ type Schema = z.infer<typeof schema>;
 const form = ref();
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
+  console.log("data");
   submitting.value = true;
   try {
-    await $fetch("/api/editor/new", {
+    await $fetch("/api/builds/commit", {
       method: "POST",
       body: JSON.stringify({
         path: props.pagePath,
