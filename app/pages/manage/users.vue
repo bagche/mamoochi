@@ -31,7 +31,7 @@ definePageMeta({
           </UButtonGroup>
         </div>
         <div class="flex gap-3 w-full">
-          <div class="basis-4/6"><UsersAll /></div>
+          <div class="basis-4/6"><UsersManage /></div>
           <div class="basis-2/6"><UsersRoles /></div>
         </div>
         <UsersNewRole v-model:is-open="addRoleIsOpen" />

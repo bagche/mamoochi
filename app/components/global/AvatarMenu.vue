@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const { loggedIn, clear } = useUserSession();
+const { loggedIn, clear, user } = useUserSession();
 const { profile, logout } = useUser();
 const { t } = useI18n();
 
-const updateIsOpen = ref(false);
+const updateProfileIsOpen = ref(false);
 const changePasswordIsOpen = ref(false);
 const loginIsOpen = ref(false);
 const registerIsOpen = ref(false);
@@ -28,7 +28,7 @@ const loggedInItems = [
     label: t("Update Profile"),
     icon: "i-lucide-user-pen",
     onSelect: () => {
-      updateIsOpen.value = true;
+      updateProfileIsOpen.value = true;
     },
   },
   {
@@ -122,8 +122,42 @@ const items = computed(() => {
         </template>
       </UDropdownMenu>
     </UChip>
-    <UsersRegister v-model:is-open="registerIsOpen" />
-    <UsersLogin v-model:is-open="loginIsOpen" />
+    <UModal
+      v-model:open="registerIsOpen"
+      :dismissible="false"
+      :title="$t('Register User')"
+    >
+      <template #body>
+        <AuthRegisterForm @close-modal="registerIsOpen = false" />
+      </template>
+    </UModal>
+    <UModal
+      v-model:open="loginIsOpen"
+      :dismissible="false"
+      :title="$t('Login User')"
+    >
+      <template #body>
+        <AuthLoginForm @close-modal="loginIsOpen = false" />
+      </template>
+    </UModal>
+    <UModal
+      v-model:open="changePasswordIsOpen"
+      :dismissible="false"
+      :title="$t('Change Password')"
+    >
+      <template #body>
+        <AuthChangePasswordForm @close-modal="changePasswordIsOpen = false" />
+      </template>
+    </UModal>
+    <UModal
+      v-model:open="updateProfileIsOpen"
+      :dismissible="false"
+      :title="$t('Update Profile')"
+    >
+      <template #body>
+        <AuthUpdateProfileForm @close-modal="updateProfileIsOpen = false" />
+      </template>
+    </UModal>
   </div>
 </template>
 
