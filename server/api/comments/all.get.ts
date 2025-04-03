@@ -1,40 +1,50 @@
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { desc, sql } from "drizzle-orm/sql";
+import { sql } from "drizzle-orm/sql";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
+
   try {
     const { DB } = event.context.cloudflare.env;
     const drizzleDb = drizzle(DB);
 
-    // Get pagination parameters from query
+    // Get pagination parameters from query string
     const query = getQuery(event);
     const page = Number(query.page) || 1;
     const pageSize = Number(query.pageSize) || 5;
     const offset = (page - 1) * pageSize;
 
-    // Query the total count of comments
+    // Query total count of comments
     const totalResult = await drizzleDb
       .select({ count: sql`COUNT(*)` })
       .from(comments);
     const total = Number(totalResult[0].count);
 
-    // Query paginated comments ordered by creation time descending
-    const paginatedComments = await drizzleDb
-      .select()
+    // Query paginated comments with author details
+    const allComments = await drizzleDb
+      .select({
+        id: comments.id,
+        routePath: comments.routePath,
+        body: comments.body,
+        status: comments.status,
+        createdAt: comments.createdAt,
+        updatedAt: comments.updatedAt,
+        authorId: comments.authorId,
+        authorUsername: users.username,
+        authorDisplayName: users.displayName,
+        authorAvatar: users.avatar,
+      })
       .from(comments)
-      .orderBy(desc(comments.createdAt))
+      .leftJoin(users, eq(comments.authorId, users.id))
       .limit(pageSize)
       .offset(offset);
-
-    // Optionally, if you experience circular reference issues:
-    // const safeComments = JSON.parse(JSON.stringify(paginatedComments));
 
     return {
       total,
       page,
       pageSize,
-      comments: paginatedComments,
+      comments: allComments,
     };
   } catch (error: any) {
     console.error("Error fetching comments:", error);

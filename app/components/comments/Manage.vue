@@ -2,164 +2,200 @@
 import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 import { getPaginationRowModel } from "@tanstack/vue-table";
-
-// Define page meta to use the "manage" layout
+import { computed, h, ref } from "vue";
 
 const { t } = useI18n();
+const toast = useToast();
+
 // Resolve Nuxt UI components
 const UTable = resolveComponent("UTable");
+const UButtonGroup = resolveComponent("UButtonGroup");
 const UButton = resolveComponent("UButton");
-const UDropdownMenu = resolveComponent("UDropdownMenu");
+const UBadge = resolveComponent("UBadge");
 const UAvatar = resolveComponent("UAvatar");
 const UPagination = resolveComponent("UPagination");
+const USeparator = resolveComponent("USeparator");
 
-// Define a User type (update fields as needed)
-type User = {
-  id: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  displayName?: string;
-  email: string;
-  avatar: string;
-  about?: string;
+// Define the Comment type
+type Comment = {
+  id: number;
+  routePath: string;
+  body: string;
+  status: string;
+  createdAt: number;
+  updatedAt?: number;
+  authorId: number;
+  authorUsername?: string;
+  authorDisplayName?: string;
+  authorAvatar?: string;
 };
 
-// Define pagination state. Note: UTable's v-model:pagination will automatically update this.
+// Global submitting ref (could be per-row if needed)
+const submitting = ref(false);
+
+// Function to update the comment status via API call
+async function updateCommentStatus(commentId: number, newStatus: string) {
+  try {
+    submitting.value = true;
+    await $fetch("/api/comments/moderate", {
+      method: "POST",
+      body: JSON.stringify({ id: commentId, newStatus }),
+    });
+    toast.add({
+      title: t("Success"),
+      description: t("Comment status updated successfully"),
+      color: "green",
+    });
+    // Refresh the table data after a successful update
+    refresh();
+  } catch (error: any) {
+    console.error(error);
+    toast.add({
+      title: t("Error"),
+      description: error.statusMessage || t("Failed to update comment status"),
+      color: "red",
+    });
+  } finally {
+    submitting.value = false;
+  }
+}
+
+// Set up pagination state (UTable's v-model:pagination auto-updates this)
 const pagination = ref({
   pageIndex: 0,
   pageSize: 5,
 });
 
-// Compute query parameters for useFetch (API expects 1-indexed page number)
+// Compute query parameters for useFetch (API expects a 1-indexed page number)
 const queryParams = computed(() => ({
   page: pagination.value.pageIndex + 1,
   pageSize: pagination.value.pageSize,
 }));
 
-// Use useFetch to retrieve paginated users from the API endpoint
-// When queryParams change, useFetch will re-run the request.
-const { data, error } = useFetch("/api/users/all", {
+// Fetch paginated comments from the API endpoint
+const { data, error, refresh } = useFetch("/api/comments/all", {
   query: queryParams,
 });
 
-// Toast for notifications
-const toast = useToast();
+// Optional refs for managing modals (for example, editing a comment)
+const commentModalIsOpen = ref(false);
+const currentCommentId = ref<number | null>(null);
 
-// refs
-
-const roleUserIsOpen = ref(false);
-const currentUserId = ref(0);
-
-// Define the table columns for the User table
-const columns: TableColumn<User>[] = [
+// Define table columns for the comments table
+const columns: TableColumn<Comment>[] = [
   {
     accessorKey: "id",
     header: "#",
     cell: ({ row }) => `#${row.getValue("id")}`,
   },
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "routePath",
+    header: t("Route"),
+  },
+  {
+    id: "author",
+    header: t("Author"),
     cell: ({ row }) => {
-      const user = row.original as User;
-      // Use displayName if available; otherwise, combine first and last names
-      const fullName = user.displayName || `${user.firstName} ${user.lastName}`;
+      const comment = row.original as Comment;
+      const fullName =
+        comment.authorDisplayName || comment.authorUsername || t("Unknown");
       return h("div", { class: "flex items-center gap-3" }, [
-        // UAvatar with src set to the avatar URL
         h(UAvatar, {
-          src: user.avatar,
-          size: "lg",
+          src: comment.authorAvatar || "",
+          size: "md",
           alt: fullName,
         }),
         h("div", null, [
-          h(
-            "p",
-            { class: "font-medium text-(--ui-text-highlighted)" },
-            fullName
-          ),
-          h("p", null, `@${user.username}`),
+          h("p", { class: "font-medium" }, fullName),
+          h("p", null, `@${comment.authorUsername}`),
         ]),
       ]);
     },
   },
   {
-    accessorKey: "username",
-    header: "Username",
+    accessorKey: "body",
+    header: t("Comment"),
+    cell: ({ row }) => {
+      const text = row.getValue("body");
+      return text.length > 50 ? text.substring(0, 50) + "..." : text;
+    },
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "status",
+    header: t("Status"),
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      let color = "neutral";
+      let label = status;
+      if (status === "published") {
+        color = "success";
+        label = t("Published");
+      } else if (status === "spam") {
+        color = "error";
+        label = t("Spam");
+      } else if (status === "draft") {
+        color = "neutral";
+        label = t("Draft");
+      }
+      return h(UBadge, { color }, label);
+    },
   },
-
+  {
+    accessorKey: "createdAt",
+    header: t("Created At"),
+    cell: ({ row }) => {
+      const timestamp = row.getValue("createdAt");
+      return new Date(timestamp).toLocaleString();
+    },
+  },
   {
     id: "actions",
+    header: t("Actions"),
     cell: ({ row }) => {
-      return h(
-        "div",
-        { class: "text-right" },
+      const comment = row.original as Comment;
+      const isPublished = comment.status === "published";
+      const isSpam = comment.status === "spam";
+      return h("div", { class: "text-right" }, [
         h(
-          UDropdownMenu,
+          UButtonGroup,
+          {},
           {
-            content: { align: "end" },
-            items: getRowItems(row),
-          },
-          () =>
-            h(UButton, {
-              icon: "i-lucide-ellipsis-vertical",
-              color: "neutral",
-              variant: "ghost",
-              class: "ml-auto",
-            })
-        )
-      );
+            default: () => [
+              h(UButton, {
+                color: "success",
+                variant: isPublished ? "solid" : "subtle",
+                label: t("Approve"),
+                onClick: () => updateCommentStatus(comment.id, "published"),
+              }),
+              h(UButton, {
+                color: "warning",
+                variant: isSpam ? "solid" : "subtle",
+                label: t("Spam"),
+                onClick: () => updateCommentStatus(comment.id, "spam"),
+              }),
+              h(UButton, {
+                color: "secondary",
+                variant: "subtle",
+                label: t("Edit"),
+                onClick: () => {
+                  console.log(edit);
+                },
+              }),
+            ],
+          }
+        ),
+      ]);
     },
   },
 ];
-
-// Define dropdown menu items for each user row
-function getRowItems(row: Row<User>) {
-  return [
-    {
-      type: "label",
-      label: "Actions",
-    },
-    {
-      label: t("Manage Roles"),
-      onSelect() {
-        roleUserIsOpen.value = true;
-        currentUserId.value = row.original.id;
-      },
-    },
-    {
-      label: "Edit User",
-      onSelect() {
-        toast.add({
-          title: `Edit user #${row.original.id}`,
-          color: "info",
-          icon: "i-lucide-edit",
-        });
-      },
-    },
-    {
-      label: "Delete User",
-      onSelect() {
-        toast.add({
-          title: `Delete user #${row.original.id}`,
-          color: "error",
-          icon: "i-lucide-trash",
-        });
-      },
-    },
-  ];
-}
 </script>
 
 <template>
   <div class="w-full space-y-4 p-4">
+    <USeparator icon="i-lucide-message-circle" />
     <UTable
       v-model:pagination="pagination"
-      :data="data?.users ?? []"
+      :data="data?.comments ?? []"
       :columns="columns"
       :pagination-options="{ getPaginationRowModel: getPaginationRowModel() }"
       class="flex-1"
@@ -175,11 +211,10 @@ function getRowItems(row: Row<User>) {
         @update:page="(p) => (pagination.pageIndex = p - 1)"
       />
     </div>
-    <UsersAddRoleToUser
-      v-model:is-open="roleUserIsOpen"
-      :user-id="currentUserId"
-    />
-    <!-- Display an error message if the fetch fails -->
-    <div v-if="error" class="mt-4 text-red-500">Failed to load users.</div>
+
+    <!-- Display error message if fetching fails -->
+    <div v-if="error" class="mt-4 text-red-500">
+      {{ t("Failed to load comments") }}
+    </div>
   </div>
 </template>

@@ -1,14 +1,15 @@
 <script setup lang="ts">
 const { profile } = useUser();
+const route = useRoute();
 
 const page = ref(1);
 const pageSize = ref(10);
 const total = ref(0);
 
 const { data: commentsData, refresh: refreshComments } = useFetch(
-  "/api/comments/all",
+  "/api/comments/single",
   {
-    query: { page, pageSize },
+    query: { page, pageSize, path: route.path },
   }
 );
 
