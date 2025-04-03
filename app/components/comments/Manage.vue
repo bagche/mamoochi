@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
-import type { Row } from "@tanstack/vue-table";
-import { getPaginationRowModel } from "@tanstack/vue-table";
-import { computed, h, ref } from "vue";
 
 const { t } = useI18n();
 const toast = useToast();
@@ -63,7 +60,7 @@ async function updateCommentStatus(commentId: number, newStatus: string) {
 // Set up pagination state (UTable's v-model:pagination auto-updates this)
 const pagination = ref({
   pageIndex: 0,
-  pageSize: 5,
+  pageSize: 20,
 });
 
 // Compute query parameters for useFetch (API expects a 1-indexed page number)
@@ -73,13 +70,9 @@ const queryParams = computed(() => ({
 }));
 
 // Fetch paginated comments from the API endpoint
-const { data, error, refresh } = useFetch("/api/comments/all", {
+const { data, error, refresh, status } = useFetch("/api/comments/all", {
   query: queryParams,
 });
-
-// Optional refs for managing modals (for example, editing a comment)
-const commentModalIsOpen = ref(false);
-const currentCommentId = ref<number | null>(null);
 
 // Define table columns for the comments table
 const columns: TableColumn<Comment>[] = [
@@ -137,7 +130,7 @@ const columns: TableColumn<Comment>[] = [
         color = "neutral";
         label = t("Draft");
       }
-      return h(UBadge, { color }, label);
+      return h(UBadge, { color, size: "md" }, label);
     },
   },
   {
@@ -158,7 +151,9 @@ const columns: TableColumn<Comment>[] = [
       return h("div", { class: "text-right" }, [
         h(
           UButtonGroup,
-          {},
+          {
+            size: "xs",
+          },
           {
             default: () => [
               h(UButton, {
@@ -188,16 +183,23 @@ const columns: TableColumn<Comment>[] = [
     },
   },
 ];
+const sorting = ref([
+  {
+    id: "createdAt",
+    desc: true,
+  },
+]);
 </script>
 
 <template>
   <div class="w-full space-y-4 p-4">
-    <USeparator icon="i-lucide-message-circle" />
     <UTable
-      v-model:pagination="pagination"
-      :data="data?.comments ?? []"
+      v-model:sorting="sorting"
+      :loading="status === 'pending'"
+      loading-color="primary"
+      loading-animation="carousel"
+      :data="data?.comments"
       :columns="columns"
-      :pagination-options="{ getPaginationRowModel: getPaginationRowModel() }"
       class="flex-1"
     />
 
