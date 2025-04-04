@@ -121,4 +121,9 @@ export default defineNuxtConfig({
       "VisualMapComponent",
     ],
   },
+  runtimeConfig: {
+    githubToken: "",
+    githubOwner: "",
+    githubRepo: "",
+  },
 });

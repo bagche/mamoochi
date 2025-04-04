@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
-import { computed, h, ref } from "vue";
 
 // i18n and toast
 const { t } = useI18n();
@@ -111,6 +110,9 @@ const columns: TableColumn<Build>[] = [
       return h(UBadge, { color, size: "md" }, () => statusValue);
     },
   },
+  {
+    id: "action",
+  },
 ];
 
 // Sorting (for UI display only; server-side ordering is handled by the API)
@@ -151,6 +153,13 @@ const sorting = ref([
           <div v-else>
             {{ t("No commits found.") }}
           </div>
+        </div>
+      </template>
+
+      <!-- Action slot renders the BuildsRun component if build status is "new" -->
+      <template #action-cell="{ row }">
+        <div v-if="row.original.status === 'new'">
+          <BuildsRun :build-id="row.original.id" @finish="refresh" />
         </div>
       </template>
     </UTable>
