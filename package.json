@@ -34,20 +34,20 @@
     "nuxt-auth-utils": "0.5.18",
     "nuxt-authorization": "0.3.3",
     "nuxt-tiptap-editor": "^2.1.4",
-    "sass": "^1.86.2",
+    "sass": "^1.86.3",
     "tiptap-extension-auto-joiner": "^0.1.3",
     "tiptap-markdown": "^0.8.10",
     "vue": "latest",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250403.0",
+    "@cloudflare/workers-types": "^4.20250404.0",
     "@iconify-json/lucide": "^1.2.34",
     "@nuxt/content": "^3.4.0",
     "@nuxt/eslint": "^1.3.0",
     "@nuxtjs/i18n": "^9.4.0",
     "@tailwindcss/typography": "^0.5.16",
-    "@types/luxon": "^3.6.0",
+    "@types/luxon": "^3.6.2",
     "drizzle-kit": "^0.30.6",
     "eslint": "^9.23.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
@@ -57,7 +57,7 @@
     "typescript": "^5.8.2",
     "vite-plugin-compression": "^0.5.1",
     "vue-router": "^4.5.0",
-    "wrangler": "^4.7.0"
+    "wrangler": "^4.7.1"
   },
   "pnpm": {
     "overrides": {
