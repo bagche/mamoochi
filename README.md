@@ -1,149 +1,179 @@
-# Mamoochi - Modular, Serverless-First Web Platform Framework
+# Mamochi - Headless, Git-Native, Serverless CMS & Web Platform Framework
 
-**Mamoochi** is a highly modular and extensible web platform framework built on modern web technologies. Designed to support hybrid Server-Side Rendering (SSR) and Static Site Generation (SSG), Mamoochi is optimized for performance and scalability while providing a flexible foundation for rapid development and customization.
-
-This framework leverages a combination of a Nuxt 4 frontend with a serverless backend powered by Cloudflare Workers. It’s built for developers who need fine-grained control over both the frontend and backend, with clear separation of concerns and an extensible plugin system that simplifies feature integration and maintenance.
+Mamochi is a modern, headless content management and web platform framework built for developers who need a scalable, modular, and developer-friendly environment. It combines a Git-based workflow with real-time, decentralized features to deliver a robust system for building content-rich websites and applications.
 
 ---
 
-## 🚀 Architecture Overview
+## Overview
 
-Mamoochi is built on a decoupled, modular architecture that separates concerns and optimizes for performance, scalability, and developer productivity. Each layer of the platform is designed to function independently while integrating seamlessly for a unified development experience.
+Mamochi leverages cutting-edge technologies and serverless infrastructure to deliver a headless-first experience. Key aspects include:
 
-### **Frontend & UI:**
+- **Headless-First Architecture:** Decoupled backend content management and frontend rendering, allowing you to use any modern frontend framework (e.g., Nuxt, Vue, React).
 
-- **Nuxt 4 & Vue 3:**  
-  The frontend is powered by Nuxt 4 and Vue 3, supporting both SSR and SSG for fast, SEO-friendly page rendering. This setup enables reactive UI components and an efficient development workflow.
-- **TailwindCSS & Nuxt UI 3:**  
-  We utilize TailwindCSS for rapid, utility-first styling, complemented by Nuxt UI 3’s collection of pre-built components to speed up UI development and maintain consistency.
+- **Git-Native Versioning:** Every content edit is stored as a commit, grouped into builds, and pushed to GitHub—ensuring full version control and auditability.
 
-### **Backend & API:**
+- **Serverless & Scalable:** Powered by Cloudflare Workers, Durable Objects, D1, and KV storage, Mamochi offers global low-latency performance.
 
-- **Cloudflare Workers & Serverless Infrastructure:**  
-  Our backend is deployed on Cloudflare Workers, offering global distribution with low latency and auto-scaling capabilities. The integration with Cloudflare D1, KV storage, and Durable Objects provides robust and efficient data management.
-- **Plugin Architecture:**  
-  Mamoochi’s flexible plugin system lets developers extend core functionalities—whether adding new API endpoints or overriding default UI components—without altering the core codebase.
+- **Real-Time Collaboration & Decentralization:** Integrates with Cloudflare’s real-time technologies and the Nostr protocol for decentralized messaging and identity.
 
-### **Hybrid CMS Model:**
-
-- **Tiptap + GitHub-based Headless Panel:**  
-  The Hybrid CMS Model is designed for a seamless, headless content management experience. It leverages the powerful Tiptap rich text editor to provide a flexible and intuitive editing interface. This is coupled with a GitHub-based version control system, enabling content creators to manage, collaborate, and version their site content with confidence. Content is then delivered via static generation or rendered on-demand, ensuring rapid performance without sacrificing dynamic updates.
-
-### **Real-Time Communication & State Management:**
-
-- **Decentralized Messaging (Nostr):**  
-  Utilizing the Nostr protocol, Mamoochi supports real-time, decentralized communication for chat, notifications, and comment systems, ensuring resilience and reducing reliance on centralized servers.
+- **Modular & Extensible:** A plugin-based system allows easy extension of core features—custom routes, middleware, dashboards, and more.
 
 ---
 
-## This detailed view of Mamoochi’s architecture highlights the key components and technical choices that empower developers to build, customize, and scale high-performance web applications efficiently.
+## Architecture
 
-## 🛠️ Frameworks & Libraries Used
+### Frontend & User Interface
 
-Mamoochi is built on a modern technology stack, carefully selected to enhance developer productivity and application performance:
+- **Nuxt & Vue:**
 
-### **Frontend**
+Mamochi uses Nuxt (v3/4) and Vue 3 for both SSR and SSG, providing fast, SEO-friendly rendering and reactive UI components.
 
-- **Nuxt 4:**  
-  A robust framework for Vue.js that supports both SSR and SSG, enabling dynamic and statically generated content.
-- **Vue 3:**  
-  Provides a reactive component model for building scalable and maintainable UIs.
-- **TailwindCSS:**  
-  A utility-first CSS framework that accelerates styling and ensures consistency across components.
-- **Nuxt UI 3:**  
-  A collection of pre-built UI components optimized for Nuxt, reducing the need for boilerplate code.
+- **Tiptap Editor:**
 
-### **Backend & API**
+A rich, visual Markdown editor that allows content creators to work with Markdown (with front matter) seamlessly.
 
-- **Cloudflare Workers:**  
-  Serverless compute that scales globally with low latency, ideal for API endpoints and backend logic.
-- **Cloudflare D1:**  
-  A lightweight, serverless SQL database compatible with SQLite, designed for rapid development and scale.
-- **Cloudflare KV:**  
-  A fast, globally distributed key-value storage system for caching and session management.
-- **Durable Objects:**  
-  Provides stateful coordination and data storage to manage real-time interactions efficiently.
+- **TailwindCSS & Nuxt UI:**
 
-### **Messaging & Local Storage**
+Rapid styling with TailwindCSS and pre-built UI components accelerate frontend development.
 
-- **Nostr Protocol:**  
-  A decentralized messaging protocol for real-time notifications, chat, and comment systems.
-- **Dexie.js:**  
-  An IndexedDB wrapper that simplifies local storage operations in the browser.
+### Backend & API
 
-### **Developer Experience**
+- **Cloudflare Workers:**
 
-- **Drizzle ORM:**  
-  A type-safe SQL query builder that enhances database interactions while minimizing runtime errors.
-- **ESLint & Prettier:**  
-  Integrated tooling for code formatting and linting to maintain a clean, consistent codebase.
-- **Vitest:**  
-  A fast and modern unit testing framework that integrates seamlessly with Vue and JavaScript projects.
+The serverless backend runs on Cloudflare Workers, providing global distribution and auto-scaling.
+
+- **Cloudflare D1 & KV Storage:**
+
+Use Cloudflare’s serverless SQL (D1) and KV storage for efficient data management and caching.
+
+- **Durable Objects:**
+
+Manage real-time state (such as collaborative editing and live dashboards) with Cloudflare Durable Objects.
+
+- **Drizzle ORM:**
+
+A type-safe SQL query builder simplifies interactions with your Cloudflare D1 database.
+
+### Commit/Build System & GitHub Integration
+
+- **Commit System:**
+
+Each edit to a Markdown page is saved as a commit that includes file path, content, and a commit message.
+
+- **Build Aggregation:**
+
+Commits are grouped into builds. An admin can review a build and trigger the push process, which:
+
+- Creates a new Git tree (updating modified files).
+
+- Creates a new commit on a target branch (e.g., `develop`).
+
+- Updates the branch reference via the GitHub API.
+
+- **CI/CD Integration:**
+
+Once a build is pushed, GitHub triggers Cloudflare Pages CI/CD to deploy the updated content.
+
+### Real-Time & Decentralized Communication
+
+- **Nostr Protocol Integration:**
+
+Mamochi supports decentralized identity and messaging with Nostr—enabling real-time notifications, chat, and collaborative features without relying on centralized servers.
+
+### Plugin & Extensibility System
+
+- **Modular Plugin Architecture:**
+
+Developers can extend or override core functionalities through plugins. Custom routes, middleware, dashboards, and integrations (e.g., custom auth or monetization strategies) can be added without modifying the core codebase.
 
 ---
 
-## 🌍 Open-Source Philosophy
+## Key Features
 
-At its core, Mamoochi embraces an open-source philosophy. We believe that software should be transparent, community-driven, and free from vendor lock-in. Our guiding principles include:
+- **Headless CMS:**
 
-- **Transparency & Freedom:**  
-  Every component of Mamoochi is open for review and modification, allowing developers to tailor the framework to their needs.
+Manage Markdown-based content (with YAML front matter) in a Git-based workflow.
 
-- **Community-Driven Development:**  
-  Contributions from developers around the globe are not only welcomed but essential to the continuous improvement and evolution of the platform.
+- **Git-Native Versioning:**
 
-- **Performance & Simplicity:**  
-  The architecture is designed to remain lightweight and efficient, ensuring fast performance even at scale while keeping the codebase accessible for new contributors.
+Every edit is versioned as a commit. Builds aggregate commits, enabling controlled pushes and CI/CD triggers.
 
-- **Flexible Monetization:**  
-  While Mamoochi provides a robust core framework for free, it allows for easy integration of custom monetization strategies without compromising the open-source model.
+- **Serverless Infrastructure:**
+
+Powered by Cloudflare Workers, D1, KV, and Durable Objects for low-latency, scalable backend operations.
+
+- **Real-Time Collaboration:**
+
+Built-in real-time state management and decentralized messaging via the Nostr protocol.
+
+- **Extensible & Modular:**
+
+Easily extend functionalities using a robust plugin system.
+
+- **Developer-Friendly:**
+
+Modern tools like Nuxt, Vue, TailwindCSS, Drizzle ORM, ESLint, Prettier, and Vitest provide an optimized development experience.
 
 ---
 
-## 📥 Installation & Getting Started
+## Getting Started
 
-To start using Mamoochi, follow these steps:
-
-### **1️⃣ Prerequisites**
-
-Ensure you have the following installed:
+### Prerequisites
 
 - **Node.js (v18+)**
-- **pnpm (preferred) or npm/yarn**
-- **Cloudflare CLI** (for deployment)
 
-### **2️⃣ Clone the Repository**
+- **pnpm (or npm/yarn)**
+
+- **Cloudflare CLI (Wrangler)** for deployment
+
+- **GitHub Account** with repository access for Git-based content management
+
+### Installation
+
+1. **Clone the Repository:**
 
 ```sh
-git clone git@github.com:Bagche/Mamoochi.git
-cd Mamoochi
+
+git clone git@github.com:bagche/mamoochi.git
+
+cd mamoochi
+
 pnpm install
+
 ```
 
-### **3️⃣ Start the Development Server**
+2. **Start the Development Server:**
 
 ```sh
+
 pnpm dev
+
 ```
 
-The project will be available at `http://localhost:3000`.
+Visit `http://localhost:3000` to see the application in action.
 
-### **4️⃣ Build for Production**
+3. **Build for Production:**
 
 ```sh
+
 NITRO_PRESET=cloudflare-pages pnpm build
+
 ```
 
-### **5️⃣ Deploy to Cloudflare Workers**
+4. **Deploy to Cloudflare Workers:**
 
 ```sh
+
 npx wrangler pages deploy
+
 ```
 
 ---
 
-## 📜 License
+## License
 
-Mamoochi is released under the **MIT License**, meaning you are free to use, modify, and distribute it **with proper attribution**.
+Mamochi is released under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
 ---
+
+Mamochi is an evolving project that embraces open-source principles, community collaboration, and cutting-edge web technologies to empower developers in building scalable, modular, and high-performance web applications.
