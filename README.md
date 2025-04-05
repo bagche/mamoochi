@@ -69,8 +69,6 @@ Mamochi leverages cutting-edge technologies and serverless infrastructure to del
 
 Below is a high-level diagram outlining the key data flows and system components:
 
-Here's the **Mermaid chart** version of your system architecture:
-
 ```mermaid
 
 flowchart TD
