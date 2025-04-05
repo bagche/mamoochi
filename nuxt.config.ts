@@ -53,6 +53,9 @@ export default defineNuxtConfig({
     fonts: false,
   },
   i18n: {
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: "i18n_redirected",
