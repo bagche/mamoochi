@@ -31,7 +31,7 @@
     "minisearch": "^7.1.2",
     "nostr-tools": "^2.12.0",
     "nuxt": "^3.16.2",
-    "nuxt-auth-utils": "0.5.18",
+    "nuxt-auth-utils": "0.5.19",
     "nuxt-authorization": "0.3.3",
     "nuxt-tiptap-editor": "^2.1.4",
     "sass": "^1.86.3",
@@ -41,23 +41,23 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250405.0",
-    "@iconify-json/lucide": "^1.2.34",
+    "@cloudflare/workers-types": "^4.20250407.0",
+    "@iconify-json/lucide": "^1.2.35",
     "@nuxt/content": "^3.4.0",
     "@nuxt/eslint": "^1.3.0",
-    "@nuxtjs/i18n": "^9.5.1",
+    "@nuxtjs/i18n": "^9.5.2",
     "@tailwindcss/typography": "^0.5.16",
     "@types/luxon": "^3.6.2",
     "drizzle-kit": "^0.30.6",
     "eslint": "^9.24.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "nitro-cloudflare-dev": "^0.2.2",
-    "nuxt-echarts": "^0.2.6",
+    "nuxt-echarts": "^0.3.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
     "vite-plugin-compression": "^0.5.1",
     "vue-router": "^4.5.0",
-    "wrangler": "^4.7.2"
+    "wrangler": "^4.8.0"
   },
   "pnpm": {
     "overrides": {

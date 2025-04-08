@@ -1,6 +1,11 @@
 <script setup lang="ts">
-const { locale, defaultLocale } = useI18n();
 const route = useRoute();
+const basePath = computed(() => {
+  const pathLocale = route.path.startsWith(`/${locale.value}/`)
+    ? locale.value
+    : defaultLocale;
+  return route.path === "/" ? `/${pathLocale}` : route.path;
+});
 
 const props = defineProps({
   cat: { type: String, required: false, default: "" },
@@ -14,7 +19,7 @@ const { data } = useAsyncData(`home-archives-${route.path}`, async () => {
 
   return await logsQuery
     .andWhere((query) => {
-      return query.where("path", "LIKE", `/${locale.value ?? defaultLocale}/%`);
+      return query.where("path", "LIKE", `${basePath.value}%`);
     })
     .limit(10)
     .order("date", "DESC")

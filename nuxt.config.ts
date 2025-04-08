@@ -83,6 +83,8 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
+    "/": { prerender: true },
+    "/fa/": { prerender: true },
     // Disable prerender (and SSR) for any manage routes:
     "/manage": { prerender: false, ssr: false, robots: false },
     "/manage/**": { prerender: false, ssr: false, robots: false },
