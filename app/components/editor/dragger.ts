@@ -177,7 +177,14 @@ export function DragHandlePlugin(
       dragHandleElement.draggable = true;
       dragHandleElement.dataset.dragHandle = "";
       dragHandleElement.classList.add("drag-handle");
-
+      dragHandleElement.innerHTML = `
+        <div class="drag-controls flex flex-col gap-1 absolute -top-5 ${document.documentElement.dir === "rtl" ? "right-6" : "left-6"}">
+          <div class="move-up w-5 h-5 bg-white border border-gray-300 rounded cursor-pointer text-xs flex items-center justify-center hover:bg-gray-100" title="Move Up">↑</div>
+          <div class="grab w-5 h-5 bg-white border border-gray-300 rounded cursor-grab text-xs flex items-center justify-center hover:bg-gray-100" title="grab">#</div>
+          <div class="move-down w-5 h-5 bg-white border border-gray-300 rounded cursor-pointer text-xs flex items-center justify-center hover:bg-gray-100" title="Move Down">↓</div>
+          <div class="delete w-5 h-5 bg-white border border-gray-300 rounded cursor-pointer text-xs flex items-center justify-center hover:bg-gray-100" title="Delete">🗑️</div>
+        </div>
+      `;
       const onDragStart = (e: DragEvent) => handleDragStart(e, view);
       const onDrag = (e: DragEvent) => {
         hideDragHandle();

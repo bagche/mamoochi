@@ -31,10 +31,8 @@ const editor = useEditor({
     FloatingMenu,
     BubbleMenu,
     GlobalDragHandle.configure({
-      dragHandleWidth: 50,
-      scrollTreshold: 500,
-      excludedTags: [],
-      customNodes: [],
+      dragHandleWidth: 20,
+      scrollTreshold: 100,
     }),
     ...customExtensions,
     Markdown,
@@ -57,7 +55,11 @@ onBeforeUnmount(() => {
     <USeparator class="mt-5" />
 
     <!-- Floating Menu -->
-    <FloatingMenu :editor="editor" :tippy-options="{ duration: 100 }">
+    <FloatingMenu
+      :editor="editor"
+      :tippy-options="{ duration: 100 }"
+      class="bg-gray-200"
+    >
       <UButtonGroup class="flex justify-center rounded-none p-1" size="md">
         <UTooltip :text="$t('Horizontal Line')">
           <UButton
@@ -125,7 +127,11 @@ onBeforeUnmount(() => {
     </FloatingMenu>
 
     <!-- Bubble Menu -->
-    <BubbleMenu :editor="editor" :tippy-options="{ duration: 100 }">
+    <BubbleMenu
+      :editor="editor"
+      :tippy-options="{ duration: 100 }"
+      class="bg-gray-200"
+    >
       <UButtonGroup class="flex justify-center rounded-none p-1" size="md">
         <UTooltip :text="$t('Blockquote')">
           <UButton
@@ -218,7 +224,7 @@ p.is-empty::before {
 /* Floating Menu */
 .floating-menu {
   display: flex;
-  background-color: var(--gray-3);
+  background-color: var(--gray-300);
   padding: 0.2rem;
   border-radius: 0.5rem;
   box-shadow: var(--shadow);
@@ -245,7 +251,7 @@ p.is-empty::before {
 
 /* Bubble Menu */
 .bubble-menu {
-  background-color: var(--white);
+  background-color: #ddd;
   border: 1px solid var(--gray-1);
   border-radius: 0.7rem;
   box-shadow: var(--shadow);
@@ -270,6 +276,8 @@ p.is-empty::before {
 .drag-handle {
   position: fixed;
   opacity: 1;
+}
+.drag-handle .grab {
   transition:
     opacity 0.2s ease-in,
     background-color 0.2s ease-in;
@@ -280,18 +288,18 @@ p.is-empty::before {
   z-index: 50;
   cursor: grab;
 }
-html.light .drag-handle {
+html.light .drag-handle .grab {
   background-color: #bbb;
 }
 
-.drag-handle:hover {
+.drag-handle .grab:hover {
   background-color: #ccc;
 }
-html.light .drag-handle:hover {
+html.light .drag-handle .grab:hover {
   background-color: #999;
 }
 
-.drag-handle:active {
+.drag-handle .grab:active {
   background-color: var(--novel-stone-200, #aaa);
   cursor: grabbing;
 }
