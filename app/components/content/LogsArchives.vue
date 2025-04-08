@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const route = useRoute();
+const { locale, defaultLocale } = useI18n();
+
 const basePath = computed(() => {
   const pathLocale = route.path.startsWith(`/${locale.value}/`)
     ? locale.value
