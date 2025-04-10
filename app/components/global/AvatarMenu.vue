@@ -102,8 +102,11 @@ const items = computed(() => {
           src="/mamoochi-tiny.webp"
           class="avatar-button"
           placeholder
+          provider="cloudflare"
+          :modifiers="{ fit: 'contain' }"
+          preload
+          loading="lazy"
         />
-
         <!-- Account slot -->
         <template #account="{ item }">
           <UAvatar
@@ -112,6 +115,10 @@ const items = computed(() => {
             src="/mamoochi-tiny.webp"
             class="avatar-button"
             placeholder
+            provider="cloudflare"
+            :modifiers="{ fit: 'contain' }"
+            preload
+            loading="lazy"
           />
           <p class="text-sm">{{ profile.displayName }}</p>
         </template>

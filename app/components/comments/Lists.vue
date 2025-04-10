@@ -41,13 +41,16 @@ watch(commentsData, () => {
         <div class="w-full flex justify-between">
           <div class="flex items-center gap-2">
             <UAvatar
-              chip-color="primary"
-              chip-text=""
-              chip-position="top-right"
-              src="mamoochi-tiny.webp"
-              size="sm"
-              class="avatar-button"
+              :alt="profile.displayName"
+              size="2xl"
+              src="/mamoochi-tiny.webp"
+              placeholder
+              provider="cloudflare"
+              :modifiers="{ fit: 'contain' }"
+              preload
+              loading="lazy"
             />
+
             <span class="text-base font-medium">
               {{ profile.displayName }}
             </span>
