@@ -99,7 +99,7 @@ const items = computed(() => {
         <UAvatar
           :alt="profile.displayName"
           size="xs"
-          src="/totoro_render.webp"
+          src="/mamoochi-tiny.webp"
           class="avatar-button"
           placeholder
         />
@@ -109,7 +109,7 @@ const items = computed(() => {
           <UAvatar
             :alt="profile.displayName"
             size="2xs"
-            src="/totoro_render.webp"
+            src="/mamoochi-tiny.webp"
             class="avatar-button"
             placeholder
           />

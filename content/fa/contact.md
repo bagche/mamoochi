@@ -1,7 +1,7 @@
 ---
 title: تماس
 description: "اطلاعات تماس"
-thumbnail: /content/totoro-image-12.webp
+thumbnail: /content/mamoochi.webp
 ---
 
 ## اطلاعات تماس

@@ -44,7 +44,7 @@ watch(commentsData, () => {
               chip-color="primary"
               chip-text=""
               chip-position="top-right"
-              src="/totoro_render.webp"
+              src="mamoochi-tiny.webp"
               size="sm"
               class="avatar-button"
             />
