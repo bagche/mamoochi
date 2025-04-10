@@ -67,6 +67,8 @@ useSeoMeta({
           <!-- Optimized Image (Matches Content Layout) -->
           <nuxt-img
             v-if="pageData.thumbnail"
+            provider="cloudflare"
+            :modifiers="{ fit: 'contain' }"
             preload
             loading="lazy"
             sizes="(max-width: 640px) 100vw, 700px"

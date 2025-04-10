@@ -131,4 +131,9 @@ export default defineNuxtConfig({
     githubOwner: "",
     githubRepo: "",
   },
+  image: {
+    cloudflare: {
+      baseURL: "https://mamoochi.bagche.app",
+    },
+  },
 });

@@ -48,6 +48,8 @@ const { data } = useAsyncData(
       </div>
       <div class="w-full md:w-1/2 flex justify-center">
         <nuxt-img
+          provider="cloudflare"
+          :modifiers="{ fit: 'contain' }"
           preload
           loading="lazy"
           class="w-full max-w-md rounded-lg object-cover"
