@@ -2,6 +2,7 @@
 import { z } from "zod";
 
 import type { FormSubmitEvent } from "#ui/types";
+const { loggedIn, clear, user } = useUserSession();
 
 const toast = useToast();
 const { t } = useI18n();
@@ -81,13 +82,14 @@ const handleKeyDown = (event: KeyboardEvent) => {
           variant="ghost"
           color="primary"
           class="w-full"
+          size="xl"
           autoresize
           :disabled="!canCreate"
           @keydown="handleKeyDown"
         />
       </UFormField>
       <template #footer>
-        <div class="flex justify-end">
+        <div v-if="loggedIn" class="flex justify-end">
           <UButton
             :disabled="!canCreate"
             class="px-3 py-2"
@@ -99,6 +101,24 @@ const handleKeyDown = (event: KeyboardEvent) => {
           >
             {{ $t("Send Comment") }}
           </UButton>
+        </div>
+        <div v-else class="flex justify-end">
+          <UPopover>
+            <UButton
+              class="px-3 py-2"
+              icon="i-lucide-message-square-plus"
+              variant="outline"
+              color="secondary"
+            >
+              {{ $t("Verify Yourself") }}
+            </UButton>
+
+            <template #content>
+              <div class="p-3">
+                <AuthGuestRegisterForm @close-modal="registerIsOpen = false" />
+              </div>
+            </template>
+          </UPopover>
         </div>
       </template>
     </UCard>

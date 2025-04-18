@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import * as locales from "@nuxt/ui/locale";
+import { onMounted } from "vue";
 
 const { locale } = useI18n();
 const { initDevice } = useUser();
@@ -30,32 +31,30 @@ const description = computed(() =>
 );
 
 // Update head metadata reactively when locale or other values change.
-watchEffect(() => {
-  useHead({
-    title: siteName.value,
-    titleTemplate: `%s - ${siteName.value} • ${description.value}`,
-    htmlAttrs: {
-      lang: lang.value,
-      dir: dir.value,
+useHead({
+  title: siteName.value,
+  titleTemplate: `%s - ${siteName.value} • ${description.value}`,
+  htmlAttrs: {
+    lang: lang.value,
+    dir: dir.value,
+  },
+  meta: [
+    { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { name: "theme-color", content: "#e5e7eb" },
+    {
+      hid: "description",
+      name: "description",
+      content: description.value,
     },
-    meta: [
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#e5e7eb" },
-      {
-        hid: "description",
-        name: "description",
-        content: description.value,
-      },
-    ],
-    link: [
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-      { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon.png" },
-    ],
-  });
+  ],
+  link: [
+    { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+    { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon.png" },
+  ],
 });
-
-// Initialize user session/registration.
-initDevice();
+onMounted(() => {
+  initDevice();
+});
 </script>
 
 <template>

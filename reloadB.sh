@@ -3,52 +3,21 @@
 # Abort on errors
 set -e
 
-# Remove old wrangler directory and bundled migration files
+# Remove old database and migration files
 rm -rf .wrangler
 rm -rf ./migrations
 
-# Create the output directory for bundled migrations
-mkdir -p ./migrations
+# Ensure wrangler starts D1 before running Drizzle commands
+# npx wrangler d1 execute inbox --command "SELECT 1;" --local > /dev/null 2>&1
 
-# Wait a moment (if needed)
+# Wait for a moment to allow the database to be initialized
 sleep 2
 
-# Generate fresh migration files using drizzle-kit
+# Generate a fresh migration from the schema
 npx drizzle-kit generate
 
-# Define the directory where drizzle-kit outputs SQL migration files.
-MIGRATION_DIR="./migrations"
+# Forcefully apply schema to the database (even if migrations exist)
+# npx drizzle-kit push --force
 
-# Debug: list migration files found in MIGRATION_DIR
-echo "Listing migration files in ${MIGRATION_DIR}:"
-ls -l "${MIGRATION_DIR}" || true
-
-# Set output file for bundled migrations
-output_file=./server/utils/migrations.ts
-
-# Write header for the migrations.ts file
-cat <<'EOF' >"$output_file"
-// This file is auto-generated. Do not edit manually.
-export const dbMigrations = [
-EOF
-
-# Loop over each SQL file in MIGRATION_DIR
-for file in "$MIGRATION_DIR"/*.sql; do
-    if [ -f "$file" ]; then
-        base=$(basename "$file")
-        # Read file content and convert it to a JSON string using Python.
-        content=$(python -c 'import sys, json; print(json.dumps(sys.stdin.read()))' <"$file")
-        # Append a migration object to the output file.
-        cat <<EOF >>"$output_file"
-  {
-    name: "$base",
-    content: $content,
-  },
-EOF
-    fi
-done
-
-# Close the exported array
-echo "];" >>"$output_file"
-
-echo "Bundled migrations generated at $output_file"
+# Apply the migrations cleanly
+npx wrangler d1 migrations apply front --local

@@ -21,11 +21,6 @@ export default defineAppConfig({
       // icon: "i-lucide-info",
       to: "/about",
     },
-    {
-      label: "Contact",
-      // icon: "i-lucide-mail",
-      to: "/contact",
-    },
   ],
   dashMenu: [
     {

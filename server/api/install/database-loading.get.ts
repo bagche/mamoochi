@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
   try {
     const db: D1Database = event.context.cloudflare.env.DB;
     const drizzleDb = drizzle(db);
-    const appConfig = useAppConfig(event);
 
     // Check if the default Admin role exists
     const adminRole = await drizzleDb

@@ -1,33 +1,23 @@
 <script setup lang="ts">
-const { profile } = useUser();
-const route = useRoute();
+defineProps<{
+  comments: Comment[];
+  total: number;
+  page: number;
+  pageSize: number;
+  isLoading: boolean;
+  errorMessage: string | null;
+}>();
 
-const page = ref(1);
-const pageSize = ref(10);
-const total = ref(0);
-
-const { data: commentsData, refresh: refreshComments } = useFetch(
-  "/api/comments/single",
-  {
-    query: { page, pageSize, path: route.path },
-  }
-);
-
-defineExpose({ refreshComments });
-
-const currentComments = computed(() => commentsData.value?.comments || []);
-
-watch(commentsData, () => {
-  if (commentsData.value?.total !== undefined) {
-    total.value = commentsData.value.total;
-  }
-});
+// Emit page change event
+const emit = defineEmits<{
+  (e: "update:page", page: number): void;
+}>();
 </script>
 
 <template>
   <div class="flex w-full flex-col mt-5">
     <UCard
-      v-for="comment in currentComments"
+      v-for="comment in comments"
       :key="comment.id"
       class="mb-10 w-full"
       variant="soft"
@@ -41,18 +31,19 @@ watch(commentsData, () => {
         <div class="w-full flex justify-between">
           <div class="flex items-center gap-2">
             <UAvatar
-              :alt="profile.displayName"
-              size="2xl"
-              src="/mamoochi-tiny.webp"
+              icon="i-lucide-user"
+              size="xl"
               placeholder
               provider="cloudflare"
               :modifiers="{ fit: 'contain' }"
+              :src="comment.author.avatar"
               preload
               loading="lazy"
+              class="tracking-wide"
             />
 
-            <span class="text-base font-medium">
-              {{ profile.displayName }}
+            <span class="text-lg font-medium">
+              {{ comment.author.displayName }}
             </span>
           </div>
           <div class="flex gap-2 text-sm">
@@ -80,10 +71,12 @@ watch(commentsData, () => {
       </template>
     </UCard>
     <UPagination
-      v-model:page="page"
+      v-if="total > pageSize"
+      :page="page"
       :total="total"
       :page-size="pageSize"
       class="justify-center w-full flex"
+      @update:page="emit('update:page', $event)"
     />
   </div>
 </template>

@@ -1,34 +1,44 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { z } from "zod";
+import {
+  array,
+  maxLength,
+  minLength,
+  object,
+  optional,
+  parse,
+  string,
+} from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
-  const body = await readBody(event);
 
-  // Define a Zod schema for validating the incoming payload.
-  const schema = z.object({
-    roleName: z.string().min(3, t("Must be at least 3 characters")),
-    description: z.string().optional(),
-    permissions: z
-      .array(z.string())
-      .min(1, t("At least one permission must be selected")),
+  // Define Valibot schema for validating the incoming payload
+  const schema = object({
+    roleName: string([
+      minLength(3, t("Role name must be at least 3 characters")),
+      maxLength(255, t("Role name must not exceed 255 characters")),
+    ]),
+    description: optional(
+      string([
+        maxLength(1000, t("Description must not exceed 1000 characters")),
+      ])
+    ),
+    permissions: array(
+      string([minLength(1, t("Permission must not be empty"))]),
+      [minLength(1, t("At least one permission must be selected"))]
+    ),
   });
 
-  const parsed = schema.safeParse(body);
-  if (!parsed.success) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: parsed.error.message,
-    });
-  }
-
-  const { roleName, description, permissions } = parsed.data;
+  // Read and validate the body
+  const body = await readBody(event);
+  const parsed = parse(schema, body, { abortEarly: false });
+  const { roleName, description, permissions } = parsed;
 
   const { DB } = event.context.cloudflare.env;
   const drizzleDb = drizzle(DB);
 
-  // Check if the role name is already registered.
+  // Check if the role name is already registered
   const existingRole = await drizzleDb
     .select()
     .from(roles)
@@ -44,8 +54,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Insert the new role into the database.
-  // Permissions are stored as a JSON string.
+  // Insert the new role into the database
   await drizzleDb
     .insert(roles)
     .values({

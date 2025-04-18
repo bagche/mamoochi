@@ -2,33 +2,44 @@ import fs from "fs";
 import path from "path";
 
 /**
- * Generates routes by scanning all locales under the "content" folder.
+ * Generates routes for Nuxt Content full-static prerendering.
+ * Matches filesystem paths exactly to avoid mismatches.
  */
 export const generateRoutes = (): string[] => {
   const contentDir = path.join(process.cwd(), "content");
-  // Get locale folders (e.g. "en", "fa")
-  const locales = fs
-    .readdirSync(contentDir)
-    .filter((entry) => fs.statSync(path.join(contentDir, entry)).isDirectory());
+  const routes = new Set<string>();
 
-  const routes: string[] = [];
+  if (!fs.existsSync(contentDir)) {
+    console.warn("Content directory not found:", contentDir);
+    return ["/"];
+  }
+
+  const locales = fs
+    .readdirSync(contentDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
 
   for (const locale of locales) {
     const localeDir = path.join(contentDir, locale);
-    // Just scan everything; no excluded folders, no second pass for "items".
     const localeRoutes = scanDirectory(localeDir, localeDir, locale);
-    routes.push(...localeRoutes);
+    localeRoutes.forEach((route) => {
+      // Exclude dynamic routes
+      if (!route.includes("/profile") && !route.includes("/manage")) {
+        routes.add(route);
+      }
+    });
   }
-  return routes;
+
+  // Add root and locale roots
+  routes.add("/");
+  locales.forEach((locale) => routes.add(`/${locale}`));
+
+  const routeList = Array.from(routes);
+  return routeList;
 };
 
 /**
- * Recursively scans a directory for markdown files and builds routes.
- *
- * @param directory The current directory being scanned
- * @param baseDir   The base directory used to calculate the relative path
- * @param locale    The locale code (from the top-level folder)
- * @returns An array of route paths
+ * Recursively scans a directory for markdown files and builds Nuxt Content routes.
  */
 const scanDirectory = (
   directory: string,
@@ -36,37 +47,36 @@ const scanDirectory = (
   locale: string
 ): string[] => {
   const routes: string[] = [];
-  const entries = fs.readdirSync(directory);
+  const entries = fs.readdirSync(directory, { withFileTypes: true });
 
   for (const entry of entries) {
-    const fullPath = path.join(directory, entry);
+    const fullPath = path.join(directory, entry.name);
 
-    if (fs.statSync(fullPath).isDirectory()) {
-      // Recurse
+    if (entry.isDirectory()) {
+      // Recurse into subdirectories
       routes.push(...scanDirectory(fullPath, baseDir, locale));
-    } else if (entry.endsWith(".md")) {
-      // Calculate subpath
+    } else if (entry.isFile() && entry.name.endsWith(".md")) {
+      // Calculate route from relative path
       const relativePath = path.relative(baseDir, fullPath);
       const parts = relativePath.split(path.sep);
       const fileName = parts.pop()!;
-      // remove ".md" to get the slug
       const slug = fileName.replace(/\.md$/, "");
 
-      // Start building the route: /{locale}
+      // Build route: start with locale
       let routePath = `/${locale}`;
 
-      // If there are any subfolders, append them:
+      // Append subdirectories
       if (parts.length > 0) {
         routePath += `/${parts.join("/")}`;
       }
 
-      // If the file isn't index.md, append the slug
+      // Only append slug if not index.md
       if (slug !== "index") {
         routePath += `/${slug}`;
       }
 
-      // Normalize slashes and remove trailing slash if needed
-      routePath = routePath.replace(/\/+/g, "/").replace(/\/$/, "");
+      // Normalize path (remove duplicate/trailing slashes)
+      routePath = routePath.replace(/\/+/g, "/").replace(/\/$/, "") || "/";
       routes.push(routePath);
     }
   }

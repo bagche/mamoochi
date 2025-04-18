@@ -1,7 +1,7 @@
 ---
 title: کتاب
 description: "کتاب ها"
-thumbnail: /content/mamoochi.webp
+thumbnail: /content/gnu.png
 ---
 
 <LogsArchives cat='books' />

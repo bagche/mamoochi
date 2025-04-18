@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
+import { minLength, object, parse, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -16,14 +17,18 @@ export default defineEventHandler(async (event) => {
     }
     const userId = session.user.id;
 
-    // Read and validate input
-    const { oldPassword, newPassword } = await readBody(event);
-    if (!oldPassword || !newPassword) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: t("Missing required fields: oldPassword or newPassword"),
-      });
-    }
+    // Define Valibot schema for body validation
+    const schema = object({
+      oldPassword: string([
+        minLength(1, t("Current password must not be empty")),
+      ]),
+      newPassword: string([minLength(1, t("New password must not be empty"))]),
+    });
+
+    // Read and validate the body
+    const body = await readBody(event);
+    const parsed = parse(schema, body, { abortEarly: false });
+    const { oldPassword, newPassword } = parsed;
 
     // Initialize DB from Cloudflare environment
     const { DB } = event.context.cloudflare.env;

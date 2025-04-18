@@ -1,19 +1,47 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { sql } from "drizzle-orm/sql";
+import {
+  minValue,
+  number,
+  object,
+  optional,
+  parse,
+  pipe,
+  string,
+  transform,
+} from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
   try {
+    // Define Valibot schema for query parameters
+    const querySchema = object({
+      page: optional(
+        pipe(
+          string(),
+          transform((val) => (val ? Number(val) : 1)),
+          number([minValue(1, t("Page must be at least 1"))])
+        )
+      ),
+      pageSize: optional(
+        pipe(
+          string(),
+          transform((val) => (val ? Number(val) : 5)),
+          number([minValue(1, t("Page size must be at least 1"))])
+        )
+      ),
+    });
+
+    const query = getQuery(event);
+    const parsedQuery = parse(querySchema, query, { abortEarly: false });
+
+    const { page = 1, pageSize = 5 } = parsedQuery;
+    const offset = (page - 1) * pageSize;
+
     const { DB } = event.context.cloudflare.env;
     const drizzleDb = drizzle(DB);
-
-    // Get pagination parameters from query string
-    const query = getQuery(event);
-    const page = Number(query.page) || 1;
-    const pageSize = Number(query.pageSize) || 5;
-    const offset = (page - 1) * pageSize;
 
     // Query total count of comments
     const totalResult = await drizzleDb

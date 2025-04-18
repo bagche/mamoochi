@@ -1,5 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
+import { integer, minValue, number, object, parse,picklist } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -15,23 +16,22 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    // Read the body and validate required fields
-    const { id, newStatus } = await readBody(event);
-    if (!id || !newStatus) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: t("Missing required fields: id or newStatus"),
-      });
-    }
+    // Define Valibot schema for body validation
+    const schema = object({
+      id: number([
+        integer(),
+        minValue(1, t("Comment ID must be a positive integer")),
+      ]),
+      newStatus: picklist(
+        ["published", "spam", "draft"],
+        t("Invalid status value.")
+      ),
+    });
 
-    // Validate newStatus is allowed
-    const allowedStatuses = ["published", "spam", "draft"];
-    if (!allowedStatuses.includes(newStatus)) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: t("Invalid status value."),
-      });
-    }
+    // Read and validate the body
+    const body = await readBody(event);
+    const parsed = parse(schema, body, { abortEarly: false });
+    const { id, newStatus } = parsed;
 
     // Initialize database connection
     const { DB } = event.context.cloudflare.env;

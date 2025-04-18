@@ -34,20 +34,20 @@ export default () => {
       const pub = getPublicKey(privKey); // Get corresponding public key
 
       // Generate a device identity (deviceName) based on the public key and locale.
-      const randomName: any = GenerateIdentity(pub, locale.value);
+      // const randomName: any = GenerateIdentity(pub, locale.value);
 
       // Update the profile with generated keys and device data.
       profile.value = {
         ...profile.value,
-        firstName: randomName.split(" ")[0],
-        lastName: randomName.slice(randomName.split(" ")[0].length).trim(),
-        displayName: randomName,
-        about:
-          locale.value === "en"
-            ? `un ${randomName} new comer :)`
-            : `یک ${randomName} تازه وارد :)`,
+        // firstName: randomName.split(" ")[0],
+        // lastName: randomName.slice(randomName.split(" ")[0].length).trim(),
+        // displayName: randomName,
+        // about:
+        //   locale.value === "en"
+        //     ? `un ${randomName} new comer :)`
+        //     : `یک ${randomName} تازه وارد :)`,
         pub,
-        deviceName: randomName,
+        // deviceName: randomName,
       };
       devicePriv.value = privHex;
     }
@@ -81,11 +81,11 @@ export default () => {
     devicePriv.value = "";
     loggedIn.value = false;
   };
-  watch(loggedIn, () => {
-    if (!loggedIn.value) {
-      initDevice();
-    }
-  });
+  // watch(loggedIn, () => {
+  //   if (!loggedIn.value) {
+  //     initDevice();
+  //   }
+  // });
   return {
     profile,
     loggedIn,

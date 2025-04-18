@@ -1,26 +1,32 @@
 <script setup lang="ts">
 const route = useRoute();
-const { locale, defaultLocale } = useI18n();
+const { locale } = useI18n();
 
-const basePath = computed(() => {
-  const pathLocale = route.path.startsWith(`/${locale.value}/`)
-    ? locale.value
-    : defaultLocale;
-  return route.path === "/" ? `/${pathLocale}` : route.path;
-});
-
-const { data } = useAsyncData(
+const { data, error } = await useAsyncData(
   `home-intro-${route.path}`,
   async () => {
-    return await queryCollection("logs")
-      .where("intro", "=", true)
-      .andWhere((query) => {
-        return query.where("path", "LIKE", `${basePath.value}%`);
-      })
-      .order("date", "DESC")
-      .first();
+    try {
+      const response = await $fetch("/api/content/query", {
+        query: {
+          intro: true,
+          sortBy: "date",
+          sortOrder: "DESC",
+          limit: 1,
+          locale: locale.value,
+        },
+      });
+      // Response is { status: 200, data: [...] }
+      return response.data[0] || null;
+    } catch (e) {
+      console.error("Error fetching home intro:", e);
+      return null;
+    }
   },
-  { default: () => null }
+  {
+    dedupe: "defer",
+    lazy: false,
+    server: true,
+  }
 );
 </script>
 
@@ -47,14 +53,15 @@ const { data } = useAsyncData(
         </NuxtLink>
       </div>
       <nuxt-img
+        provider="cloudflare"
         :modifiers="{ fit: 'contain' }"
         preload
         loading="lazy"
-        class="w-full md:w-1/2 flex justify-center"
+        class="w-full md:w-1/2 flex justify-center max-w-7xl md:rounded-sm"
         :src="data.thumbnail"
         :alt="data.title || 'Image'"
-        :placeholder="[400]"
-        sizes="100vw sm:50vw md:400px"
+        placeholder
+        sizes="(max-width: 4080x) 100vw, 400px"
       />
     </div>
     <div v-else>

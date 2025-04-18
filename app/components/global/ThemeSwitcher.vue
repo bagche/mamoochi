@@ -13,11 +13,13 @@ const isDark = computed({
 </script>
 
 <template>
-  <div>
-    <USwitch
-      v-model="isDark"
+  <div class="flex items-center">
+    <UButton
+      :icon="isDark ? 'i-lucide-sun' : 'i-lucide-moon'"
+      class="cursor-pointer"
       size="xs"
-      :label="isDark ? $t('Dark Mode') : $t('Light Mode')"
+      variant="link"
+      @click="isDark ? (isDark = false) : (isDark = true)"
     />
   </div>
 </template>

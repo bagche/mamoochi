@@ -1,5 +1,15 @@
 import { drizzle } from "drizzle-orm/d1";
 import { sql } from "drizzle-orm/sql";
+import {
+  minValue,
+  number,
+  object,
+  optional,
+  parse,
+  pipe,
+  string,
+  transform,
+} from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -11,15 +21,34 @@ export default defineEventHandler(async (event) => {
       statusMessage: t("Forbidden: You do not have permission to get builds."),
     });
   }
+
   try {
+    // Define Valibot schema for query parameters
+    const querySchema = object({
+      page: optional(
+        pipe(
+          string(),
+          transform((val) => (val ? Number(val) : 1)),
+          number([minValue(1, t("Page must be at least 1"))])
+        )
+      ),
+      pageSize: optional(
+        pipe(
+          string(),
+          transform((val) => (val ? Number(val) : 10)),
+          number([minValue(1, t("Page size must be at least 1"))])
+        )
+      ),
+    });
+
+    const query = getQuery(event);
+    const parsedQuery = parse(querySchema, query, { abortEarly: false });
+
+    const { page = 1, pageSize = 10 } = parsedQuery; // Default values if undefined
+    const offset = (page - 1) * pageSize;
+
     const { DB } = event.context.cloudflare.env;
     const db = drizzle(DB);
-
-    // Get pagination parameters from query
-    const query = getQuery(event);
-    const page = Number(query.page) || 1;
-    const pageSize = Number(query.pageSize) || 10;
-    const offset = (page - 1) * pageSize;
 
     // Query the total count of builds
     const totalResult = await db.select({ count: sql`COUNT(*)` }).from(builds);

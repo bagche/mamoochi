@@ -1,7 +1,7 @@
 ---
 title: بلاگ
 description: "آخرین یادداشت ها و نوشته ها"
-thumbnail: /content/mamoochi.webp
+thumbnail: /content/gnu.png
 ---
 
 <LogsArchives  />

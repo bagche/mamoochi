@@ -1,7 +1,7 @@
 ---
 title: پروژه
 description: پروژه ها
-thumbnail: /content/mamoochi.webp
+thumbnail: /content/gnu.png
 ---
 
 <LogsArchives cat='projects' />

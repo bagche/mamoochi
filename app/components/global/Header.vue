@@ -4,7 +4,11 @@
     <UContainer class="flex gap-3 overflow-x-auto justify-start items-center">
       <LogoArea />
       <NavbarMenu />
-      <NavbarTools />
+      <div class="flex items-center gap-2">
+        <LanguageSwitcher />
+        <ThemeSwitcher />
+        <NavbarTools />
+      </div>
     </UContainer>
   </header>
 </template>

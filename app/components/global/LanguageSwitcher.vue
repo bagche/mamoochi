@@ -1,9 +1,13 @@
 <script setup lang="ts">
 const { locale, locales, setLocale, t } = useI18n();
-
 const availableLocales = computed(() =>
   locales.value.filter((l) => l.code !== locale.value)
 );
+
+const switchLocale = async (code: string) => {
+  await setLocale(code);
+  await reloadNuxtApp();
+};
 </script>
 
 <template>
@@ -13,9 +17,8 @@ const availableLocales = computed(() =>
       :key="loc.code"
       class="cursor-pointer"
       size="xs"
-      variant="ghost"
-      external
-      @click="setLocale(loc.code)"
+      variant="link"
+      @click="switchLocale(loc.code)"
     >
       {{ loc.code !== "fa" ? t("English") : t("Persian") }}
     </UButton>

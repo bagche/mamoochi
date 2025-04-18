@@ -1,25 +1,29 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
+import { minLength, object, optional, parse, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
-  // Use plain object property access for headers
   const headers: any = getHeaders(event);
   const now = new Date();
 
   try {
-    const body = await readBody(event);
+    // Define Valibot schema for body validation
+    const schema = object({
+      firstName: string([minLength(1, t("First name must not be empty"))]),
+      lastName: string([minLength(1, t("Last name must not be empty"))]),
+      userName: string([minLength(1, t("Username must not be empty"))]),
+      password: string([minLength(1, t("Password must not be empty"))]),
+      pub: string([minLength(1, t("Public key must not be empty"))]),
+      about: string([minLength(1, t("About must not be empty"))]),
+      avatar: optional(string()),
+    });
 
-    // Validate that all required admin details are provided
-    const { firstName, lastName, userName, password, pub, about, avatar } = body;
-    if (!firstName || !lastName || !userName || !password || !pub || !about) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: t(
-          "Please provide firstName, lastName, about, userName, password, and pub."
-        ),
-      });
-    }
+    // Read and validate the body
+    const body = await readBody(event);
+    const parsed = parse(schema, body, { abortEarly: false });
+    const { firstName, lastName, userName, password, pub, about, avatar } =
+      parsed;
 
     const { DB } = event.context.cloudflare.env;
     const drizzleDb = drizzle(DB);
@@ -89,7 +93,7 @@ export default defineEventHandler(async (event) => {
       lastActivity: now,
     });
 
-    // Retrieve the default Admin role (which should already be configured)
+    // Retrieve the default Admin role
     const adminRole = await drizzleDb
       .select()
       .from(roles)

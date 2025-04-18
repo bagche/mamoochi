@@ -1,28 +1,72 @@
 <script setup lang="ts">
-// Reference to the comments list component
-const commentsListRef = ref<InstanceType<typeof CommentsLists> | null>(null);
+const route = useRoute();
 
-// Handle the event emitted from CommentsCreateForm and trigger refresh in CommentsLists.
-const handleCommentPosted = () => {
-  commentsListRef.value?.refreshComments();
+// State for pagination and comments
+const page = ref(1);
+const pageSize = ref(10);
+const total = ref(0);
+const isLoading = ref(false);
+const errorMessage = ref<string | null>(null);
+
+// Fetch comments in parent
+const {
+  data: commentsData,
+  refresh: refreshComments,
+  error,
+  execute,
+} = await useFetch<{
+  comments: Comment[];
+  total: number;
+}>("/api/comments/single", {
+  query: {
+    page,
+    pageSize,
+    path: route.path,
+  },
+  watch: [page, pageSize],
+  immediate: false,
+});
+
+// Computed for comments
+const comments = computed(() => commentsData.value?.comments || []);
+
+// Update total when data changes
+watch(commentsData, () => {
+  if (commentsData.value?.total !== undefined) {
+    total.value = commentsData.value.total;
+  }
+});
+
+// Handle comment posted event
+const handleCommentPosted = async () => {
+  page.value = 1; // Reset to first page
+  await refreshComments(); // Refresh comments
 };
+
+// Handle page change from child
+const handlePageChange = (newPage: number) => {
+  page.value = newPage;
+};
+onMounted(() => {
+  execute();
+});
 </script>
 
 <template>
-  <section class="w-full">
+  <section id="comments" class="w-full">
     <div class="flex justify-between items-center my-5">
       <h2 class="text-3xl font-semibold">{{ $t("Comments") }}</h2>
     </div>
-    <!-- Emit "commentPosted" event from the create form -->
     <CommentsCreateForm @comment-posted="handleCommentPosted" />
-    <!-- Bind ref to allow refresh from parent -->
-    <CommentsLists ref="commentsListRef" />
+
+    <CommentsLists
+      :comments="comments"
+      :total="total"
+      :page="page"
+      :page-size="pageSize"
+      :is-loading="isLoading"
+      :error-message="errorMessage"
+      @update:page="handlePageChange"
+    />
   </section>
 </template>
-
-<style lang="scss" scoped>
-h3 {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-</style>

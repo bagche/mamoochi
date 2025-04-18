@@ -1,4 +1,15 @@
 import { drizzle } from "drizzle-orm/d1";
+import {
+  integer,
+  minLength,
+  minValue,
+  nullable,
+  number,
+  object,
+  optional,
+  parse,
+  string,
+} from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -13,16 +24,25 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  // Define Valibot schema for body validation
+  const schema = object({
+    routePath: string([minLength(1, t("Route path must not be empty"))]),
+    commentBody: string([minLength(1, t("Comment body must not be empty"))]),
+    parentCommentId: optional(
+      nullable(
+        number([
+          integer(),
+          minValue(1, t("Parent comment ID must be a positive integer")),
+        ])
+      )
+    ),
+  });
+
+  // Read and validate the body
   const payload = await readBody(event);
-  const { routePath, commentBody, parentCommentId } = payload;
-  if (!routePath || !commentBody) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: t(
-        "Missing required fields: routePath and commentBody are required."
-      ),
-    });
-  }
+  const parsed = parse(schema, payload, { abortEarly: false });
+
+  const { routePath, commentBody, parentCommentId } = parsed;
 
   const { DB } = event.context.cloudflare.env;
   const drizzleDb = drizzle(DB);
@@ -32,7 +52,7 @@ export default defineEventHandler(async (event) => {
   const insertedComment = await drizzleDb
     .insert(comments)
     .values({
-      routePath: routePath,
+      routePath,
       authorId: session.user.id,
       parentCommentId: parentCommentId || null,
       body: commentBody,

@@ -1,7 +1,7 @@
 ---
 title: درباره
 description: "درباره من"
-thumbnail: /content/mamoochi.webp
+thumbnail: /content/gnu.png
 ---
 
 ## درباره من

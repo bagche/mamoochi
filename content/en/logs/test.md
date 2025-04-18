@@ -1,6 +1,6 @@
 ---
 title: An Interesting Title
-thumbnail: /content/mamoochi.webp
+thumbnail: /content/gnu.png
 description: "Lorem Ipsum is a dummy text used in the printing industry to create meaningless content for design purposes. Printers and typesetters have used it for centuries to fill newspaper columns, magazine layouts, and book pages in a structured manner. It serves as a placeholder to focus on design rather than content. Over time, it has become a fundamental tool in the tech world for evaluating layouts, typography, and design elements in various applications. Many books and articles highlight its importance in the past, present, and future, helping designers and content creators maintain focus on user experience rather than textual content."
 date: 2025-01-01T00:00:00.294Z
 toc: true

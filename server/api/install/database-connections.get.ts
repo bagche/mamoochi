@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const d1: D1Database = event.context.cloudflare.env.DB;
 
   try {
-    // Perform a simple query to verify that the database connection is working.
+    // Perform a simple query to verify that the database connection is working
     const result = await d1.prepare("SELECT 1 as result").all();
 
     const connected = Boolean(

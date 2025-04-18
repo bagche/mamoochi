@@ -1,18 +1,21 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
+import { integer, minValue, number, object, parse, pipe } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
-  // Expect a buildId in the request body
+  // Validate incoming payload
   const body = await readBody(event);
-  const { buildId } = body;
-  if (!buildId) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: t("Missing buildId in request body"),
-    });
-  }
+  const schema = object({
+    buildId: pipe(
+      number(),
+      integer(t("buildId must be an integer")),
+      minValue(1, t("buildId must be a positive integer"))
+    ),
+  });
+  const parsed = parse(schema, body, { abortEarly: false });
+  const { buildId } = parsed;
 
   // Initialize DB connection
   const { DB } = event.context.cloudflare.env;
@@ -49,23 +52,20 @@ export default defineEventHandler(async (event) => {
     .map((c) => `- ${c.message}`)
     .join("\n");
 
-  // Build file changes from commits.
-  // If multiple commits update the same file, the later one overwrites the earlier ones.
-  const fileChanges = {};
+  // Build file changes from commits
+  const fileChanges: Record<string, string> = {};
   for (const commit of buildCommits) {
-    // Ensure commit has both a valid path and content.
     if (commit.path && typeof commit.body === "string") {
       fileChanges[commit.path] = commit.body;
     }
   }
 
-  // Create tree items for GitHub API.
-  // Sanitize file paths to remove any trailing slashes.
+  // Create tree items for GitHub API
   const treeItems = Object.keys(fileChanges).map((filePath) => {
     const sanitizedPath = filePath.replace(/\/+$/, "");
     return {
       path: sanitizedPath,
-      mode: "100644", // Standard file mode for blobs
+      mode: "100644",
       type: "blob",
       content: fileChanges[filePath],
     };
@@ -78,7 +78,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // --- GitHub API integration below ---
+  // GitHub API integration
   const { githubToken, githubOwner, githubRepo } = useRuntimeConfig(event);
   if (!githubToken || !githubOwner || !githubRepo) {
     throw createError({
@@ -109,10 +109,10 @@ export default defineEventHandler(async (event) => {
     `https://api.github.com/repos/${githubOwner}/${githubRepo}/git/commits/${currentSha}`,
     { headers: { Authorization: `token ${githubToken}` } }
   );
-  if (!commitResponse.ok) {
-    const err = await commitResponse.json();
+  if (!refResponse.ok) {
+    const err = await refResponse.json();
     throw createError({
-      statusCode: commitResponse.status,
+      statusCode: refResponse.status,
       statusMessage: t(`Failed to get current commit: ${err.message || ""}`),
     });
   }
@@ -194,7 +194,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Update build status to "success" after successful GitHub API calls
+  // Update build status to "success"
   await db
     .update(builds)
     .set({ status: "success" })

@@ -1,9 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { z } from "zod";
-
-// Assume createCommit is imported from your permissions module
-// import { createCommit } from "~/permissions";
+import { minLength, object, parse, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -20,18 +17,12 @@ export default defineEventHandler(async (event) => {
 
   // Validate incoming payload
   const body = await readBody(event);
-  const schema = z.object({
-    path: z.string(),
-    body: z.string(),
+  const schema = object({
+    path: string([minLength(1, t("Path must not be empty"))]),
+    body: string([minLength(1, t("Content must not be empty"))]),
   });
-  const parsed = schema.safeParse(body);
-  if (!parsed.success) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: parsed.error.message,
-    });
-  }
-  const { path, body: content } = parsed.data;
+  const parsed = parse(schema, body, { abortEarly: false });
+  const { path, body: content } = parsed;
 
   // Retrieve the current user session
   const session = await getUserSession(event);
@@ -58,7 +49,7 @@ export default defineEventHandler(async (event) => {
   if (existingBuild) {
     buildId = existingBuild.id;
   } else {
-    // Create a new build.
+    // Create a new build
     const now = new Date();
     const pad = (n: number) => n.toString().padStart(2, "0");
     // Format as "YYYY-MM-DD HH:mm"

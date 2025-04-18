@@ -1,7 +1,7 @@
 ---
 title: Books
 description: "Books Archives"
-thumbnail: /content/mamoochi.webp
+thumbnail: /content/gnu.png
 ---
 
 <LogsArchives cat='books' />
