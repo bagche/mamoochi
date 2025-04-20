@@ -48,13 +48,17 @@ useSeoMeta({
     <div v-if="pageData && !error" class="w-full">
       <template v-if="pageData.thumbnail">
         <div
-          class="page-header flex flex-col gap-6 text-center pt-10 md:pb-12 md:min-h-[calc(100vh-2rem)] items-center justify-between text-gray-600 border-gray-200 bg-gray-100 max-h-screen"
+          class="page-header flex flex-col gap-6 text-center pt-12 pb-6 md:pb-12 md:min-h-[50vh] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
         >
-          <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1
+              class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 tracking-tight"
+            >
               {{ pageData.title }}
             </h1>
-            <div class="flex flex-wrap justify-center gap-6 text-sm mb-4">
+            <div
+              class="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm sm:text-base mb-6"
+            >
               <span
                 v-if="pageData?.author"
                 class="font-medium whitespace-nowrap"
@@ -78,7 +82,7 @@ useSeoMeta({
                 }}</span>
               </span>
             </div>
-            <p class="mt-5 text-lg">
+            <p class="mt-4 text-base sm:text-lg md:text-xl max-w-3xl mx-auto">
               {{ pageData.description }}
             </p>
           </div>
@@ -89,8 +93,8 @@ useSeoMeta({
             preload
             loading="lazy"
             placeholder
-            sizes="(max-width: 768px) 100vw, 900px"
-            class="max-w-7xl md:rounded-sm h-auto"
+            sizes="sm:100vw md:80vw lg:800px"
+            class="w-full max-w-7xl max-h-[50vh] h-auto object-contain md:rounded-lg"
             :src="pageData.thumbnail"
             :alt="pageData.title"
           />
@@ -99,7 +103,7 @@ useSeoMeta({
 
       <UContainer>
         <div
-          class="max-w-2xl mx-auto flex flex-col items-center py-10 px-2 sm:px-4 prose md:prose-lg dark:prose-invert"
+          class="maxStorage-w-3xl mx-auto flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 prose prose-sm sm:prose-base md:prose-lg dark:prose-invert"
         >
           <PageToc
             v-if="pageData.toc"

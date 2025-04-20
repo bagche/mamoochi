@@ -9,7 +9,7 @@
     "clean": "rm -rf .nuxt dist .output dist_build .data .velite",
     "dev": "nuxt dev & velite dev",
     "generate": "nuxt generate",
-    "i18:update": "node scripts/updateLocale.js",
+    "i18:update": "node scripts/updateLocaleJS.js",
     "postinstall": "nuxt prepare",
     "lint:fix": "eslint . --fix",
     "preview": "nuxt preview",

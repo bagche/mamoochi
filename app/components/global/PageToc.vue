@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="w-full mb-20">
     <h3 class="mt-0">
       {{ $t("Content Toc") }}
     </h3>
