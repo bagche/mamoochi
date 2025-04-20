@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     "nuxt-echarts",
     "@nuxtjs/turnstile",
     "@nuxtjs/mdc",
-    "nuxt-delay-hydration",
+    // "nuxt-delay-hydration",
   ],
   app: {
     head: {
@@ -181,5 +181,5 @@ export default defineNuxtConfig({
   mdc: {
     highlight: false,
   },
-  delayHydration: { mode: "mount" },
+  // delayHydration: { mode: "mount" },
 });
