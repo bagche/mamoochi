@@ -162,7 +162,7 @@ export default defineNuxtConfig({
     githubOwner: "",
     githubRepo: "",
     turnstile: {
-      secretKey: "",
+      secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY,
     },
   },
 
