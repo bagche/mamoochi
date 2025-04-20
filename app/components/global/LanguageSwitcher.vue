@@ -20,7 +20,7 @@ const switchLocale = async (code: string) => {
       variant="link"
       @click="switchLocale(loc.code)"
     >
-      {{ loc.code !== "fa" ? t("English") : t("Persian") }}
+      {{ loc.name }}
     </UButton>
   </div>
 </template>

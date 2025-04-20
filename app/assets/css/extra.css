@@ -3,16 +3,11 @@
 /* custom themes  */
 
 @font-face {
-  font-family: "FarhangDot";
-  font-style: normal;
-  font-weight: 100 900;
-  src: url("~/assets/fonts/FarhangVariableDot.woff");
-}
-@font-face {
   font-family: "Vazirmatn";
   font-style: normal;
   font-weight: 100 900;
-  src: url("~/assets/fonts/Vazirmatn[wght].ttf");
+  src: url("/fonts/Vazirmatn[wght].woff2") format("woff2");
+  font-display: swap;
 }
 :root {
   font-family: Vazirmatn;
@@ -20,7 +15,7 @@
 
 [dir="rtl"] .logo {
   @apply text-3xl;
-  font-family: FarhangDot;
+  font-family: Vazirmatn;
 }
 [dir="rtl"] .navbar span {
 }

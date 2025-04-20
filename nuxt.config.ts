@@ -20,8 +20,21 @@ export default defineNuxtConfig({
     "nuxt-echarts",
     "@nuxtjs/turnstile",
     "@nuxtjs/mdc",
+    "nuxt-delay-hydration",
   ],
-
+  app: {
+    head: {
+      link: [
+        {
+          rel: "preload",
+          href: "/fonts/Vazirmatn[wght].woff2",
+          as: "font",
+          type: "font/woff2",
+          crossorigin: "anonymous",
+        },
+      ],
+    },
+  },
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
   build: { transpile: ["echarts-liquidfill"] },
 
@@ -47,6 +60,7 @@ export default defineNuxtConfig({
         output: {
           manualChunks: {
             vendor: ["vue", "echarts", "vue-router"],
+            charts: ["echarts-liquidfill"],
           },
         },
       },
@@ -80,20 +94,36 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    bundle: { optimizeTranslationDirective: false },
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
+    lazy: true,
     detectBrowserLanguage: {
       useCookie: true,
-      cookieKey: "i18n_redirected",
+      cookieKey: "i18n",
       redirectOn: "root",
     },
     locales: [
-      { name: "فارسی", dir: "rtl", code: "fa", file: "fa.json" },
-      { name: "English", dir: "ltr", code: "en", file: "en.json" },
+      {
+        name: "فارسی",
+        dir: "rtl",
+        code: "fa",
+        file: "fa.js",
+      },
+      {
+        name: "English",
+        dir: "ltr",
+        code: "en",
+        file: "en.js",
+      },
     ],
     langDir: "locales",
     defaultLocale: "fa",
     strategy: "prefix",
-    experimental: { localeDetector: "localeDetector.ts" },
+    experimental: {
+      localeDetector: "localeDetector.ts",
+      generatedLocaleFilePathFormat: "off",
+    },
   },
 
   routeRules: {
@@ -110,7 +140,7 @@ export default defineNuxtConfig({
 
   experimental: {
     restoreState: true,
-    payloadExtraction: false,
+    payloadExtraction: true,
   },
 
   echarts: {
@@ -151,4 +181,5 @@ export default defineNuxtConfig({
   mdc: {
     highlight: false,
   },
+  delayHydration: { mode: "mount" },
 });

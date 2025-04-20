@@ -1,12 +1,12 @@
-import { bytesToHex } from "@noble/hashes/utils";
+// import { bytesToHex } from "@noble/hashes/utils";
 import { useStorage } from "@vueuse/core";
-import { generateSecretKey, getPublicKey } from "nostr-tools";
-import { useI18n } from "vue-i18n";
+// import { generateSecretKey, getPublicKey } from "nostr-tools";
+// import { useI18n } from "vue-i18n";
 
 // Assume GenerateIdentity is available in your project to generate a device name based on the public key and locale.
 
 export default () => {
-  const { locale } = useI18n();
+  // const { locale } = useI18n();
 
   const profile = useCookie("current-user", {
     default: () => ({
@@ -29,27 +29,25 @@ export default () => {
   // Generate keys and device info on app boot if not already set.
   const initDevice = () => {
     if (!loggedIn.value) {
-      const privKey = generateSecretKey(); // Generates a Uint8Array secret key
-      const privHex = bytesToHex(privKey); // Convert to hex string
-      const pub = getPublicKey(privKey); // Get corresponding public key
-
+      // const privKey = generateSecretKey(); // Generates a Uint8Array secret key
+      // const privHex = bytesToHex(privKey); // Convert to hex string
+      // const pub = getPublicKey(privKey); // Get corresponding public key
       // Generate a device identity (deviceName) based on the public key and locale.
       // const randomName: any = GenerateIdentity(pub, locale.value);
-
       // Update the profile with generated keys and device data.
-      profile.value = {
-        ...profile.value,
-        // firstName: randomName.split(" ")[0],
-        // lastName: randomName.slice(randomName.split(" ")[0].length).trim(),
-        // displayName: randomName,
-        // about:
-        //   locale.value === "en"
-        //     ? `un ${randomName} new comer :)`
-        //     : `یک ${randomName} تازه وارد :)`,
-        pub,
-        // deviceName: randomName,
-      };
-      devicePriv.value = privHex;
+      // profile.value = {
+      // ...profile.value,
+      // firstName: randomName.split(" ")[0],
+      // lastName: randomName.slice(randomName.split(" ")[0].length).trim(),
+      // displayName: randomName,
+      // about:
+      //   locale.value === "en"
+      //     ? `un ${randomName} new comer :)`
+      //     : `یک ${randomName} تازه وارد :)`,
+      // pub,
+      // deviceName: randomName,
+      // };
+      // devicePriv.value = privHex;
     }
     loggedIn.value = true;
   };
