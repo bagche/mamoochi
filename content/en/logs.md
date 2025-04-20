@@ -1,7 +1,7 @@
 ---
 title: logs
 description: "logs Archives"
-thumbnail: /content/gnu.png
+thumbnail: /content/gnu.webp
 ---
 
 <LogsArchives   />

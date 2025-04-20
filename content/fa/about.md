@@ -1,7 +1,7 @@
 ---
 title: درباره
 description: "درباره من"
-thumbnail: /content/gnu.png
+thumbnail: /content/gnu.webp
 ---
 
 ## درباره من

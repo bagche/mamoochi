@@ -1,7 +1,7 @@
 ---
 title: پروژه
 description: پروژه ها
-thumbnail: /content/gnu.png
+thumbnail: /content/gnu.webp
 ---
 
 <LogsArchives cat='projects' />

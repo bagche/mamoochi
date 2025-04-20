@@ -10,3 +10,4 @@ dist_build
 pnpm-lock.yaml
 .wrangler
 .data
+.velite
