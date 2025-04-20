@@ -140,7 +140,7 @@ export default defineNuxtConfig({
 
   experimental: {
     restoreState: true,
-    payloadExtraction: true,
+    payloadExtraction: false,
   },
 
   echarts: {
