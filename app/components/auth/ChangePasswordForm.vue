@@ -5,6 +5,7 @@ import type { FormSubmitEvent } from "#ui/types";
 const { t } = useI18n();
 const toast = useToast();
 const submitting = ref(false);
+const form = ref(false);
 const emit = defineEmits(["close-modal"]);
 
 // Password visibility toggles

@@ -1,147 +1,224 @@
 <script setup lang="ts">
 import { z } from "zod";
 
-import type { FormSubmitEvent } from "#ui/types";
-const turnstile = ref();
-
-function reset() {
-  turnstile.value?.reset();
-}
+const emit = defineEmits(["close-modal"]);
 
 const { t } = useI18n();
 const { fetch: fetchProfile } = useUserSession();
+const { generateNewIdentity, profile } = useUser();
 const toast = useToast();
+
+// Refs
+const turnstile = ref();
+const token = ref();
 const submitting = ref(false);
-const form = ref();
-const emit = defineEmits(["close-modal"]);
 
-// Get initial profile from useUser composable
-const { profile } = useUser();
-
-// Initialize form state with data from the profile
+// Form state
 const state = reactive({
   firstName: "",
   lastName: "",
   about: "",
-  userName: "",
-  password: "",
-  confirmPassword: "",
 });
 
-// On mount, load initial values from useUser profile.
-// Use a fallback for the about field with the device name.
-onMounted(() => {
-  state.firstName = profile.value.firstName || "";
-  state.lastName = profile.value.lastName || "";
-  state.about = profile.value.about;
+// Validation errors
+const errors = reactive({
+  firstName: "",
+  lastName: "",
+  about: "",
 });
 
 // Validation schema
-const schema = z
-  .object({
-    firstName: z.string().min(2, t("Must be at least 2 characters")),
-    lastName: z.string().min(3, t("Must be at least 3 characters")),
-    about: z.string().min(3, t("Must be at least 3 characters")),
-    userName: z.string().min(3, t("Must be at least 3 characters")),
-    password: z.string().min(6, t("Password must be at least 6 characters")),
-    confirmPassword: z
-      .string()
-      .min(6, t("Confirm Password must be at least 6 characters")),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: t("Passwords do not match"),
-    path: ["confirmPassword"],
-  });
+const schema = z.object({
+  firstName: z.string().min(2, { message: t("Must be at least 2 characters") }),
+  lastName: z.string().min(3, { message: t("Must be at least 3 characters") }),
+  about: z.string().min(3, { message: t("Must be at least 3 characters") }),
+});
 
-type Schema = z.output<typeof schema>;
+// Initialize form state
+const initializeForm = () => {
+  state.firstName = profile.value.firstName || "";
+  state.lastName = profile.value.lastName || "";
+  state.about = profile.value.about || "";
+};
 
-// Handle form submission: include the device public key from useUser profile.
-const profileActivate = async (event: FormSubmitEvent<Schema>) => {
-  submitting.value = true;
+// Load initial values and watch for profile changes
+onMounted(initializeForm);
+watch(profile, initializeForm);
+
+// Reset turnstile
+const resetTurnstile = () => {
+  turnstile.value?.reset();
+};
+
+// Clear errors
+const clearErrors = () => {
+  errors.firstName = "";
+  errors.lastName = "";
+  errors.about = "";
+};
+
+// Validate form
+const validateForm = async (): Promise<boolean> => {
+  clearErrors();
   try {
-    await $fetch("/api/users/register", {
-      method: "POST",
-      body: JSON.stringify({
-        firstName: event.data.firstName,
-        lastName: event.data.lastName,
-        about: event.data.about,
-        userName: event.data.userName,
-        password: event.data.password,
-        pub: profile.value.pub, // send public key from useUser
-      }),
+    await schema.parseAsync(state);
+    return true;
+  } catch (error: any) {
+    if (error instanceof z.ZodError) {
+      error.errors.forEach((err) => {
+        if (err.path[0] === "firstName") errors.firstName = err.message;
+        if (err.path[0] === "lastName") errors.lastName = err.message;
+        if (err.path[0] === "about") errors.about = err.message;
+      });
+    }
+    toast.add({
+      title: t("Validation Error"),
+      description: t("Please check all fields"),
+      color: "warning",
     });
+    return false;
+  }
+};
+
+// Handle submission
+const handleSubmit = async () => {
+  console.log("handleSubmit called with data:", toRaw(state));
+
+  if (!token.value) {
+    toast.add({
+      title: t("Error"),
+      description: t("Please complete the verification"),
+      color: "warning",
+    });
+    return;
+  }
+
+  const isValid = await validateForm();
+  if (!isValid) {
+    console.log("Form validation failed, errors:", toRaw(errors));
+    return;
+  }
+
+  submitting.value = true;
+
+  try {
+    await $fetch("/api/users/guest-register", {
+      method: "POST",
+      body: {
+        token: token.value,
+        firstName: state.firstName,
+        lastName: state.lastName,
+        about: state.about,
+        pub: profile.value.pub,
+      },
+    });
+
     await fetchProfile();
-    submitting.value = false;
-    emit("close-modal");
 
     toast.add({
       title: t("Success"),
       description: t("User registered successfully"),
       color: "success",
     });
+
+    resetTurnstile();
+    emit("close-modal");
     reloadNuxtApp();
   } catch (error: any) {
-    submitting.value = false;
+    const errorMessage = error.data?.message || error.message;
+    const errorDetails =
+      error.data?.data?.issues?.[0]?.message || error.data?.data;
+
     toast.add({
-      title: error.data?.message || error.message,
-      description: error.data?.data?.issues?.[0]?.message || error.data?.data,
+      title: errorMessage,
+      description: errorDetails,
       color: "warning",
     });
+  } finally {
+    submitting.value = false;
   }
 };
+
+// Debug token changes
+watch(token, (newToken) => {
+  console.debug("Turnstile token updated:", newToken);
+});
 </script>
 
 <template>
-  <div class="flex flex-col px-2 gap-3">
-    <div class="flex gap-3 w-full">
-      <UFormField :label="$t('First Name')" name="firstName" class="basis-1/2">
+  <div class="flex flex-col px-2">
+    <div class="flex border-b pb-1 w-full justify-between mb-3">
+      <div class="text-md">{{ $t("Your Basic Info") }}</div>
+      <UButton
+        class="cursor-pointer flex"
+        variant="link"
+        icon="i-lucide-refresh-ccw"
+        color="secondary"
+        size="xs"
+        :label="$t('New Random Name')"
+        @click="generateNewIdentity()"
+      />
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <div class="basis-1/2">
+        <label class="block text-sm font-medium text-gray-700">{{
+          $t("First Name")
+        }}</label>
         <UInput
           v-model="state.firstName"
           class="w-full"
           variant="subtle"
           :placeholder="$t('Your first name')"
         />
-      </UFormField>
-      <UFormField :label="$t('Last Name')" name="lastName" class="basis-1/2">
+        <p v-if="errors.firstName" class="text-red-500 text-xs mt-1">
+          {{ errors.firstName }}
+        </p>
+      </div>
+
+      <div class="basis-1/2">
+        <label class="block text-sm font-medium text-gray-700">{{
+          $t("Last Name")
+        }}</label>
         <UInput
           v-model="state.lastName"
           class="w-full"
           variant="subtle"
           :placeholder="$t('Your last name')"
         />
-      </UFormField>
-    </div>
+        <p v-if="errors.lastName" class="text-red-500 text-xs mt-1">
+          {{ errors.lastName }}
+        </p>
+      </div>
 
-    <UFormField :label="$t('About')" name="about" class="basis-2/2">
-      <UTextarea
-        v-model="state.about"
-        class="w-full"
-        variant="subtle"
-        :placeholder="$t('Ex: Developer Lead')"
-      />
-    </UFormField>
-    <UButtonGroup class="flex w-full" size="md">
-      <UButton
-        block
-        class="cursor-pointer"
-        variant="outline"
-        :label="$t('Reset from handler')"
-        color="success"
-        size="xl"
-        @click="reset"
-      />
-      <UButton
-        block
-        class="cursor-pointer"
-        variant="outline"
-        :label="$t('Reset Token Template')"
-        color="success"
-        size="xl"
-        @click="turnstile.reset()"
-      />
-    </UButtonGroup>
-    <div class="flex justify-center">
-      <NuxtTurnstile ref="turnstile" />
+      <div class="basis-2/2">
+        <label class="block text-sm font-medium text-gray-700">{{
+          $t("About")
+        }}</label>
+        <UTextarea
+          v-model="state.about"
+          class="w-full"
+          variant="subtle"
+          :placeholder="$t('Ex: Developer Lead')"
+        />
+        <p v-if="errors.about" class="text-red-500 text-xs mt-1">
+          {{ errors.about }}
+        </p>
+      </div>
+
+      <div class="flex justify-center h-16 gap-2">
+        <NuxtTurnstile ref="turnstile" v-model="token" />
+        <UButton
+          type="button"
+          variant="outline"
+          icon="i-lucide-plus"
+          color="success"
+          :label="$t('Register As Guest')"
+          :disabled="!token || submitting"
+          :loading="submitting"
+          @click="handleSubmit"
+        />
+      </div>
     </div>
   </div>
 </template>

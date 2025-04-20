@@ -79,7 +79,7 @@ export default defineNuxtConfig({
       routes: generateRoutes(),
       failOnError: true,
       // concurrency: 10,
-      // autoSubfolderIndex: true,
+      autoSubfolderIndex: false,
     },
   },
   ui: { fonts: false },
