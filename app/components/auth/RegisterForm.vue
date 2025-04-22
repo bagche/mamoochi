@@ -8,7 +8,6 @@ const { fetch: fetchProfile } = useUserSession();
 const toast = useToast();
 const submitting = ref(false);
 const form = ref();
-const emit = defineEmits(["close-modal"]);
 
 // Get initial profile from useUser composable
 const { profile } = useUser();
@@ -71,7 +70,6 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
     });
     await fetchProfile();
     submitting.value = false;
-    emit("close-modal");
 
     toast.add({
       title: t("Success"),

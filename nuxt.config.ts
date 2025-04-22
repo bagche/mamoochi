@@ -22,19 +22,7 @@ export default defineNuxtConfig({
     "@nuxtjs/mdc",
     "nuxt-booster",
   ],
-  app: {
-    head: {
-      link: [
-        {
-          rel: "preload",
-          href: "/fonts/Vazirmatn[wght].woff2",
-          as: "font",
-          type: "font/woff2",
-          crossorigin: "anonymous",
-        },
-      ],
-    },
-  },
+
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
   build: { transpile: ["echarts-liquidfill"] },
 
@@ -153,6 +141,7 @@ export default defineNuxtConfig({
       "ToolboxComponent",
       "GeoComponent",
       "VisualMapComponent",
+      "LegendComponent",
     ],
   },
 
@@ -193,7 +182,7 @@ export default defineNuxtConfig({
       fonts: [
         {
           family: "Vazirmatn",
-          src: "/fonts/Vazirmatn[wght].woff2",
+          src: "@/fonts/Vazirmatn[wght].woff2",
           preload: true, // Matches your existing preload setup
         },
       ],

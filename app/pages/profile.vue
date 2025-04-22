@@ -53,7 +53,7 @@ useSeoMeta({
         <div
           class="max-w-3xl mx-auto flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 prose prose-sm sm:prose-base md:prose-lg dark:prose-invert"
         >
-          data
+          <DashboardTabs />
         </div>
       </UContainer>
     </div>

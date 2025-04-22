@@ -42,6 +42,11 @@ export default defineAppConfig({
       to: "/manage/comments",
     },
     {
+      label: "Newsletter",
+      // icon: "i-lucide-database",
+      to: "/manage/newsletter",
+    },
+    {
       label: "Users",
       // icon: "i-lucide-box",
       to: "/manage/users",

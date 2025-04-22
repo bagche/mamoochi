@@ -1,20 +1,17 @@
 <script setup lang="ts">
-const { loggedIn, clear, user } = useUserSession();
+const { loggedIn, clear } = useUserSession();
 const { profile, logout } = useUser();
-const { t, locale, setLocale } = useI18n();
+const { t, locale } = useI18n();
 const route = useRoute();
 
 const updateProfileIsOpen = ref(false);
 const changePasswordIsOpen = ref(false);
-const loginIsOpen = ref(false);
-const registerIsOpen = ref(false);
 
 // Account group always shows the avatar
 const accountGroup = [
   {
     label: "",
     slot: "account",
-    disabled: true,
   },
 ];
 
@@ -41,16 +38,12 @@ const loggedOutItems = [
   {
     label: t("Login"),
     icon: "i-lucide-arrow-right-left",
-    onSelect: () => {
-      loginIsOpen.value = true;
-    },
+    to: "login",
   },
   {
     label: t("Register"),
     icon: "i-lucide-log-in",
-    onSelect: () => {
-      registerIsOpen.value = true;
-    },
+    to: "register",
   },
 ];
 
@@ -62,7 +55,7 @@ const exitItem = {
     await clear();
     logout();
     reloadNuxtApp();
-    window.location.reload();
+    window.location.replace("/");
   },
 };
 
@@ -135,24 +128,7 @@ const items = computed(() => {
         </template>
       </UDropdownMenu>
     </UButtonGroup>
-    <UModal
-      v-model:open="registerIsOpen"
-      :dismissible="false"
-      :title="$t('Register User')"
-    >
-      <template #body>
-        <AuthRegisterForm @close-modal="registerIsOpen = false" />
-      </template>
-    </UModal>
-    <UModal
-      v-model:open="loginIsOpen"
-      :dismissible="false"
-      :title="$t('Login User')"
-    >
-      <template #body>
-        <AuthLoginForm @close-modal="loginIsOpen = false" />
-      </template>
-    </UModal>
+
     <UModal
       :open="changePasswordIsOpen"
       :dismissible="false"
