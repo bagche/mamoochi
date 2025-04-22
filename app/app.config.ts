@@ -8,60 +8,44 @@ export default defineAppConfig({
   mainMenu: [
     {
       label: "Home",
-      // icon: "i-lucide-home",
       to: "/",
     },
     {
       label: "logs",
-      // icon: "i-lucide-search",
       to: "/logs",
     },
     {
       label: "About",
-      // icon: "i-lucide-info",
       to: "/about",
     },
   ],
   dashMenu: [
     {
       label: "Dashboard",
-      // type: "label",
-      // icon: "i-lucide-book-open",
       to: "/manage",
     },
     {
-      label: "Items",
-      // icon: "i-lucide-book-open",
-      // active: true,
-      // defaultOpen: true,
-      to: "/manage/items",
+      label: "Pages",
+      to: "/manage/pages",
     },
     {
       label: "Comments",
-      // icon: "i-lucide-database",
       to: "/manage/comments",
     },
     {
       label: "Newsletter",
-      // icon: "i-lucide-database",
       to: "/manage/newsletter",
     },
     {
       label: "Users",
-      // icon: "i-lucide-box",
       to: "/manage/users",
-      // defaultOpen: true,
     },
     {
       label: "Builds",
-      // type: "label",
-      // icon: "i-lucide-book-open",
       to: "/manage/builds",
     },
     {
       label: "Settings",
-      // type: "label",
-      // icon: "i-lucide-book-open",
       to: "/manage/settings",
     },
   ],

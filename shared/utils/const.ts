@@ -1,5 +1,5 @@
 export const CommentStatus = {
   Published: "published",
   Spam: "spam",
-  Draft: "draft",
+  New: "new",
 } as const;

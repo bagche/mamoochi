@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { integer, minValue, number, object, parse,picklist } from "valibot";
+import { integer, minValue, number, object, parse, picklist } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
         minValue(1, t("Comment ID must be a positive integer")),
       ]),
       newStatus: picklist(
-        ["published", "spam", "draft"],
+        ["published", "spam", "new"],
         t("Invalid status value.")
       ),
     });

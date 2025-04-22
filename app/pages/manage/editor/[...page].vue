@@ -3,17 +3,18 @@ import { z } from "zod";
 
 import type { FormSubmitEvent } from "#ui/types";
 
-const props = defineProps<{ pagePath: string }>();
 const route = useRoute();
 const { t } = useI18n();
 const toast = useToast();
+const filPath = route.params.page.join("/");
+
 const { data: page, error }: any = await useAsyncData(
   `page:${route.path}`,
   async () => {
     try {
       return await $fetch("/api/content/single", {
         query: {
-          path: props.pagePath,
+          path: filPath,
         },
       });
     } catch (error) {
@@ -94,10 +95,10 @@ const onSubmit = async (event: FormSubmitEvent<Schema>): Promise<void> => {
 
 const isTyping = (data: string): void => (state.body = data);
 
-definePageMeta({
-  middleware: "permissions",
-  permission: "commit.create",
-});
+// definePageMeta({
+//   middleware: "permissions",
+//   permission: "commit.create",
+// });
 </script>
 
 <template>

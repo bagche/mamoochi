@@ -116,12 +116,8 @@ export default defineNuxtConfig({
 
   routeRules: {
     "/": { prerender: true },
-    "/fa/": { prerender: true },
-    "/en/": { prerender: true },
     "/:locale/**": { prerender: true },
     "/api/**": { ssr: true },
-    "/manage": { prerender: false, ssr: false, robots: false },
-    "/manage/**": { prerender: false, ssr: false, robots: false },
     "/:locale/manage": { prerender: false, ssr: false, robots: false },
     "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
   },

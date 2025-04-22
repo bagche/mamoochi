@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { TableColumn } from "@nuxt/ui";
 
+const props = defineProps({
+  status: { type: String, required: true, default: "new" },
+});
+
 const { t } = useI18n();
 const toast = useToast();
 
@@ -11,7 +15,6 @@ const UButton = resolveComponent("UButton");
 const UBadge = resolveComponent("UBadge");
 const UAvatar = resolveComponent("UAvatar");
 const UPagination = resolveComponent("UPagination");
-const USeparator = resolveComponent("USeparator");
 
 // Define the Comment type
 type Comment = {
@@ -41,7 +44,7 @@ async function updateCommentStatus(commentId: number, newStatus: string) {
     toast.add({
       title: t("Success"),
       description: t("Comment status updated successfully"),
-      color: "green",
+      color: "success",
     });
     // Refresh the table data after a successful update
     refresh();
@@ -50,7 +53,7 @@ async function updateCommentStatus(commentId: number, newStatus: string) {
     toast.add({
       title: t("Error"),
       description: error.statusMessage || t("Failed to update comment status"),
-      color: "red",
+      color: "error",
     });
   } finally {
     submitting.value = false;
@@ -67,6 +70,7 @@ const pagination = ref({
 const queryParams = computed(() => ({
   page: pagination.value.pageIndex + 1,
   pageSize: pagination.value.pageSize,
+  status: props.status,
 }));
 
 // Fetch paginated comments from the API endpoint
@@ -126,9 +130,9 @@ const columns: TableColumn<Comment>[] = [
       } else if (status === "spam") {
         color = "error";
         label = t("Spam");
-      } else if (status === "draft") {
+      } else if (status === "new") {
         color = "neutral";
-        label = t("Draft");
+        label = t("new");
       }
       return h(UBadge, { color, size: "md" }, label);
     },
@@ -192,7 +196,7 @@ const sorting = ref([
 </script>
 
 <template>
-  <div class="w-full space-y-4 p-4">
+  <div class="w-full space-y-4 pt-4">
     <UTable
       v-model:sorting="sorting"
       :loading="status === 'pending'"

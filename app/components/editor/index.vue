@@ -11,7 +11,7 @@ import AutoJoiner from "tiptap-extension-auto-joiner";
 import { Markdown } from "tiptap-markdown";
 import { onBeforeUnmount, unref } from "vue";
 
-import GlobalDragHandle from "../editor/dragger";
+// import GlobalDragHandle from "../editor/dragger";
 import { getExtensions } from "../editor/Extension";
 
 // Retrieve any custom extensions.
@@ -30,10 +30,10 @@ const editor = useEditor({
     StarterKit,
     FloatingMenu,
     BubbleMenu,
-    GlobalDragHandle.configure({
-      dragHandleWidth: 20,
-      scrollTreshold: 100,
-    }),
+    // GlobalDragHandle.configure({
+    //   dragHandleWidth: 20,
+    //   scrollTreshold: 100,
+    // }),
     ...customExtensions,
     Markdown,
     Placeholder.configure({ placeholder: t("Type Something...") }),

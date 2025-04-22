@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { sql } from "drizzle-orm/sql";
 import {
+  enum_, // Import enum_ for status validation
   minValue,
   number,
   object,
@@ -14,8 +15,19 @@ import {
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
+  if (await denies(event, editComment)) {
+    throw createError({
+      statusCode: 403,
+      statusMessage: t(
+        "Forbidden: You do not have permission to Manage comments."
+      ),
+    });
+  }
 
   try {
+    // Define allowed status values
+    const StatusEnum = enum_(["new", "published", "spam"]);
+
     // Define Valibot schema for query parameters
     const querySchema = object({
       page: optional(
@@ -32,25 +44,28 @@ export default defineEventHandler(async (event) => {
           number([minValue(1, t("Page size must be at least 1"))])
         )
       ),
+      status: optional(StatusEnum, undefined), // Optional status with enum validation
     });
 
     const query = getQuery(event);
     const parsedQuery = parse(querySchema, query, { abortEarly: false });
 
-    const { page = 1, pageSize = 5 } = parsedQuery;
+    const { page = 1, pageSize = 5, status } = parsedQuery;
     const offset = (page - 1) * pageSize;
 
     const { DB } = event.context.cloudflare.env;
     const drizzleDb = drizzle(DB);
 
     // Query total count of comments
-    const totalResult = await drizzleDb
-      .select({ count: sql`COUNT(*)` })
-      .from(comments);
+    let totalQuery = drizzleDb.select({ count: sql`COUNT(*)` }).from(comments);
+    if (status) {
+      totalQuery = totalQuery.where(eq(comments.status, status));
+    }
+    const totalResult = await totalQuery;
     const total = Number(totalResult[0].count);
 
     // Query paginated comments with author details
-    const allComments = await drizzleDb
+    let commentsQuery = drizzleDb
       .select({
         id: comments.id,
         routePath: comments.routePath,
@@ -67,6 +82,12 @@ export default defineEventHandler(async (event) => {
       .leftJoin(users, eq(comments.authorId, users.id))
       .limit(pageSize)
       .offset(offset);
+
+    if (status) {
+      commentsQuery = commentsQuery.where(eq(comments.status, status));
+    }
+
+    const allComments = await commentsQuery;
 
     return {
       total,

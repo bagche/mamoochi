@@ -56,7 +56,7 @@ export default defineEventHandler(async (event) => {
       authorId: session.user.id,
       parentCommentId: parentCommentId || null,
       body: commentBody,
-      status: CommentStatus.Draft,
+      status: CommentStatus.New,
       createdAt: now,
       updatedAt: now,
     })
