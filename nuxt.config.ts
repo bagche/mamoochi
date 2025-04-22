@@ -58,6 +58,7 @@ export default defineNuxtConfig({
       exclude: ["shiki", "oniguruma"],
     },
   },
+
   nitro: {
     preset: "cloudflare-pages",
     compressPublicAssets: { brotli: true },
@@ -172,7 +173,6 @@ export default defineNuxtConfig({
 
   // Nuxt Booster Configuration
   booster: {
-    enabled: true, // Enable Nuxt Booster
     modern: true, // Serve modern ES modules to modern browsers
     lazyHydration: true, // Enable lazy hydration (replaces nuxt-delay-hydration)
     criticalCss: true, // Enable critical CSS extraction
@@ -182,8 +182,10 @@ export default defineNuxtConfig({
       fonts: [
         {
           family: "Vazirmatn",
-          src: "@/fonts/Vazirmatn[wght].woff2",
-          preload: true, // Matches your existing preload setup
+          src: "/fonts/Vazirmatn[wght].woff2",
+          as: "font",
+          type: "font/woff2",
+          crossorigin: "anonymous",
         },
       ],
     },
