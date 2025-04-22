@@ -2,7 +2,7 @@
 const route = useRoute();
 const { locale } = useI18n();
 
-const { data, error } = useAsyncData(
+const { data, error } = await useAsyncData(
   `home-intro-${route.path}`,
   async () => {
     try {

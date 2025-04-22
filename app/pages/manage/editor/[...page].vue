@@ -104,59 +104,58 @@ const isTyping = (data: string): void => (state.body = data);
 <template>
   <UContainer>
     <div class="max-w-7xl mx-auto flex flex-col items-center pt-10 px-4">
-      <ClientOnly>
-        <UForm
-          ref="form"
-          :schema="schema"
-          :state="state"
-          class="space-y-4 w-full"
-          @submit="onSubmit"
-        >
-          <div class="flex w-full flex-col">
-            <div class="flex w-full justify-between pb-3 gap-3 items-end">
-              <UFormField label="عنوان" class="w-full" size="md">
-                <UInput v-model="state.title" class="w-full" />
-              </UFormField>
-              <UButtonGroup size="md">
-                <UButton
-                  :icon="codeEditor ? 'i-lucide-brush' : 'i-lucide-code'"
-                  color="secondary"
-                  variant="outline"
-                  @click="
-                    () => {
-                      codeEditor = !codeEditor;
-                    }
-                  "
-                >
-                  {{ codeEditor ? $t("Visual") : $t("Code") }}
-                </UButton>
-                <UButton
-                  icon="i-lucide-cloud"
-                  type="submit"
-                  color="success"
-                  variant="outline"
-                >
-                  {{ $t("Save") }}
-                </UButton>
-              </UButtonGroup>
-            </div>
-
-            <UTextarea
-              v-if="codeEditor"
-              v-model="state.body"
-              class="w-full ltr text-xl flex"
-              autoresize
-              :rows="30"
-            />
-            <Editor
-              v-else
-              :body="state.body"
-              class="prose prose-lg dark:prose-invert"
-              @update="isTyping"
-            />
+      <UForm
+        ref="form"
+        :schema="schema"
+        :state="state"
+        class="space-y-4 w-full"
+        @submit="onSubmit"
+      >
+        <div class="flex w-full flex-col">
+          <div class="flex w-full justify-between pb-3 gap-3 items-end">
+            <UFormField label="عنوان" class="w-full" size="md">
+              <UInput v-model="state.title" class="w-full" />
+            </UFormField>
+            <UButtonGroup size="md">
+              <UButton
+                :icon="codeEditor ? 'i-lucide-brush' : 'i-lucide-code'"
+                color="secondary"
+                variant="outline"
+                @click="
+                  () => {
+                    codeEditor = !codeEditor;
+                  }
+                "
+              >
+                {{ codeEditor ? $t("Visual") : $t("Code") }}
+              </UButton>
+              <UButton
+                icon="i-lucide-cloud"
+                type="submit"
+                color="success"
+                variant="outline"
+              >
+                {{ $t("Save") }}
+              </UButton>
+            </UButtonGroup>
           </div>
-        </UForm>
-      </ClientOnly>
+
+          <UTextarea
+            v-if="codeEditor"
+            v-model="state.body"
+            class="w-full ltr text-xl flex"
+            autoresize
+            :rows="30"
+          />
+
+          <Editor
+            v-else
+            :body="state.body"
+            class="prose prose-lg dark:prose-invert"
+            @update="isTyping"
+          />
+        </div>
+      </UForm>
     </div>
   </UContainer>
 </template>
