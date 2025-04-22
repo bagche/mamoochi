@@ -1,4 +1,4 @@
-import { minLength, object, parse, string } from "valibot";
+import { minLength, object, parse, pipe, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const { default: Content } = await import("#velite/content.json", {
@@ -6,9 +6,8 @@ export default defineEventHandler(async (event) => {
   });
   const t = await useTranslation(event);
   const schema = object({
-    path: string([minLength(1, "Missing or invalid path parameter")]),
+    path: pipe(string(), minLength(1, t("Missing or invalid path parameter"))),
   });
-
   try {
     const query = getQuery(event);
     const parsed = parse(schema, query, { abortEarly: false });

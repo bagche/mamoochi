@@ -1,10 +1,10 @@
 import { mergeAttributes, Node } from "@tiptap/core";
-import { NodeViewWrapper,VueNodeViewRenderer } from "@tiptap/vue-3";
+import { NodeViewWrapper, VueNodeViewRenderer } from "@tiptap/vue-3";
 import { defineComponent, h } from "vue";
 
 // Function to dynamically import components
 const importComponents = async () => {
-  const context = import.meta.glob("../content/**/*.vue", { eager: true });
+  const context = import.meta.glob("../mdc/**/*.vue", { eager: true });
   const components = {};
 
   for (const [path, module] of Object.entries(context)) {

@@ -7,11 +7,30 @@ const props = defineProps<{ pagePath: string }>();
 const route = useRoute();
 const { t } = useI18n();
 const toast = useToast();
-
-const { data: page } = await useAsyncData(route.path, () =>
-  queryCollection("content").path(props.pagePath).first()
+const { data: page, error }: any = await useAsyncData(
+  `page:${route.path}`,
+  async () => {
+    try {
+      return await $fetch("/api/content/single", {
+        query: {
+          path: props.pagePath,
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching page content:", error);
+      throw createError({
+        statusCode: 404,
+        statusMessage: "Page not found",
+      });
+    }
+  },
+  {
+    dedupe: "defer",
+    transform: (data) => data || null,
+    lazy: false,
+    server: true,
+  }
 );
-
 /**
  * Converts literal "\n" to real newlines, then extracts the front matter block
  * (from the start of the file until the second triple-dash) and the remaining content.
@@ -26,8 +45,8 @@ const parseFrontMatter = (
     : { frontMatter: "", content: replaced };
 };
 
-const rawBody = page?.value?.rawbody || "";
-const { frontMatter, content } = parseFrontMatter(rawBody);
+const body = page?.value?.body || "";
+const { frontMatter, content } = parseFrontMatter(body);
 
 const state = reactive({
   title: page?.value?.title ?? "title",
@@ -104,7 +123,7 @@ definePageMeta({
                   variant="outline"
                   @click="
                     () => {
-                      codeEditor.value = !codeEditor.value;
+                      codeEditor = !codeEditor;
                     }
                   "
                 >
