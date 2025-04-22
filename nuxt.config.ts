@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     "nuxt-echarts",
     "@nuxtjs/turnstile",
     "@nuxtjs/mdc",
-    // "nuxt-delay-hydration",
+    "nuxt-booster",
   ],
   app: {
     head: {
@@ -78,11 +78,10 @@ export default defineNuxtConfig({
       crawlLinks: false,
       routes: generateRoutes(),
       failOnError: true,
-      // concurrency: 10,
       autoSubfolderIndex: false,
     },
   },
-  ui: { fonts: false },
+  ui: { fonts: false }, // Nuxt Booster can handle font optimization, kept as false to avoid conflicts
 
   image: {
     cloudflare: {
@@ -181,5 +180,32 @@ export default defineNuxtConfig({
   mdc: {
     highlight: false,
   },
-  // delayHydration: { mode: "mount" },
+
+  // Nuxt Booster Configuration
+  booster: {
+    enabled: true, // Enable Nuxt Booster
+    modern: true, // Serve modern ES modules to modern browsers
+    lazyHydration: true, // Enable lazy hydration (replaces nuxt-delay-hydration)
+    criticalCss: true, // Enable critical CSS extraction
+    lowPriorityAssets: true, // Optimize low-priority asset loading
+    fontOptimization: {
+      enabled: true, // Optimize font loading
+      fonts: [
+        {
+          family: "Vazirmatn",
+          src: "/fonts/Vazirmatn[wght].woff2",
+          preload: true, // Matches your existing preload setup
+        },
+      ],
+    },
+    imageOptimization: {
+      enabled: true, // Works with @nuxt/image
+      sizes: [320, 640, 960, 1280, 1920], // Responsive image sizes
+      formats: ["webp", "avif"], // Matches your @nuxt/image config
+    },
+    performance: {
+      http2: true, // Enable HTTP/2 push
+      compression: true, // Works with viteCompression and nitro compressPublicAssets
+    },
+  },
 });
