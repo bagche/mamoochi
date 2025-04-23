@@ -44,7 +44,7 @@ useSeoMeta({
   // Open Graph Tags
   ogTitle: pageData.value?.title ?? t("Page Not Found"),
   ogDescription: pageData.value?.description ?? t("Page Not Found"),
-  ogImage: pageData.value?.thumbnail ?? "/icons/android-chrome-512x512.png",
+  ogImage: pageData.value?.thumbnail ?? "/content/gnu.webp",
   ogImageAlt: pageData.value?.title ?? t("Page Not Found"),
   // ogUrl: canonicalUrl,
   ogType: "website",
@@ -52,11 +52,10 @@ useSeoMeta({
   // ogSiteName: config.public.siteName || 'Your Site Name',
 
   // Twitter Card Tags
-  twitterCard: "summary_large_image",
+  twitterCard: pageData.value?.thumbnail ?? "/content/gnu.webp",
   twitterTitle: pageData.value?.title ?? t("Page Not Found"),
   twitterDescription: pageData.value?.description ?? t("Page Not Found"),
-  twitterImage:
-    pageData.value?.thumbnail ?? "/icons/android-chrome-512x512.png",
+  twitterImage: pageData.value?.thumbnail ?? "/content/gnu.webp",
 
   // Additional SEO Tags
   robots: pageData.value?.noIndex ? "noindex" : "index, follow",
