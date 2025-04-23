@@ -1,12 +1,10 @@
-name = "front"
+name = "mamoochi"
 pages_build_output_dir = "dist"
-compatibility_flags = [ "nodejs_compat" ]
+compatibility_flags = ["nodejs_compat"]
 compatibility_date = "2024-09-23"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "front"
-database_id = "9be4e7ed-9aa9-4b4c-a793-eff446903779"
+database_name = "mamoochi"
+database_id = "1702648e-6998-4b67-bce2-281bb4622534"
 migrations_dir = "migrations"
-
- 
