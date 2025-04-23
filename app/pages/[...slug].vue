@@ -113,7 +113,6 @@ useSeoMeta({
             preload
             loading="lazy"
             placeholder
-            sizes="sm:100vw md:80vw lg:800px"
             class="w-full max-w-7xl max-h-[50vh] h-auto object-contain md:rounded-lg"
             :src="pageData.thumbnail"
             :alt="pageData.title"

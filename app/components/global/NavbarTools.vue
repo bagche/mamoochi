@@ -149,9 +149,3 @@ const items = computed(() => {
     </UModal>
   </div>
 </template>
-
-<style lang="scss">
-.avatar-button img {
-  width: auto !important;
-}
-</style>

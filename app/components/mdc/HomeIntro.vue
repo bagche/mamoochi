@@ -63,7 +63,6 @@ const { data, error } = await useAsyncData(
         :src="data.thumbnail"
         :alt="data.title || 'Image'"
         placeholder
-        sizes="sm:100vw md:50vw lg:600px"
       />
     </div>
     <div v-else>
