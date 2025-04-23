@@ -11,7 +11,7 @@ CREATE TABLE `comments` (
 	`author_id` integer NOT NULL,
 	`parent_comment_id` integer,
 	`body` text NOT NULL,
-	`status` text DEFAULT 'published',
+	`status` text DEFAULT 'new' NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer,
 	FOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,
@@ -43,6 +43,14 @@ CREATE TABLE `devices` (
 	`login_date` integer NOT NULL,
 	`last_activity` integer NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE TABLE `newsletter` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`route_path` text NOT NULL,
+	`email` text NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer
 );
 --> statement-breakpoint
 CREATE TABLE `roles` (

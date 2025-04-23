@@ -14,7 +14,7 @@ definePageMeta({
           <h2 class="text-2xl text-bolder">{{ $t("Manage Newsletters") }}</h2>
         </div>
         <div class="flex gap-3 w-full">
-          <CommentsManage />
+          <NewsletterManage />
         </div>
       </div>
     </UContainer>

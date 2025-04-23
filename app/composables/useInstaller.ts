@@ -1,10 +1,8 @@
-import { useStorage } from "@vueuse/core";
-
-const dbConnected = useStorage("app-installing-dbConnected", false);
-const dbMigrated = useStorage("app-installing-dbMigrated", false);
-const dbLoaded = useStorage("app-installing-dbLoaded", false);
-const adminLoaded = useStorage("app-installing-adminLoaded", false);
-const currentStep = useStorage("app-installing-currentStep", 0);
+const dbConnected = ref(false);
+const dbMigrated = ref(false);
+const dbLoaded = ref(false);
+const adminLoaded = ref(false);
+const currentStep = ref(0);
 const isMigrating = ref(false);
 const dbLoading = ref(false);
 

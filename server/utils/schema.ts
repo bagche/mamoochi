@@ -88,3 +88,11 @@ export const comments = sqliteTable("comments", {
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
   updatedAt: integer("updated_at", { mode: "timestamp" }),
 });
+
+export const newsletter = sqliteTable("newsletter", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  routePath: text("route_path").notNull(),
+  email: text("email").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" }),
+});
