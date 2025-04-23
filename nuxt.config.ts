@@ -9,7 +9,6 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: [
     "@nuxt/ui",
-    "@nuxtjs/seo",
     "@nuxt/image",
     "@nuxt/eslint",
     "nitro-cloudflare-dev",
@@ -21,6 +20,7 @@ export default defineNuxtConfig({
     "@nuxtjs/turnstile",
     "@nuxtjs/mdc",
     "nuxt-booster",
+    "@nuxtjs/sitemap",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],

@@ -35,11 +35,32 @@ const { data: pageData, error }: any = await useAsyncData(
 
 // Set SEO metadata only if pageData exists
 useSeoMeta({
+  // Basic Meta Tags
   title: pageData.value?.title ?? t("Page Not Found"),
   description: pageData.value?.description ?? t("Page Not Found"),
+  charset: "utf-8",
+  viewport: "width=device-width, initial-scale=1",
+
+  // Open Graph Tags
   ogTitle: pageData.value?.title ?? t("Page Not Found"),
   ogDescription: pageData.value?.description ?? t("Page Not Found"),
   ogImage: pageData.value?.thumbnail ?? "/icons/android-chrome-512x512.png",
+  ogImageAlt: pageData.value?.title ?? t("Page Not Found"),
+  // ogUrl: canonicalUrl,
+  ogType: "website",
+  ogLocale: locale.value,
+  // ogSiteName: config.public.siteName || 'Your Site Name',
+
+  // Twitter Card Tags
+  twitterCard: "summary_large_image",
+  twitterTitle: pageData.value?.title ?? t("Page Not Found"),
+  twitterDescription: pageData.value?.description ?? t("Page Not Found"),
+  twitterImage:
+    pageData.value?.thumbnail ?? "/icons/android-chrome-512x512.png",
+
+  // Additional SEO Tags
+  robots: pageData.value?.noIndex ? "noindex" : "index, follow",
+  keywords: pageData.value?.keywords?.join(", ") ?? "",
 });
 </script>
 
