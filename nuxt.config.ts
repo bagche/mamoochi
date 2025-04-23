@@ -70,9 +70,19 @@ export default defineNuxtConfig({
       autoSubfolderIndex: false,
     },
   },
-  ui: { fonts: false }, // Nuxt Booster can handle font optimization, kept as false to avoid conflicts
-
+  ui: { fonts: false },
   image: {
+    screens: {
+      default: 320,
+      xxs: 480,
+      xs: 576,
+      sm: 768,
+      md: 996,
+      lg: 1200,
+      xl: 1367,
+      xxl: 1600,
+      "4k": 1921,
+    },
     cloudflare: {
       baseURL: "https://mamoochi.bagche.app",
     },
@@ -115,8 +125,6 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    "/": { prerender: true },
-    "/:locale/**": { prerender: true },
     "/api/**": { ssr: true },
     "/:locale/manage": { prerender: false, ssr: false, robots: false },
     "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
@@ -161,38 +169,36 @@ export default defineNuxtConfig({
     addValidateEndpoint: true,
   },
   alias: {
-    "#velite": resolve(__dirname, "./.velite"), // Absolute path to .velite/index.js
+    "#velite": resolve(__dirname, "./.velite"),
   },
   mdc: {
     highlight: false,
   },
 
-  // Nuxt Booster Configuration
   booster: {
-    modern: true, // Serve modern ES modules to modern browsers
-    lazyHydration: true, // Enable lazy hydration (replaces nuxt-delay-hydration)
-    criticalCss: true, // Enable critical CSS extraction
-    lowPriorityAssets: true, // Optimize low-priority asset loading
-    fontOptimization: {
-      enabled: true, // Optimize font loading
-      fonts: [
-        {
-          family: "Vazirmatn",
-          src: "/fonts/Vazirmatn[wght].woff2",
-          as: "font",
-          type: "font/woff2",
-          crossorigin: "anonymous",
-        },
-      ],
+    detection: {
+      performance: true,
+      browserSupport: true,
     },
-    imageOptimization: {
-      enabled: true, // Works with @nuxt/image
-      sizes: [320, 640, 960, 1280, 1920], // Responsive image sizes
-      formats: ["webp", "avif"], // Matches your @nuxt/image config
+    performanceMetrics: {
+      device: {
+        hardwareConcurrency: { min: 2, max: 48 },
+        deviceMemory: { min: 2 },
+      },
+      timing: {
+        fcp: 800,
+        dcl: 1200,
+      },
     },
-    performance: {
-      http2: true, // Enable HTTP/2 push
-      compression: true, // Works with viteCompression and nitro compressPublicAssets
+    targetFormats: ["webp", "avif", "jpg|jpeg|png|gif"],
+    lazyOffset: {
+      component: "0%",
+      asset: "0%",
+    },
+    optimizeSSR: {
+      cleanPreloads: true,
+      cleanPrefetches: true,
+      inlineStyles: true,
     },
   },
 });
