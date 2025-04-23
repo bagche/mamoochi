@@ -57,6 +57,16 @@ export default defineNuxtConfig({
       include: ["echarts", "echarts-liquidfill"],
       exclude: ["shiki", "oniguruma"],
     },
+    esbuild: {
+      drop: ["debugger"],
+      pure: [
+        "console.log",
+        "console.error",
+        "console.warn",
+        "console.debug",
+        "console.trace",
+      ],
+    },
   },
 
   nitro: {
@@ -84,7 +94,7 @@ export default defineNuxtConfig({
       "4k": 1921,
     },
     cloudflare: {
-      baseURL: "https://mamoochi.bagche.app",
+      baseURL: process.env.NUXT_BASE_URL,
     },
     formats: ["webp", "avif"],
     density: [1, 2],
@@ -126,8 +136,8 @@ export default defineNuxtConfig({
 
   routeRules: {
     "/api/**": { ssr: true },
-    "/:locale/manage": { prerender: false, ssr: false, robots: false },
-    "/:locale/manage/**": { prerender: false, ssr: false, robots: false },
+    "/:locale/manage": { prerender: false, ssr: false },
+    "/:locale/manage/**": { prerender: false, ssr: false },
   },
 
   experimental: {
@@ -161,11 +171,6 @@ export default defineNuxtConfig({
     },
   },
 
-  seo: {
-    automaticDefaults: true,
-  },
-
-  linkChecker: { enabled: false },
   turnstile: {
     siteKey: process.env.NUXT_TURNSTILE_SITE_KEY || "",
     addValidateEndpoint: true,
