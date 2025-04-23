@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   });
   const t = await useTranslation(event);
   const schema = object({
-    path: pipe(string(), minLength(1, "Missing or invalid path parameter")),
+    path: pipe(string(), minLength(1, t("Missing or invalid path parameter"))),
   });
   try {
     const query = getQuery(event);

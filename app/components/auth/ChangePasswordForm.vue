@@ -39,7 +39,7 @@ const changePassword = async (event: FormSubmitEvent<Schema>) => {
   submitting.value = true;
 
   try {
-    await $fetch("/api/users/change-password", {
+    await $fetch("/api/auth/change-password", {
       method: "PUT",
       body: {
         oldPassword: event.data.oldPassword,

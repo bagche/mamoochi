@@ -151,11 +151,13 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    githubToken: "",
-    githubOwner: "",
-    githubRepo: "",
+    app: {
+      githubToken: process.env.NUXT_APP_GITHUB_TOKEN || "",
+      githubOwner: process.env.NUXT_APP_GITHUB_OWNER || "",
+      githubRepo: process.env.NUXT_APP_GITHUB_REPO || "",
+    },
     turnstile: {
-      secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY,
+      secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY || "",
     },
   },
 
@@ -165,7 +167,7 @@ export default defineNuxtConfig({
 
   linkChecker: { enabled: false },
   turnstile: {
-    siteKey: "0x4AAAAAABMfNmOrYsdJl6yK",
+    siteKey: process.env.NUXT_TURNSTILE_SITE_KEY || "",
     addValidateEndpoint: true,
   },
   alias: {

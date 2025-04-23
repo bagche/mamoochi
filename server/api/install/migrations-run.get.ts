@@ -1,8 +1,9 @@
 import type { D1Database } from "@cloudflare/workers-types";
-import { sha256 } from "@noble/hashes/sha256";
+import { sha256 } from "@noble/hashes/sha2";
 import { bytesToHex } from "@noble/hashes/utils";
+import { array, minLength, object, parse, pipe, string } from "valibot";
 
-function computeHash(data: string): string {
+async function computeHash(data: string): Promise<string> {
   const encoder = new TextEncoder();
   const hashBytes = sha256(encoder.encode(data));
   return bytesToHex(hashBytes);
@@ -16,20 +17,17 @@ async function ensureMigrationsTable(db: D1Database) {
 }
 
 async function getAppliedMigrations(db: D1Database): Promise<string[]> {
-  const result = await db
+  const { results } = await db
     .prepare("SELECT hash FROM __drizzle_migrations")
     .all();
-  return result && result.results
-    ? result.results.map((row: any) => row.hash)
-    : [];
+  return results ? results.map((row: any) => row.hash) : [];
 }
 
-async function applyMigration(db: D1Database, content: string) {
+async function applyMigration(db: D1Database, content: string): Promise<void> {
   if (!content.trim()) {
     throw new Error("Migration content is empty or malformed.");
   }
 
-  // Split SQL by statement-breakpoints and semicolons, then filter empty strings
   const statements = content
     .split(/;|\-\-\> statement-breakpoint/)
     .map((stmt) => stmt.trim())
@@ -37,7 +35,6 @@ async function applyMigration(db: D1Database, content: string) {
 
   for (const stmt of statements) {
     try {
-      console.log("Executing SQL:", stmt);
       await db.prepare(stmt).run();
     } catch (error) {
       console.error("Error executing SQL statement:", stmt, error);
@@ -46,7 +43,10 @@ async function applyMigration(db: D1Database, content: string) {
   }
 }
 
-async function markMigrationAsApplied(db: D1Database, hash: string) {
+async function markMigrationAsApplied(
+  db: D1Database,
+  hash: string
+): Promise<void> {
   await db
     .prepare("INSERT INTO __drizzle_migrations (hash) VALUES (?)")
     .bind(hash)
@@ -56,20 +56,44 @@ async function markMigrationAsApplied(db: D1Database, hash: string) {
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
   const db: D1Database = event.context.cloudflare.env.DB;
+  const appConfig = useAppConfig(event);
+
+  // Check if app is installed
+  if (appConfig.installed) {
+    throw createError({
+      statusCode: 403,
+      message: t("Application is already installed"),
+    });
+  }
+
+  // Define Valibot schema for migrations
+  const MigrationSchema = array(
+    object({
+      name: pipe(string(), minLength(1, t("Migration name must not be empty"))),
+      content: pipe(
+        string(),
+        minLength(1, t("Migration content must not be empty"))
+      ),
+    })
+  );
+
   if (!db) {
     console.warn("No D1 database found in environment; skipping migrations.");
-    return {
-      status: "error",
+    throw createError({
+      statusCode: 500,
       message: t("Database connection is not configured."),
-    };
+    });
   }
 
   try {
+    // Validate migrations
+    const migrations = parse(MigrationSchema, dbMigrations);
+
     await ensureMigrationsTable(db);
     const appliedMigrations = await getAppliedMigrations(db);
 
-    for (const migration of dbMigrations) {
-      const hash = computeHash(migration.content);
+    for (const migration of migrations) {
+      const hash = await computeHash(migration.content);
       if (!appliedMigrations.includes(hash)) {
         await applyMigration(db, migration.content);
         await markMigrationAsApplied(db, hash);
@@ -79,17 +103,17 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    console.log("All pending migrations applied successfully.");
     return {
       status: "success",
       message: t("All pending migrations applied successfully."),
     };
   } catch (error: any) {
     console.error("Automatic migration failed:", error);
-    return {
-      status: "error",
-      message: t("Automatic migration failed."),
-      error: error.message,
-    };
+    throw createError({
+      statusCode: error.statusCode || 500,
+      message:
+        t("Automatic migration failed: ") +
+        (error.message || t("Unknown error")),
+    });
   }
 });

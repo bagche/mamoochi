@@ -58,11 +58,17 @@ const items = [
 </script>
 
 <template>
-  <div class="mx-auto flex flex-col items-center px-4 justify-center h-screen">
+  <div
+    class="mx-auto flex flex-col items-center px-4 justify-center h-screen container"
+  >
     <UCard :ui="{ root: ' ' }">
       <template #header>
-        <div class="flex justify-center items-center">
+        <div class="flex items-center w-full justify-between">
           <h1 class="text-2xl">{{ t("Mamoochi Database  Installation") }}</h1>
+          <div class="flex">
+            <LanguageSwitcher />
+            <ThemeSwitcher />
+          </div>
         </div>
       </template>
       <UStepper

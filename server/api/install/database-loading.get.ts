@@ -1,52 +1,87 @@
 import type { D1Database } from "@cloudflare/workers-types";
+import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { eq } from "drizzle-orm/sql";
+import { array, minLength, object, parse, pipe, string } from "valibot";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
+  const db: D1Database = event.context.cloudflare.env.DB;
+  const drizzleDb = drizzle(db);
+  const appConfig = useAppConfig(event);
+
+  // Check if app is installed
+  if (appConfig.installed) {
+    throw createError({
+      statusCode: 403,
+      message: t("Application is already installed"),
+    });
+  }
+
+  // Define Valibot schema for role validation
+  const RoleSchema = array(
+    object({
+      name: pipe(string(), minLength(1, t("Role name must not be empty"))),
+      description: pipe(
+        string(),
+        minLength(1, t("Role description must not be empty"))
+      ),
+      permissions: array(string()),
+    })
+  );
 
   try {
-    const db: D1Database = event.context.cloudflare.env.DB;
-    const drizzleDb = drizzle(db);
+    // Validate roles input (assuming rolesToCreate is provided or defined)
+    const rolesToCreate = parse(RoleSchema, [
+      ownerPermissions,
+      editorPermissions,
+      memberPermissions,
+    ]);
 
-    // Check if the default Admin role exists
-    const adminRole = await drizzleDb
-      .select()
-      .from(roles)
-      .where(eq(roles.name, "Admin"))
-      .get();
+    const results = [];
 
-    // Create the Admin role with full permissions if it doesn't exist
-    if (!adminRole) {
-      await drizzleDb
-        .insert(roles)
-        .values({
-          name: "Admin",
-          description: "Default admin role with full permissions.",
-          permissions: JSON.stringify(corePermissions),
-        })
-        .execute();
-      console.log(t("Admin role created successfully."));
-      return {
-        dbConnected: true,
-        message: t("The default admin role was created successfully."),
-      };
-    } else {
-      console.log(t("Admin role already exists."));
-      return {
-        dbConnected: true,
-        message: t("The default admin role is already configured."),
-      };
+    // Process each role
+    for (const role of rolesToCreate) {
+      const existingRole = await drizzleDb
+        .select()
+        .from(roles)
+        .where(eq(roles.name, role.name))
+        .get();
+
+      if (!existingRole) {
+        await drizzleDb
+          .insert(roles)
+          .values({
+            name: role.name,
+            description: role.description,
+            permissions: JSON.stringify(role.permissions),
+          })
+          .execute();
+        results.push({
+          role: role.name,
+          message: t(`${role.name} role created successfully.`),
+          created: true,
+        });
+      } else {
+        results.push({
+          role: role.name,
+          message: t(`${role.name} role already exists.`),
+          created: false,
+        });
+      }
     }
-  } catch (error: any) {
-    console.error(
-      t("Error initializing default database data: ") + error.message
-    );
+
     return {
-      dbConnected: false,
-      message:
-        t("An error occurred while setting up default database data: ") +
-        error.message,
+      dbConnected: true,
+      results,
+      message: t("Role initialization completed."),
     };
+  } catch (error: any) {
+    console.error("Error initializing default database roles:", error);
+    throw createError({
+      statusCode: error.statusCode || 500,
+      message:
+        t("Failed to initialize roles: ") +
+        (error.message || t("Unknown error")),
+    });
   }
 });

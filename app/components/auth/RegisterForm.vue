@@ -57,7 +57,7 @@ type Schema = z.output<typeof schema>;
 const profileActivate = async (event: FormSubmitEvent<Schema>) => {
   submitting.value = true;
   try {
-    await $fetch("/api/users/register", {
+    await $fetch("/api/auth/register", {
       method: "POST",
       body: JSON.stringify({
         firstName: event.data.firstName,

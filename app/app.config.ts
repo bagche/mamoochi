@@ -1,5 +1,5 @@
 export default defineAppConfig({
-  installed: true,
+  installed: false,
   ui: {
     colors: {
       primary: "zinc",

@@ -29,7 +29,7 @@ const login = async (event: FormSubmitEvent<Schema>) => {
     submitting.value = true;
 
     // Send the public key from our useUser profile along with the credentials
-    const response = await $fetch("/api/users/login", {
+    const response = await $fetch("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({
         userName: event.data.userName,

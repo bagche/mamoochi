@@ -45,7 +45,7 @@ useHead({
     {
       rel: "preload",
       type: "font/woff2",
-      href: "@/assets/fonts/Vazirmatn[wght].woff2",
+      href: "/fonts/Vazirmatn[wght].woff2",
       as: "font",
     },
   ],
@@ -57,10 +57,10 @@ onMounted(() => {
 
 <template>
   <UApp :locale="appLocales">
-    <NuxtLayout>
+    <Installer v-if="!appConfig.installed" />
+    <NuxtLayout v-else>
       <NuxtLoadingIndicator />
-      <Installer v-if="!appConfig.installed" />
-      <NuxtPage v-else />
+      <NuxtPage />
     </NuxtLayout>
   </UApp>
 </template>

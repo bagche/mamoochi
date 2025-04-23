@@ -7,6 +7,7 @@ const { t } = useI18n();
 const { fetch: fetchProfile } = useUserSession();
 const { generateNewIdentity, profile } = useUser();
 const toast = useToast();
+const router = useRouter();
 
 // Refs
 const turnstile = ref();
@@ -102,7 +103,7 @@ const handleSubmit = async () => {
   submitting.value = true;
 
   try {
-    await $fetch("/api/users/guest-register", {
+    await $fetch("/api/auth/guest-register", {
       method: "POST",
       body: {
         token: token.value,
@@ -123,7 +124,8 @@ const handleSubmit = async () => {
 
     resetTurnstile();
     emit("close-modal");
-    reloadNuxtApp();
+    window.location.hash = "#comments";
+    window.location.reload();
   } catch (error: any) {
     const errorMessage = error.data?.message || error.message;
     const errorDetails =
@@ -206,9 +208,15 @@ watch(token, (newToken) => {
         </p>
       </div>
 
-      <div class="flex justify-center h-16 gap-2">
-        <NuxtTurnstile ref="turnstile" v-model="token" />
+      <div class="flex justify-center gap-2 flex-col w-75">
+        <NuxtTurnstile
+          ref="turnstile"
+          v-model="token"
+          class="h-16 bg-gray-100"
+        />
         <UButton
+          size="xl"
+          block
           type="button"
           variant="outline"
           icon="i-lucide-plus"
