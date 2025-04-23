@@ -38,18 +38,16 @@ useHead({
     lang: lang.value,
     dir: dir.value,
   },
-  meta: [
-    { name: "viewport", content: "width=device-width, initial-scale=1" },
-    { name: "theme-color", content: "#e5e7eb" },
-    {
-      hid: "description",
-      name: "description",
-      content: description.value,
-    },
-  ],
+
   link: [
     { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
     { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon.png" },
+    {
+      rel: "preload",
+      type: "font/woff2",
+      href: "@/assets/fonts/Vazirmatn[wght].woff2",
+      as: "font",
+    },
   ],
 });
 onMounted(() => {
