@@ -122,7 +122,7 @@ useSeoMeta({
 
       <UContainer>
         <div
-          class="mx-auto flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 prose prose-sm sm:prose-base md:prose-lg dark:prose-invert"
+          class="mx-auto flex flex-col items-center prose prose-sm sm:prose-base md:prose-lg dark:prose-invert"
         >
           <PageToc
             v-if="pageData.toc"

@@ -54,13 +54,12 @@ const subscribe = async (event: FormSubmitEvent<Schema>) => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col lg:flex-row w-full items-center border rounded mt-5"
-  >
+  <div class="flex flex-col lg:flex-row w-full items-center border rounded">
     <div class="flex-1 w-full p-5">
-      <h3 class="mb-2 text-2xl font-bold">
+      <h2 class="text-3xl font-semibold">
         {{ $t("Subscribe to Newsletter") }}
-      </h3>
+      </h2>
+
       <p>
         {{ $t("Provide your email to get email notification for new updates") }}
       </p>
@@ -78,7 +77,7 @@ const subscribe = async (event: FormSubmitEvent<Schema>) => {
             :placeholder="$t('Enter your email address')"
             :disabled="submitting"
           />
-          <UButton type="submit" :loading="submitting">
+          <UButton type="submit" :loading="submitting" variant="outline">
             {{ $t("Subscribe") }}
           </UButton>
         </UButtonGroup>

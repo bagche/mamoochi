@@ -45,7 +45,7 @@ useHead({
     {
       rel: "preload",
       type: "font/woff2",
-      href: "/fonts/Vazirmatn[wght].woff2",
+      href: "@/assets/Vazirmatn[wght].woff2",
       as: "font",
     },
   ],

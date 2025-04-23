@@ -6,10 +6,10 @@ defineProps({
 </script>
 
 <template>
-  <div class="w-full mb-20">
-    <h3 class="mt-0">
+  <div class="w-full">
+    <h2 class="text-3xl font-semibold">
       {{ $t("Content Toc") }}
-    </h3>
+    </h2>
     <ol class="md:-mb-4 space-y-2">
       <li v-for="item in tocData" :key="item.url">
         <a :href="item.url" class="hover:underline">
@@ -32,5 +32,6 @@ defineProps({
         </a>
       </li>
     </ol>
+    <USeparator class="my-15" />
   </div>
 </template>

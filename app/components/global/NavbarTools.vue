@@ -38,12 +38,12 @@ const loggedOutItems = [
   {
     label: t("Login"),
     icon: "i-lucide-arrow-right-left",
-    to: "login",
+    to: "/login",
   },
   {
     label: t("Register"),
     icon: "i-lucide-log-in",
-    to: "register",
+    to: "/register",
   },
 ];
 
