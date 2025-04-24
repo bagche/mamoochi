@@ -198,10 +198,10 @@ export default defineNuxtConfig({
       },
     },
     targetFormats: ["webp", "avif", "jpg|jpeg|png|gif"],
-    lazyOffset: {
-      component: "0%",
-      asset: "0%",
-    },
+    // lazyOffset: {
+    //   component: "0%",
+    //   asset: "0%",
+    // },
     optimizeSSR: {
       cleanPreloads: true,
       cleanPrefetches: true,
