@@ -18,7 +18,9 @@ const emit = defineEmits<{
   <div class="flex w-full flex-col mt-5">
     <UCard
       v-for="comment in comments"
+      :id="`#comment-${comment.id}`"
       :key="comment.id"
+      :href="`#comment-${comment.id}`"
       class="mb-10 w-full"
       variant="soft"
       :ui="{

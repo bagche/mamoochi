@@ -4,9 +4,6 @@ const { profile, logout } = useUser();
 const { t, locale } = useI18n();
 const route = useRoute();
 
-const updateProfileIsOpen = ref(false);
-const changePasswordIsOpen = ref(false);
-
 // Account group always shows the avatar
 const accountGroup = [
   {
@@ -18,18 +15,9 @@ const accountGroup = [
 // Items for logged in users
 const loggedInItems = [
   {
-    label: t("Update Profile"),
-    icon: "i-lucide-user-pen",
-    onSelect: () => {
-      updateProfileIsOpen.value = true;
-    },
-  },
-  {
-    label: t("Change Password"),
-    icon: "i-lucide-key",
-    onSelect: () => {
-      changePasswordIsOpen.value = true;
-    },
+    label: t("Profile"),
+    icon: "i-lucide-user",
+    to: `/${locale.value}/profile`,
   },
 ];
 
@@ -38,12 +26,12 @@ const loggedOutItems = [
   {
     label: t("Login"),
     icon: "i-lucide-arrow-right-left",
-    to: "/login",
+    to: `/${locale.value}/login`,
   },
   {
     label: t("Register"),
     icon: "i-lucide-log-in",
-    to: "/register",
+    to: `/${locale.value}/register`,
   },
 ];
 
@@ -54,7 +42,6 @@ const exitItem = {
   onSelect: async () => {
     await clear();
     logout();
-    reloadNuxtApp();
     window.location.replace("/");
   },
 };
@@ -128,24 +115,5 @@ const items = computed(() => {
         </template>
       </UDropdownMenu>
     </UButtonGroup>
-
-    <UModal
-      :open="changePasswordIsOpen"
-      :dismissible="false"
-      :title="$t('Change Password')"
-    >
-      <template #body>
-        <AuthChangePasswordForm @close-modal="changePasswordIsOpen = false" />
-      </template>
-    </UModal>
-    <UModal
-      v-model:open="updateProfileIsOpen"
-      :dismissible="false"
-      :title="$t('Update Profile')"
-    >
-      <template #body>
-        <AuthUpdateProfileForm @close-modal="updateProfileIsOpen = false" />
-      </template>
-    </UModal>
   </div>
 </template>

@@ -58,6 +58,7 @@ export default defineAppConfig({
     description_en: "Tiny & Playful",
     footer_fa: "همه چیز به شکل شگفت انگیزی خوب باید باشد",
     footer_en: "Everything must be wonderful in every shape and form ",
+    default_banner: "/content/gnu.webp",
   },
   cats: ["books", "notes", "projects"],
 });

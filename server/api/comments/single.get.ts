@@ -21,23 +21,23 @@ export default defineEventHandler(async (event) => {
     page: pipe(
       string(),
       transform((val) => Number(val)),
-      number([minValue(1, t("Invalid page parameter: must be a number >= 1"))])
+      number(),
+      minValue(1, t("Invalid page parameter: must be a number >= 1"))
     ),
     pageSize: pipe(
       string(),
       transform((val) => Number(val)),
-      number([
-        minValue(
-          1,
-          t("Invalid pageSize parameter: must be a number between 1 and 100")
-        ),
-        maxValue(
-          100,
-          t("Invalid pageSize parameter: must be a number between 1 and 100")
-        ),
-      ])
+      number(),
+      minValue(
+        1,
+        t("Invalid pageSize parameter: must be a number between 1 and 100")
+      ),
+      maxValue(
+        100,
+        t("Invalid pageSize parameter: must be a number between 1 and 100")
+      )
     ),
-    path: string([minLength(1, t("Missing or invalid path parameter"))]),
+    path: pipe(string(), minLength(1, t("Missing or invalid path parameter"))),
   });
 
   // Parse query parameters
@@ -54,7 +54,7 @@ export default defineEventHandler(async (event) => {
 
     // Retrieve current user session (if any)
     const session = await getUserSession(event);
-    const currentUserId = session && session.user ? session.user.id : null;
+    const currentUserId = session?.user?.id ?? null;
 
     // Build the where condition
     const whereCondition = currentUserId

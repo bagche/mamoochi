@@ -12,7 +12,7 @@ const items = [
 <template>
   <UTabs :items="items" color="neutral" variant="link" class="w-full">
     <template #comments="{ item }">
-      <CommentsManage />
+      <CommentsSelf />
     </template>
   </UTabs>
 </template>

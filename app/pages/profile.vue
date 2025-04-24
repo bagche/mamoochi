@@ -1,6 +1,12 @@
 <script lang="ts" setup>
-const { profile, loggedIn } = useUser();
-const { locale, t } = useI18n();
+const { profile, generateNewIdentity, loggedIn } = useUser();
+const { loggedIn: sessionLoggedIn } = useUserSession();
+
+const { t } = useI18n();
+const appConfig = useAppConfig();
+
+const updateProfileIsOpen = ref(false);
+const changePasswordIsOpen = ref(false);
 
 // Set SEO metadata based on profile
 useSeoMeta({
@@ -8,7 +14,7 @@ useSeoMeta({
   description: profile.value?.about ?? t("User profile page"),
   ogTitle: profile.value?.displayName ?? t("User Profile"),
   ogDescription: profile.value?.about ?? t("User profile page"),
-  ogImage: "/content/gnu.webp",
+  ogImage: appConfig.app.default_banner,
 });
 </script>
 
@@ -16,8 +22,33 @@ useSeoMeta({
   <div class="w-full min-h-screen">
     <div v-if="profile" class="w-full">
       <div
-        class="w-full page-header flex flex-col gap-4 sm:gap-6 pt-8 pb-6 md:pb-12 md:min-h-[50vh] items-center justify-between text-gray-600 border-gray-200 bg-gray-100"
+        class="w-full page-header flex flex-col gap-5 pt-8 pb-6 md:pb-12 md:min-h-[50vh] items-center justify-start text-gray-600 border-gray-200 bg-gray-100"
       >
+        <div class="flex justify-end w-full max-w-5xl">
+          <UButtonGroup>
+            <UButton
+              v-if="sessionLoggedIn"
+              color="neutral"
+              variant="subtle"
+              :label="$t('Change Password')"
+              @click="changePasswordIsOpen = true"
+            />
+            <UButton
+              v-if="sessionLoggedIn"
+              color="neutral"
+              variant="subtle"
+              :label="$t('Update Profile')"
+              @click="changePasswordIsOpen = true"
+            />
+            <UButton
+              v-if="loggedIn"
+              color="neutral"
+              variant="subtle"
+              :label="$t('Generate Random Name')"
+              @click="generateNewIdentity"
+            />
+          </UButtonGroup>
+        </div>
         <div
           class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-4 sm:gap-6 md:gap-8 md:justify-around"
         >
@@ -37,7 +68,7 @@ useSeoMeta({
             preload
             class="w-full md:w-1/2 max-h-[40vh] h-auto object-contain md:rounded-lg"
             loading="lazy"
-            src="/content/gnu.webp"
+            :src="appConfig.app.default_banner"
           />
         </div>
       </div>
@@ -49,6 +80,25 @@ useSeoMeta({
           <UsersProfileTabs />
         </div>
       </UContainer>
+
+      <UModal
+        v-if="sessionLoggedIn"
+        :open="changePasswordIsOpen"
+        :title="$t('Change Password')"
+      >
+        <template #body>
+          <AuthChangePasswordForm @close-modal="changePasswordIsOpen = false" />
+        </template>
+      </UModal>
+      <UModal
+        v-if="sessionLoggedIn"
+        :open="updateProfileIsOpen"
+        :title="$t('Update Profile')"
+      >
+        <template #body>
+          <AuthUpdateProfileForm @close-modal="updateProfileIsOpen = false" />
+        </template>
+      </UModal>
     </div>
 
     <NotFound v-else class="w-full" />
