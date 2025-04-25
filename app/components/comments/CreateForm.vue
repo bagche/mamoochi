@@ -24,7 +24,7 @@ type Schema = z.infer<typeof schema>;
 const form = ref();
 const sending = ref(false);
 
-const canCreate = await allows(createComment);
+// const canCreate = await allows(createComment);
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   sending.value = true;
@@ -64,63 +64,83 @@ const handleKeyDown = (event: KeyboardEvent) => {
 </script>
 
 <template>
-  <UForm ref="form" :schema="schema" :state="state" @submit="onSubmit">
-    <UCard
-      variant="soft"
-      :ui="{
-        root: 'p-0 rounded-sm',
-        body: ' border-none',
-        header: 'border-none',
-      }"
-    >
-      <UFormField name="message">
-        <UTextarea
-          v-model="state.message"
-          :ui="{ base: 'p-5 bg-transparent' }"
-          :placeholder="$t('Write your comment...')"
-          :padded="false"
-          variant="ghost"
-          color="primary"
-          class="w-full"
-          size="xl"
-          autoresize
-          :disabled="!canCreate"
-          @keydown="handleKeyDown"
-        />
-      </UFormField>
-      <template #footer>
-        <div v-if="loggedIn" class="flex justify-end">
-          <UButton
-            :disabled="!canCreate"
-            class="px-3 py-2"
-            icon="i-lucide-message-square-plus"
-            variant="outline"
-            color="primary"
-            type="submit"
-            :loading="sending"
-          >
-            {{ $t("Send Comment") }}
-          </UButton>
-        </div>
-        <div v-else class="flex justify-end">
-          <UPopover>
-            <UButton
-              class="px-3 py-2"
-              icon="i-lucide-message-square-plus"
-              variant="outline"
-              color="secondary"
-            >
-              {{ $t("Verify Yourself") }}
-            </UButton>
+  <UCard
+    variant="soft"
+    :ui="{
+      root: 'p-0 rounded-sm',
+      body: ' border-none',
+      header: 'border-none',
+    }"
+  >
+    <Bouncer :ability="createComment">
+      <template #can>
+        <UForm ref="form" :schema="schema" :state="state" @submit="onSubmit">
+          <div class="flex flex-col gap-5">
+            <UFormField name="message">
+              <UTextarea
+                v-model="state.message"
+                :ui="{ base: 'p-5 bg-transparent' }"
+                :placeholder="$t('Write your comment...')"
+                :padded="false"
+                variant="ghost"
+                color="primary"
+                class="w-full"
+                size="xl"
+                autoresize
+                @keydown="handleKeyDown"
+              />
+            </UFormField>
+            <div class="flex justify-end">
+              <UButton
+                class="px-3 py-2"
+                icon="i-lucide-message-square-plus"
+                variant="subtle"
+                color="primary"
+                type="submit"
+                :loading="sending"
+              >
+                {{ $t("Send Comment") }}
+              </UButton>
+            </div>
+          </div>
+        </UForm>
+      </template>
 
-            <template #content>
-              <div class="p-3">
-                <AuthGuestRegisterForm @close-modal="registerIsOpen = false" />
-              </div>
-            </template>
-          </UPopover>
+      <template #cannot>
+        <div class="flex flex-col gap-5">
+          <UTextarea
+            :ui="{ base: 'p-5 bg-transparent' }"
+            :placeholder="$t('For sending Comment Verify Yourself ...')"
+            :padded="false"
+            variant="ghost"
+            color="primary"
+            class="w-full"
+            size="xl"
+            disabled
+          />
+          <div class="flex justify-end">
+            <UPopover>
+              <UButton
+                class="px-3 py-2"
+                icon="i-lucide-message-square-plus"
+                variant="subtle"
+                color="secondary"
+                size="xl"
+              >
+                {{ $t("Verify Yourself") }}
+              </UButton>
+
+              <template #content>
+                <div class="p-3">
+                  <AuthGuestRegisterForm
+                    @close-modal="registerIsOpen = false"
+                  />
+                </div>
+              </template>
+            </UPopover>
+          </div>
         </div>
       </template>
-    </UCard>
-  </UForm>
+    </Bouncer>
+  </UCard>
 </template>

@@ -111,7 +111,7 @@ const addRole = async (event: FormSubmitEvent<Schema>) => {
           </UFormField>
           <UButton
             block
-            variant="outline"
+            variant="subtle"
             type="submit"
             :label="$t('Add Role')"
             size="xl"

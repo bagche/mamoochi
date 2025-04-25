@@ -206,7 +206,7 @@ const runAdminLoading = async (event: FormSubmitEvent<Schema>) => {
       <UButton
         :disabled="adminLoaded"
         class="mt-5"
-        variant="outline"
+        variant="subtle"
         type="submit"
         color="success"
         size="xl"

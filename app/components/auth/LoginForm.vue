@@ -107,7 +107,7 @@ const login = async (event: FormSubmitEvent<Schema>) => {
       <UButton
         class="cursor-pointer"
         block
-        variant="outline"
+        variant="subtle"
         type="submit"
         :label="$t('Login')"
         size="xl"

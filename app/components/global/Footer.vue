@@ -20,6 +20,7 @@ const footerText = computed(() =>
 
 <template>
   <div class="w-full mx-auto p-4 text-center text-sm">
-    {{ footerText }} © {{ currentYear }}
+    <span v-html="footerText" />
+    © {{ currentYear }}
   </div>
 </template>

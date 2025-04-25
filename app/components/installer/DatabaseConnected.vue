@@ -30,7 +30,7 @@ const isTurnstileConfigValid = computed(() => {
         v-if="dbConnected"
         class="flex"
         color="success"
-        variant="outline"
+        variant="subtle"
         :title="$t('Database Connection Successful')"
         :description="
           $t(
@@ -42,7 +42,7 @@ const isTurnstileConfigValid = computed(() => {
       <UAlert
         v-else
         color="error"
-        variant="outline"
+        variant="subtle"
         :title="$t('Database Connection Failed')"
         :description="
           $t(
@@ -59,7 +59,7 @@ const isTurnstileConfigValid = computed(() => {
         v-if="isGithubConfigValid"
         class="flex"
         color="success"
-        variant="outline"
+        variant="subtle"
         :title="$t('GitHub Configuration Valid')"
         :description="
           $t(
@@ -71,7 +71,7 @@ const isTurnstileConfigValid = computed(() => {
       <UAlert
         v-else
         color="error"
-        variant="outline"
+        variant="subtle"
         :title="$t('GitHub Configuration Missing')"
         :description="
           $t(
@@ -88,7 +88,7 @@ const isTurnstileConfigValid = computed(() => {
         v-if="isTurnstileConfigValid"
         class="flex"
         color="success"
-        variant="outline"
+        variant="subtle"
         :title="$t('Turnstile Configuration Valid')"
         :description="
           $t(
@@ -100,7 +100,7 @@ const isTurnstileConfigValid = computed(() => {
       <UAlert
         v-else
         color="error"
-        variant="outline"
+        variant="subtle"
         :title="$t('Turnstile Configuration Missing')"
         :description="
           $t(

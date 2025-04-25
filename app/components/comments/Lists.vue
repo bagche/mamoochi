@@ -62,7 +62,7 @@ const emit = defineEmits<{
         <div class="flex justify-between items-center text-sm">
           <span>{{ formatTimeAgo(comment.createdAt) }}</span>
           <UButton
-            variant="outline"
+            variant="subtle"
             color="gray"
             size="sm"
             :ui="{ rounded: 'rounded-md' }"

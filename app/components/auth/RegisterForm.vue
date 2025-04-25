@@ -201,7 +201,7 @@ const profileActivate = async (event: FormSubmitEvent<Schema>) => {
       <UButton
         class="cursor-pointer"
         block
-        variant="outline"
+        variant="subtle"
         type="submit"
         :label="$t('Register')"
         :loading="submitting"

@@ -8,7 +8,7 @@ const { dbLoading, dbLoaded } = useInstaller();
     <UAlert
       v-if="dbLoading"
       color="success"
-      variant="outline"
+      variant="subtle"
       :title="$t('Database Ready')"
       :description="
         $t(
@@ -22,7 +22,7 @@ const { dbLoading, dbLoaded } = useInstaller();
     <div v-else-if="dbLoaded" class="w-full">
       <UAlert
         color="info"
-        variant="outline"
+        variant="subtle"
         :title="$t('Preparing Database')"
         :description="
           $t(
@@ -37,7 +37,7 @@ const { dbLoading, dbLoaded } = useInstaller();
     <div v-else class="w-full flex flex-col gap-5 items-center">
       <UAlert
         color="warning"
-        variant="outline"
+        variant="subtle"
         :title="$t('Database Setup Required')"
         :description="
           $t(

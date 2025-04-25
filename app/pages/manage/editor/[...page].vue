@@ -120,7 +120,7 @@ const isTyping = (data: string): void => (state.body = data);
               <UButton
                 :icon="codeEditor ? 'i-lucide-brush' : 'i-lucide-code'"
                 color="secondary"
-                variant="outline"
+                variant="subtle"
                 @click="
                   () => {
                     codeEditor = !codeEditor;
@@ -133,7 +133,7 @@ const isTyping = (data: string): void => (state.body = data);
                 icon="i-lucide-cloud"
                 type="submit"
                 color="success"
-                variant="outline"
+                variant="subtle"
               >
                 {{ $t("Save") }}
               </UButton>

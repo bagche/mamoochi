@@ -132,7 +132,7 @@ const changePassword = async (event: FormSubmitEvent<Schema>) => {
       </div>
       <UButton
         block
-        variant="outline"
+        variant="subtle"
         type="submit"
         :label="$t('Change Password')"
         size="xl"

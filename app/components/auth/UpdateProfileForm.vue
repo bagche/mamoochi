@@ -101,7 +101,7 @@ const updateProfile = async (event: FormSubmitEvent<Schema>) => {
 
       <UButton
         block
-        variant="outline"
+        variant="subtle"
         type="submit"
         :label="$t('Update Profile')"
         size="xl"

@@ -56,9 +56,12 @@ export default defineAppConfig({
     site_name_en: "Mamoochi",
     title_en: "Ma moochi",
     description_en: "Tiny & Playful",
-    footer_fa: "همه چیز به شکل شگفت انگیزی خوب باید باشد",
-    footer_en: "Everything must be wonderful in every shape and form ",
+    footer_fa:
+      ' همه چیز به شکل شگفت انگیزی خوب باید باشد، ساخته شده توسط <a href="https://github.com/Bagche/Mamoochi" target="_blank">مَموچی</a>',
+    footer_en:
+      'Everything should be wonderfully perfect in every way, crafted by <a href="https://github.com/Bagche/Mamoochi" target="_blank">Mamoochi</a>',
     default_banner: "/content/gnu.webp",
+    default_avatar: "/content/gnu.webp",
   },
   cats: ["books", "notes", "projects"],
 });

@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     "@nuxtjs/mdc",
     "nuxt-booster",
     "@nuxtjs/sitemap",
+    "@nuxtjs/fontaine",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],

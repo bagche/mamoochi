@@ -36,8 +36,8 @@ const { data, error } = await useAsyncData(
 
 <template>
   <div class="w-full">
-    <h2 class="mt-0">
-      {{ cat ? $t("Latest ") + $t(cat) : $t("Latest Incoming") }}
+    <h2 class="">
+      {{ cat ? $t("Latest ") + " " + $t(cat) : $t("Latest Incoming") }}
     </h2>
 
     <div v-if="data && data.length" class="px-5 md:m-0">

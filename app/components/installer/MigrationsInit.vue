@@ -8,7 +8,7 @@ const { dbMigrated, isMigrating } = useInstaller();
     <UAlert
       v-if="dbMigrated"
       color="success"
-      variant="outline"
+      variant="subtle"
       :title="$t('Database Schema Initialized')"
       :description="
         $t(
@@ -22,7 +22,7 @@ const { dbMigrated, isMigrating } = useInstaller();
     <div v-else-if="isMigrating" class="w-full">
       <UAlert
         color="info"
-        variant="outline"
+        variant="subtle"
         :title="$t('Running Migrations')"
         :description="
           $t('Please wait while we apply the necessary database migrations...')
@@ -35,7 +35,7 @@ const { dbMigrated, isMigrating } = useInstaller();
     <div v-else class="w-full flex flex-col gap-5 items-center">
       <UAlert
         color="warning"
-        variant="outline"
+        variant="subtle"
         :title="$t('Database Schema Not Initialized')"
         :description="
           $t(

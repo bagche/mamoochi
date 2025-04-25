@@ -6,7 +6,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="w-full mb-15">
     <h2 class="text-3xl font-semibold">
       {{ $t("Content Toc") }}
     </h2>
@@ -32,6 +32,5 @@ defineProps({
         </a>
       </li>
     </ol>
-    <USeparator class="my-15" />
   </div>
 </template>

@@ -52,7 +52,7 @@ export default () => {
     const privKey = generateSecretKey();
     const privHex = bytesToHex(privKey);
     const pub = getPublicKey(privKey);
-    const deviceName = await GenerateIdentity(pub, locale.value);
+    const deviceName = await GenerateIdentity(locale.value);
 
     const [firstWord, ...rest] = deviceName.split(" ");
     const lastName = rest.join(" ").trim();
@@ -104,8 +104,23 @@ export default () => {
   };
 
   // Generate a new identity with new keys and profile data
-  const generateNewIdentity = () => {
-    setupNewIdentity();
+  const generateNewNames = async () => {
+    const deviceName = await GenerateIdentity(locale.value);
+
+    const [firstWord, ...rest] = deviceName.split(" ");
+    const lastName = rest.join(" ").trim();
+
+    profile.value = {
+      firstName: firstWord,
+      lastName,
+      displayName: deviceName,
+      about:
+        locale.value === "en"
+          ? `A ${deviceName} newcomer :)`
+          : `یک ${deviceName} تازه‌وارد :)`,
+      deviceName,
+      pub: profile.value.pub,
+    };
   };
 
   return {
@@ -114,6 +129,6 @@ export default () => {
     login,
     logout,
     initDevice,
-    generateNewIdentity,
+    generateNewNames,
   };
 };

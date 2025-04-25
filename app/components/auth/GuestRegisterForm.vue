@@ -5,9 +5,8 @@ const emit = defineEmits(["close-modal"]);
 
 const { t } = useI18n();
 const { fetch: fetchProfile } = useUserSession();
-const { generateNewIdentity, profile } = useUser();
+const { generateNewNames, profile } = useUser();
 const toast = useToast();
-const router = useRouter();
 
 // Refs
 const turnstile = ref();
@@ -158,7 +157,7 @@ watch(token, (newToken) => {
         color="secondary"
         size="xs"
         :label="$t('New Random Name')"
-        @click="generateNewIdentity()"
+        @click="generateNewNames()"
       />
     </div>
 
@@ -218,7 +217,7 @@ watch(token, (newToken) => {
           size="xl"
           block
           type="button"
-          variant="outline"
+          variant="subtle"
           icon="i-lucide-plus"
           color="success"
           :label="$t('Register As Guest')"

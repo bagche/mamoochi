@@ -74,10 +74,11 @@ const subscribe = async (event: FormSubmitEvent<Schema>) => {
         <UButtonGroup size="xl">
           <UInput
             v-model="state.email"
+            variant="subtle"
             :placeholder="$t('Enter your email address')"
             :disabled="submitting"
           />
-          <UButton type="submit" :loading="submitting" variant="outline">
+          <UButton type="submit" :loading="submitting" variant="subtle">
             {{ $t("Subscribe") }}
           </UButton>
         </UButtonGroup>

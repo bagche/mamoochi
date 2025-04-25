@@ -4,7 +4,7 @@
       <UAlert
         class="flex"
         color="success"
-        variant="outline"
+        variant="subtle"
         :title="$t('App Successfully installed')"
         :description="
           $t(
