@@ -123,8 +123,8 @@ const handleSubmit = async () => {
 
     resetTurnstile();
     emit("close-modal");
-    window.location.hash = "#comments";
-    window.location.reload();
+    // window.location.hash = "#comments";
+    // window.location.reload();
   } catch (error: any) {
     const errorMessage = error.data?.message || error.message;
     const errorDetails =
