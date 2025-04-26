@@ -71,7 +71,7 @@ const subscribe = async (event: FormSubmitEvent<Schema>) => {
       <UForm
         :schema="schema"
         :state="state"
-        class="space-y-4 w-full max-w-md"
+        class="space-y-4 w-full"
         @submit="subscribe"
       >
         <UButtonGroup size="xl" class="w-full flex">
