@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     "nuxt-booster",
     "@nuxtjs/sitemap",
     "@nuxtjs/fontaine",
-    "nuxt-delay-hydration", / 
+    "nuxt-delay-hydration",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],

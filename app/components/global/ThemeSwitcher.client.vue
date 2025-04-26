@@ -15,6 +15,7 @@ const isDark = computed({
 <template>
   <div class="flex items-center">
     <UButton
+      :aria-label="$t('Theme Switcher')"
       :icon="isDark ? 'i-lucide-sun' : 'i-lucide-moon'"
       class="cursor-pointer"
       size="xs"

@@ -3,6 +3,7 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import type { InferOutput } from "valibot";
 import { email, object, parse, pipe, string } from "valibot";
 import { reactive, ref } from "vue";
+
 import { useRoute } from "#imports";
 
 const toast = useToast();

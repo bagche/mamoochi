@@ -241,6 +241,7 @@ export default {
   "The application has established a secure connection to the D1 database. You can now continue with the installation process.": "The application has established a secure connection to the D1 database. You can now continue with the installation process.",
   "The member role is not configured in the system.": "The member role is not configured in the system.",
   "The page you are looking for doesn’t exist or has been moved.": "The page you are looking for doesn’t exist or has been moved.",
+  "Theme Switcher": "Theme Switcher",
   "This username is already in use. Please choose another.": "This username is already in use. Please choose another.",
   "Token not provided.": "Token not provided.",
   "Turnstile Configuration Missing": "Turnstile Configuration Missing",
