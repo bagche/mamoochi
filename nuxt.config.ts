@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     "nuxt-booster",
     "@nuxtjs/sitemap",
     "@nuxtjs/fontaine",
+    "nuxt-delay-hydration", / 
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -48,8 +49,9 @@ export default defineNuxtConfig({
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ["vue", "echarts", "vue-router"],
-            charts: ["echarts-liquidfill"],
+            vendor: ["vue", "vue-router"],
+            echarts: ["echarts"],
+            liquidfill: ["echarts-liquidfill"],
           },
         },
       },
@@ -99,7 +101,7 @@ export default defineNuxtConfig({
     },
     formats: ["webp", "avif"],
     density: [1, 2],
-    quality: 80,
+    quality: 70,
   },
 
   i18n: {
@@ -136,7 +138,12 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    "/api/**": { ssr: true },
+    "/api/**": {
+      ssr: true,
+      headers: {
+        "Cache-Control": "public, max-age=300, stale-while-revalidate=60",
+      },
+    },
     "/:locale/manage": { prerender: false, ssr: false },
     "/:locale/manage/**": { prerender: false, ssr: false },
   },
@@ -199,14 +206,34 @@ export default defineNuxtConfig({
       },
     },
     targetFormats: ["webp", "avif", "jpg|jpeg|png|gif"],
-    // lazyOffset: {
-    //   component: "0%",
-    //   asset: "0%",
-    // },
     optimizeSSR: {
       cleanPreloads: true,
       cleanPrefetches: true,
       inlineStyles: true,
     },
+  },
+  delayHydration: {
+    debug: process.env.NODE_ENV === "development",
+    mode: "mount",
+    // Enable replayClick to handle user interactions (e.g., clicks on navigation)
+    // before hydration completes, improving UX on JavaScript-dependent components
+    replayClick: true,
+  },
+  fontaine: {
+    fonts: [
+      {
+        family: "Vazirmatn",
+        fallbacks: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "sans-serif",
+        ],
+        weights: [100, 1100],
+        styles: ["normal"],
+        display: "swap",
+      },
+    ],
   },
 });

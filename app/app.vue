@@ -63,6 +63,7 @@ onMounted(() => {
     <Installer v-if="!appConfig.installed" />
     <NuxtLayout v-else>
       <NuxtLoadingIndicator />
+      <HydrationStatus />
       <NuxtPage />
     </NuxtLayout>
   </UApp>

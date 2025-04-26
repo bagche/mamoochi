@@ -3,7 +3,6 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import type { InferOutput } from "valibot";
 import { email, object, parse, pipe, string } from "valibot";
 import { reactive, ref } from "vue";
-
 import { useRoute } from "#imports";
 
 const toast = useToast();
@@ -54,29 +53,33 @@ const subscribe = async (event: FormSubmitEvent<Schema>) => {
 </script>
 
 <template>
-  <div class="flex flex-col lg:flex-row w-full items-center border rounded">
+  <div
+    class="flex flex-col w-full items-center border rounded md:flex-row md:justify-between"
+  >
     <div class="flex-1 w-full p-5">
       <h2 class="text-3xl font-semibold">
         {{ $t("Subscribe to Newsletter") }}
       </h2>
-
       <p>
         {{ $t("Provide your email to get email notification for new updates") }}
       </p>
     </div>
-    <div class="w-full px-5 md:w-1/2 lg:w-1/3">
+    <div
+      class="w-full p-5 flex justify-center md:w-1/2 md:justify-end lg:w-1/3"
+    >
       <UForm
         :schema="schema"
         :state="state"
-        class="space-y-4"
+        class="space-y-4 w-full max-w-md"
         @submit="subscribe"
       >
-        <UButtonGroup size="xl">
+        <UButtonGroup size="xl" class="w-full flex">
           <UInput
             v-model="state.email"
             variant="subtle"
             :placeholder="$t('Enter your email address')"
             :disabled="submitting"
+            class="w-full"
           />
           <UButton type="submit" :loading="submitting" variant="subtle">
             {{ $t("Subscribe") }}
