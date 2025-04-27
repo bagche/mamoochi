@@ -25,10 +25,6 @@ export default defineAppConfig({
       to: "/manage",
     },
     {
-      label: "Pages",
-      to: "/manage/pages",
-    },
-    {
       label: "Comments",
       to: "/manage/comments",
     },

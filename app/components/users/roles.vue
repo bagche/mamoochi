@@ -3,7 +3,6 @@ import type { TableColumn } from "@nuxt/ui";
 import type { Row } from "@tanstack/vue-table";
 
 // Define page meta to use the "manage" layout
- 
 
 // Resolve Nuxt UI components
 const UTable = resolveComponent("UTable");
@@ -111,7 +110,6 @@ function getRowItems(row: Row<Role>) {
 
 <template>
   <div class="w-full space-y-4 p-4">
-    <USeparator icon="i-lucide-key" />
     <UTable :data="data?.roles ?? []" :columns="columns" class="flex-1" />
 
     <!-- Display error if the fetch fails -->

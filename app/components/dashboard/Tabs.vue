@@ -22,8 +22,14 @@ const items = [
           :items="items"
           class="w-full"
           size="xl"
-        />
-        <CommentsManage status="new" />
+        >
+          <template #comments="{ item }">
+            <CommentsManage status="new" />
+          </template>
+          <template #users="{ item }">
+            <UsersManage />
+          </template>
+        </UTabs>
       </div>
     </UContainer>
   </div>

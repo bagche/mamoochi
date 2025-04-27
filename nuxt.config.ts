@@ -7,6 +7,8 @@ export default defineNuxtConfig({
   future: { compatibilityVersion: 4 },
   compatibilityDate: "2024-11-01",
   devtools: { enabled: false },
+  spaLoadingTemplate: true,
+
   modules: [
     "@nuxt/ui",
     "@nuxt/image",
@@ -19,10 +21,11 @@ export default defineNuxtConfig({
     "nuxt-echarts",
     "@nuxtjs/turnstile",
     "@nuxtjs/mdc",
-    "nuxt-booster",
     "@nuxtjs/sitemap",
+    "@nuxtjs/robots",
+    "nuxt-delay-hydration",
+    // "nuxt-booster",
     // "@nuxtjs/fontaine",
-    // "nuxt-delay-hydration",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -210,25 +213,11 @@ export default defineNuxtConfig({
       inlineStyles: true,
     },
   },
-  // delayHydration: {
-  //   mode: "init", // or 'manual' or 'mount'
-  //   debug: process.env.NODE_ENV === "development",
-  // },
-  // fontaine: {
-  //   fonts: [
-  //     {
-  //       family: "Vazirmatn",
-  //       fallbacks: [
-  //         "-apple-system",
-  //         "BlinkMacSystemFont",
-  //         "Segoe UI",
-  //         "Roboto",
-  //         "sans-serif",
-  //       ],
-  //       weights: [100, 1100],
-  //       styles: ["normal"],
-  //       display: "swap",
-  //     },
-  //   ],
-  // },
+  delayHydration: {
+    mode: "init", // or 'manual' or 'mount'
+    debug: process.env.NODE_ENV === "development",
+  },
+  robots: {
+    disallow: ["/manage", "/profile"],
+  },
 });

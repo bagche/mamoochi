@@ -4,7 +4,6 @@ import type { Row } from "@tanstack/vue-table";
 import { getPaginationRowModel } from "@tanstack/vue-table";
 
 // Define page meta to use the "manage" layout
- 
 
 const { t } = useI18n();
 // Resolve Nuxt UI components
@@ -158,7 +157,6 @@ function getRowItems(row: Row<User>) {
 
 <template>
   <div class="w-full space-y-4 p-4">
-    <USeparator icon="i-lucide-users" />
     <UTable
       v-model:pagination="pagination"
       :data="data?.users ?? []"
