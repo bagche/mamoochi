@@ -23,12 +23,13 @@ const option = computed(() => {
     },
     dataset: {
       dimensions: ["date", "pageViews"],
-      source: data?.value.map((item) => {
-        return {
-          date: formatDateTime(item.date!),
-          pageViews: item.pageViews,
-        };
-      }),
+      source:
+        data?.value?.map((item) => {
+          return {
+            date: formatDateTime(item.date!),
+            pageViews: item.pageViews,
+          };
+        }) ?? [],
     },
     xAxis: {
       type: "category",

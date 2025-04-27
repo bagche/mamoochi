@@ -170,7 +170,7 @@ export default defineNuxtConfig({
       githubOwner: process.env.NUXT_APP_GITHUB_OWNER || "",
       githubRepo: process.env.NUXT_APP_GITHUB_REPO || "",
       flareToken: process.env.NUXT_APP_FLARE_TOKEN || "",
-      flareZoneId: process.env.flareZoneId || "",
+      flareZoneId: process.env.NUXT_APP_FLARE_ZONE_ID || "",
     },
     turnstile: {
       secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY || "",
