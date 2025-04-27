@@ -2,6 +2,14 @@
 @import "@nuxt/ui";
 @plugin "@tailwindcss/typography";
 
+:root {
+  --ui-primary: black;
+}
+
+.dark {
+  --ui-primary: white;
+}
+
 html {
   scroll-behavior: smooth;
 }

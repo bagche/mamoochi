@@ -1,10 +1,10 @@
 export default defineAppConfig({
   installed: true,
-  ui: {
-    colors: {
-      primary: "zinc",
-    },
-  },
+  // ui: {
+  //   colors: {
+  //     primary: "black",
+  //   },
+  // },
   mainMenu: [
     {
       label: "Home",

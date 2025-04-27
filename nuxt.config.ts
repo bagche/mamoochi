@@ -24,8 +24,8 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     "@nuxtjs/robots",
     "nuxt-delay-hydration",
-    // "nuxt-booster",
-    // "@nuxtjs/fontaine",
+    "nuxt-booster",
+    "@nuxtjs/fontaine",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -214,7 +214,7 @@ export default defineNuxtConfig({
     },
   },
   delayHydration: {
-    mode: "init", // or 'manual' or 'mount'
+    mode: "mount", // or 'manual' or 'mount'
     debug: process.env.NODE_ENV === "development",
   },
   robots: {
