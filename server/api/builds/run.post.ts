@@ -79,7 +79,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // GitHub API integration
-  const { githubToken, githubOwner, githubRepo } = useRuntimeConfig(event);
+  const { githubToken, githubOwner, githubRepo } = useRuntimeConfig(event).app;
   if (!githubToken || !githubOwner || !githubRepo) {
     throw createError({
       statusCode: 500,

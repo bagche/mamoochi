@@ -21,8 +21,8 @@ export default defineNuxtConfig({
     "@nuxtjs/mdc",
     "nuxt-booster",
     "@nuxtjs/sitemap",
-    "@nuxtjs/fontaine",
-    "nuxt-delay-hydration",
+    // "@nuxtjs/fontaine",
+    // "nuxt-delay-hydration",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -140,9 +140,6 @@ export default defineNuxtConfig({
   routeRules: {
     "/api/**": {
       ssr: true,
-      headers: {
-        "Cache-Control": "public, max-age=300, stale-while-revalidate=60",
-      },
     },
     "/:locale/manage": { prerender: false, ssr: false },
     "/:locale/manage/**": { prerender: false, ssr: false },
@@ -154,7 +151,7 @@ export default defineNuxtConfig({
   },
 
   echarts: {
-    ssr: true,
+    ssr: false,
     renderer: ["svg"],
     charts: ["BarChart", "LineChart"],
     components: [
@@ -162,7 +159,6 @@ export default defineNuxtConfig({
       "GridComponent",
       "TooltipComponent",
       "ToolboxComponent",
-      "GeoComponent",
       "VisualMapComponent",
       "LegendComponent",
     ],
@@ -173,6 +169,8 @@ export default defineNuxtConfig({
       githubToken: process.env.NUXT_APP_GITHUB_TOKEN || "",
       githubOwner: process.env.NUXT_APP_GITHUB_OWNER || "",
       githubRepo: process.env.NUXT_APP_GITHUB_REPO || "",
+      flareToken: process.env.NUXT_APP_FLARE_TOKEN || "",
+      flareZoneId: process.env.flareZoneId || "",
     },
     turnstile: {
       secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY || "",
@@ -212,28 +210,25 @@ export default defineNuxtConfig({
       inlineStyles: true,
     },
   },
-  delayHydration: {
-    debug: process.env.NODE_ENV === "development",
-    mode: "mount",
-    // Enable replayClick to handle user interactions (e.g., clicks on navigation)
-    // before hydration completes, improving UX on JavaScript-dependent components
-    replayClick: true,
-  },
-  fontaine: {
-    fonts: [
-      {
-        family: "Vazirmatn",
-        fallbacks: [
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "sans-serif",
-        ],
-        weights: [100, 1100],
-        styles: ["normal"],
-        display: "swap",
-      },
-    ],
-  },
+  // delayHydration: {
+  //   mode: "init", // or 'manual' or 'mount'
+  //   debug: process.env.NODE_ENV === "development",
+  // },
+  // fontaine: {
+  //   fonts: [
+  //     {
+  //       family: "Vazirmatn",
+  //       fallbacks: [
+  //         "-apple-system",
+  //         "BlinkMacSystemFont",
+  //         "Segoe UI",
+  //         "Roboto",
+  //         "sans-serif",
+  //       ],
+  //       weights: [100, 1100],
+  //       styles: ["normal"],
+  //       display: "swap",
+  //     },
+  //   ],
+  // },
 });

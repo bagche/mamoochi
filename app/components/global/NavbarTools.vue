@@ -56,7 +56,7 @@ const items = computed(() => {
 <template>
   <div class="relative flex">
     <UButtonGroup class="gap-3" color="success">
-      <Can :ability="createCommit">
+      <Can v-if="!route.path.includes('manage')" :ability="createCommit">
         <UButton
           :to="'/' + locale + '/manage/editor' + route.path"
           size="xs"

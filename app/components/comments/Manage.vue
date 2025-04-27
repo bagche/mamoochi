@@ -47,7 +47,7 @@ async function updateCommentStatus(commentId: number, newStatus: string) {
       color: "success",
     });
     // Refresh the table data after a successful update
-    refresh();
+    await refresh();
   } catch (error: any) {
     console.error(error);
     toast.add({
@@ -74,8 +74,15 @@ const queryParams = computed(() => ({
 }));
 
 // Fetch paginated comments from the API endpoint
-const { data, error, refresh, status } = useFetch("/api/comments/all", {
+const {
+  data,
+  error,
+  refresh,
+  status: loading,
+} = useFetch("/api/comments/all", {
   query: queryParams,
+  server: true,
+  default: () => ({ comments: [], total: 0 }),
 });
 
 // Define table columns for the comments table
@@ -102,7 +109,7 @@ const columns: TableColumn<Comment>[] = [
           size: "md",
           alt: fullName,
         }),
-        h("div", null, [
+        h("div", null, () => [
           h("p", { class: "font-medium" }, fullName),
           h("p", null, `@${comment.authorUsername}`),
         ]),
@@ -132,9 +139,9 @@ const columns: TableColumn<Comment>[] = [
         label = t("Spam");
       } else if (status === "new") {
         color = "neutral";
-        label = t("new");
+        label = t("New");
       }
-      return h(UBadge, { color, size: "md" }, label);
+      return h(UBadge, { color, size: "md" }, () => [label]);
     },
   },
   {
@@ -199,7 +206,7 @@ const sorting = ref([
   <div class="w-full space-y-4 pt-4">
     <UTable
       v-model:sorting="sorting"
-      :loading="status === 'pending'"
+      :loading="loading === 'pending'"
       loading-color="primary"
       loading-animation="carousel"
       :data="data?.comments"
