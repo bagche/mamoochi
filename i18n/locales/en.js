@@ -262,6 +262,7 @@ export default {
   "Unable to connect to the database. Please verify your wrangler.toml configuration, ensure database migrations are applied, and refresh the page.": "Unable to connect to the database. Please verify your wrangler.toml configuration, ensure database migrations are applied, and refresh the page.",
   "Unauthorized": "Unauthorized",
   "Unauthorized: User not authenticated": "Unauthorized: User not authenticated",
+  "Unique Visits": "Unique Visits",
   "Unknown": "Unknown",
   "Unknown error": "Unknown error",
   "Update CDN": "Update CDN",

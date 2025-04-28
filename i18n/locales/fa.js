@@ -262,6 +262,7 @@ export default {
   "Unable to connect to the database. Please verify your wrangler.toml configuration, ensure database migrations are applied, and refresh the page.": "نمی‌تونم به دیتابیس وصل شم! تنظیمات wrangler.toml رو چک کن، مطمئن شو مهاجرت‌ها اعمال شدن و صفحه رو رفرش کن.",
   "Unauthorized": "غیرمجاز!",
   "Unauthorized: User not authenticated": "غیرمجاز: کاربر احراز هویت نشده!",
+  "Unique Visits": "Unique Visits",
   "Unknown": "ناشناس",
   "Unknown error": "خطای ناشناخته!",
   "Update CDN": "آپدیت CDN",

@@ -34,10 +34,10 @@ export default defineEventHandler(async (event) => {
 
   // Validate and format dates (default to last 7 days if not provided)
   const today = new Date();
-  const defaultEndDate = today.toISOString().split("T")[0]; // YYYY-MM-DD
+  const defaultEndDate = today.toISOString().split("T")[0];
   const defaultStartDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000)
     .toISOString()
-    .split("T")[0]; // 7 days ago
+    .split("T")[0];
 
   const formattedStartDate = startDate || defaultStartDate;
   const formattedEndDate = endDate || defaultEndDate;
@@ -69,6 +69,9 @@ export default defineEventHandler(async (event) => {
             }
             sum {
               pageViews
+            }
+            uniq {
+              uniques
             }
           }
         }
@@ -106,13 +109,12 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Extract and format page views data
-  const pageViewsData = data.viewer.zones[0].httpRequests1dGroups.map(
-    (item) => ({
-      date: item.dimensions.date,
-      pageViews: item.sum.pageViews,
-    })
-  );
+  // Extract and format traffic data
+  const trafficData = data.viewer.zones[0].httpRequests1dGroups.map((item) => ({
+    date: item.dimensions.date,
+    pageViews: item.sum.pageViews,
+    uniqueVisits: item.uniq.uniques,
+  }));
 
-  return pageViewsData;
+  return trafficData;
 });
