@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Get Cloudflare API token and zone ID from runtime config
-  const { flareToken, flareZoneId } = useRuntimeConfig(event).app;
+  const { flareToken, flareZoneId } = useRuntimeConfig(event);
   if (!flareToken || !flareZoneId) {
     throw createError({
       statusCode: 500,

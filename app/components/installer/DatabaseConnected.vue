@@ -8,9 +8,9 @@ console.log(runtimeConfig.turnstile?.secretKey);
 // Validate runtimeConfig properties
 const isGithubConfigValid = computed(() => {
   return (
-    !!runtimeConfig.app?.githubToken &&
-    !!runtimeConfig.app?.githubOwner &&
-    !!runtimeConfig.app?.githubRepo
+    !!runtimeConfig?.githubToken &&
+    !!runtimeConfig?.githubOwner &&
+    !!runtimeConfig?.githubRepo
   );
 });
 

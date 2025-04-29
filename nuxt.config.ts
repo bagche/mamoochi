@@ -10,11 +10,12 @@ export default defineNuxtConfig({
   spaLoadingTemplate: true,
 
   modules: [
+    "nuxt-delay-hydration",
+    "nuxt-booster",
     "@nuxt/ui",
     "@nuxt/image",
-    "@nuxt/eslint",
-    "nitro-cloudflare-dev",
     "nuxt-auth-utils",
+    "nitro-cloudflare-dev",
     "nuxt-tiptap-editor",
     "@nuxtjs/i18n",
     "nuxt-authorization",
@@ -23,9 +24,7 @@ export default defineNuxtConfig({
     "@nuxtjs/mdc",
     "@nuxtjs/sitemap",
     "@nuxtjs/robots",
-    "nuxt-delay-hydration",
-    // "nuxt-booster",
-    // "@nuxtjs/fontaine",
+    "@nuxt/eslint",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -47,6 +46,7 @@ export default defineNuxtConfig({
       }),
     ],
     build: {
+      target: "esnext",
       minify: "esbuild",
       cssMinify: true,
       rollupOptions: {
@@ -61,17 +61,6 @@ export default defineNuxtConfig({
     },
     optimizeDeps: {
       include: ["echarts", "echarts-liquidfill"],
-      exclude: ["shiki", "oniguruma"],
-    },
-    esbuild: {
-      drop: ["debugger"],
-      pure: [
-        "console.log",
-        "console.error",
-        "console.warn",
-        "console.debug",
-        "console.trace",
-      ],
     },
   },
 
@@ -168,13 +157,12 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    app: {
-      githubToken: process.env.NUXT_APP_GITHUB_TOKEN || "",
-      githubOwner: process.env.NUXT_APP_GITHUB_OWNER || "",
-      githubRepo: process.env.NUXT_APP_GITHUB_REPO || "",
-      flareToken: process.env.NUXT_APP_FLARE_TOKEN || "",
-      flareZoneId: process.env.NUXT_APP_FLARE_ZONE_ID || "",
-    },
+    githubToken: process.env.NUXT_APP_GITHUB_TOKEN || "",
+    githubOwner: process.env.NUXT_APP_GITHUB_OWNER || "",
+    githubRepo: process.env.NUXT_APP_GITHUB_REPO || "",
+    flareToken: process.env.NUXT_APP_FLARE_TOKEN || "",
+    flareZoneId: process.env.NUXT_APP_FLARE_ZONE_ID || "",
+    app: {},
     turnstile: {
       secretKey: process.env.NUXT_TURNSTILE_SECRET_KEY || "",
     },
@@ -190,31 +178,34 @@ export default defineNuxtConfig({
   mdc: {
     highlight: false,
   },
-
-  // booster: {
-  //   detection: {
-  //     performance: true,
-  //     browserSupport: true,
-  //   },
-  //   performanceMetrics: {
-  //     device: {
-  //       hardwareConcurrency: { min: 2, max: 48 },
-  //       deviceMemory: { min: 2 },
-  //     },
-  //     timing: {
-  //       fcp: 800,
-  //       dcl: 1200,
-  //     },
-  //   },
-  //   targetFormats: ["webp", "avif", "jpg|jpeg|png|gif"],
-  //   optimizeSSR: {
-  //     cleanPreloads: true,
-  //     cleanPrefetches: true,
-  //     inlineStyles: true,
-  //   },
-  // },
+  booster: {
+    detection: {
+      performance: true,
+      browserSupport: true,
+    },
+    performanceMetrics: {
+      device: {
+        hardwareConcurrency: { min: 2, max: 48 },
+        deviceMemory: { min: 2 },
+      },
+      timing: {
+        fcp: 800,
+        dcl: 1200,
+      },
+    },
+    optimizeSSR: {
+      cleanPreloads: true,
+      cleanPrefetches: true,
+      inlineStyles: true,
+    },
+    disableNuxtFontaine: true,
+    disableNuxtImage: true,
+    experimental: {
+      fallbackInit: true,
+    },
+  },
   delayHydration: {
-    mode: "init", // or 'manual' or 'mount'
+    mode: "mount", // or 'manual' or 'mount'
     debug: process.env.NODE_ENV === "development",
   },
   robots: {
