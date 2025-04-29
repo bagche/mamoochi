@@ -8,3 +8,10 @@ binding = "DB"
 database_name = "mamoochi"
 database_id = "1702648e-6998-4b67-bce2-281bb4622534"
 migrations_dir = "migrations"
+
+[[durable_objects.bindings]]
+name = "CHAT_DO"
+class_name = "ChatRoom"
+[[migrations]]
+tag = "v1"
+new_classes = ["ChatRoom"]

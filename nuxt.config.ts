@@ -85,6 +85,9 @@ export default defineNuxtConfig({
       failOnError: true,
       autoSubfolderIndex: false,
     },
+    experimental: {
+      websocket: true,
+    },
   },
   ui: { fonts: false },
   image: {
