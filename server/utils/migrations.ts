@@ -1,7 +1,41 @@
 // This file is auto-generated. Do not edit manually.
+import { DurableObject } from "cloudflare:workers";
+import crossws from "crossws/adapters/cloudflare-durable";
 export const dbMigrations = [
   {
     name: "0000_flat_justice.sql",
-    content: "CREATE TABLE `builds` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`build_name` text NOT NULL,\n\t`created_at` integer NOT NULL,\n\t`status` text DEFAULT 'pending'\n);\n--> statement-breakpoint\nCREATE TABLE `comments` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`route_path` text NOT NULL,\n\t`author_id` integer NOT NULL,\n\t`parent_comment_id` integer,\n\t`body` text NOT NULL,\n\t`status` text DEFAULT 'new' NOT NULL,\n\t`created_at` integer NOT NULL,\n\t`updated_at` integer,\n\tFOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,\n\tFOREIGN KEY (`parent_comment_id`) REFERENCES `comments`(`id`) ON UPDATE no action ON DELETE no action\n);\n--> statement-breakpoint\nCREATE TABLE `commits` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`build_id` integer NOT NULL,\n\t`author_id` integer NOT NULL,\n\t`path` text DEFAULT '',\n\t`type` text DEFAULT '',\n\t`status` text DEFAULT '',\n\t`message` text DEFAULT '',\n\t`body` text DEFAULT '',\n\t`created_at` integer NOT NULL,\n\t`updated_at` integer,\n\tFOREIGN KEY (`build_id`) REFERENCES `builds`(`id`) ON UPDATE no action ON DELETE no action,\n\tFOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action\n);\n--> statement-breakpoint\nCREATE TABLE `devices` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`user_id` integer NOT NULL,\n\t`pub_key` text NOT NULL,\n\t`ip_address` text DEFAULT '',\n\t`device_name` text DEFAULT '',\n\t`user_agent` text DEFAULT '',\n\t`login_date` integer NOT NULL,\n\t`last_activity` integer NOT NULL,\n\tFOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action\n);\n--> statement-breakpoint\nCREATE TABLE `newsletter` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`route_path` text NOT NULL,\n\t`email` text NOT NULL,\n\t`created_at` integer NOT NULL,\n\t`updated_at` integer\n);\n--> statement-breakpoint\nCREATE TABLE `roles` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`name` text NOT NULL,\n\t`description` text DEFAULT '',\n\t`permissions` text NOT NULL\n);\n--> statement-breakpoint\nCREATE UNIQUE INDEX `roles_name_unique` ON `roles` (`name`);--> statement-breakpoint\nCREATE TABLE `user_roles` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`user_id` integer NOT NULL,\n\t`role_id` integer NOT NULL,\n\tFOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,\n\tFOREIGN KEY (`role_id`) REFERENCES `roles`(`id`) ON UPDATE no action ON DELETE no action\n);\n--> statement-breakpoint\nCREATE TABLE `users` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`username` text NOT NULL,\n\t`firstName` text NOT NULL,\n\t`lastName` text NOT NULL,\n\t`displayName` text DEFAULT '',\n\t`about` text DEFAULT '',\n\t`email` text,\n\t`avatar` text DEFAULT '',\n\t`password` text NOT NULL,\n\t`created_at` integer NOT NULL,\n\t`last_login_at` integer,\n\t`updated_at` integer\n);\n--> statement-breakpoint\nCREATE UNIQUE INDEX `users_username_unique` ON `users` (`username`);--> statement-breakpoint\nCREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);",
+    content:
+      "CREATE TABLE `builds` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`build_name` text NOT NULL,\n\t`created_at` integer NOT NULL,\n\t`status` text DEFAULT 'pending'\n);\n--> statement-breakpoint\nCREATE TABLE `comments` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`route_path` text NOT NULL,\n\t`author_id` integer NOT NULL,\n\t`parent_comment_id` integer,\n\t`body` text NOT NULL,\n\t`status` text DEFAULT 'new' NOT NULL,\n\t`created_at` integer NOT NULL,\n\t`updated_at` integer,\n\tFOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,\n\tFOREIGN KEY (`parent_comment_id`) REFERENCES `comments`(`id`) ON UPDATE no action ON DELETE no action\n);\n--> statement-breakpoint\nCREATE TABLE `commits` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`build_id` integer NOT NULL,\n\t`author_id` integer NOT NULL,\n\t`path` text DEFAULT '',\n\t`type` text DEFAULT '',\n\t`status` text DEFAULT '',\n\t`message` text DEFAULT '',\n\t`body` text DEFAULT '',\n\t`created_at` integer NOT NULL,\n\t`updated_at` integer,\n\tFOREIGN KEY (`build_id`) REFERENCES `builds`(`id`) ON UPDATE no action ON DELETE no action,\n\tFOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action\n);\n--> statement-breakpoint\nCREATE TABLE `devices` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`user_id` integer NOT NULL,\n\t`pub_key` text NOT NULL,\n\t`ip_address` text DEFAULT '',\n\t`device_name` text DEFAULT '',\n\t`user_agent` text DEFAULT '',\n\t`login_date` integer NOT NULL,\n\t`last_activity` integer NOT NULL,\n\tFOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action\n);\n--> statement-breakpoint\nCREATE TABLE `newsletter` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`route_path` text NOT NULL,\n\t`email` text NOT NULL,\n\t`created_at` integer NOT NULL,\n\t`updated_at` integer\n);\n--> statement-breakpoint\nCREATE TABLE `roles` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`name` text NOT NULL,\n\t`description` text DEFAULT '',\n\t`permissions` text NOT NULL\n);\n--> statement-breakpoint\nCREATE UNIQUE INDEX `roles_name_unique` ON `roles` (`name`);--> statement-breakpoint\nCREATE TABLE `user_roles` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`user_id` integer NOT NULL,\n\t`role_id` integer NOT NULL,\n\tFOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE no action,\n\tFOREIGN KEY (`role_id`) REFERENCES `roles`(`id`) ON UPDATE no action ON DELETE no action\n);\n--> statement-breakpoint\nCREATE TABLE `users` (\n\t`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\n\t`username` text NOT NULL,\n\t`firstName` text NOT NULL,\n\t`lastName` text NOT NULL,\n\t`displayName` text DEFAULT '',\n\t`about` text DEFAULT '',\n\t`email` text,\n\t`avatar` text DEFAULT '',\n\t`password` text NOT NULL,\n\t`created_at` integer NOT NULL,\n\t`last_login_at` integer,\n\t`updated_at` integer\n);\n--> statement-breakpoint\nCREATE UNIQUE INDEX `users_username_unique` ON `users` (`username`);--> statement-breakpoint\nCREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);",
   },
 ];
+
+const ws = crossws({
+  // bindingName: "$DurableObject",
+  // instanceName: "crossws",
+  hooks: {
+    message: console.log,
+    open(peer) {
+      peer.subscribe("chat");
+      peer.publish("chat", { user: "server", message: `${peer} joined!` });
+    },
+  },
+});
+
+export class $DurableObject extends DurableObject {
+  constructor(state, env) {
+    super(state, env);
+    ws.handleDurableInit(this, state, env);
+  }
+
+  fetch(request) {
+    return ws.handleDurableUpgrade(this, request);
+  }
+
+  webSocketMessage(client, message) {
+    return ws.handleDurableMessage(this, client, message);
+  }
+
+  webSocketClose(client, code, reason, wasClean) {
+    return ws.handleDurableClose(this, client, code, reason, wasClean);
+  }
+}

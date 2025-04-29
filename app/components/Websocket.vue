@@ -34,14 +34,16 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
 import { useWebSocket } from "@vueuse/core";
+import { computed, ref, watch } from "vue";
 
 // Build the WS URL based on current origin
-const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-const host = window.location.host;
-const room = "test"; // change as needed
-const wsUrl = `${protocol}//${host}/chat?room=${room}`;
+const wsUrl = computed(() => {
+  const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+  const host = window?.location?.host;
+  const room = "test"; // change as needed
+  return `${protocol}//${host}/websocket?room=${room}`;
+});
 
 // Initialize WebSocket
 const {
@@ -69,16 +71,7 @@ const statusClass = computed(() => ({
 
 // Watch for incoming messages
 watch(data, (raw) => {
-  if (!raw) return;
-  try {
-    const msg = JSON.parse(raw);
-    if (msg.type === "pong") {
-      lastPong.value = new Date().toLocaleTimeString();
-      error.value = "";
-    }
-  } catch {
-    error.value = "Error parsing incoming message";
-  }
+  console.log("incoming", raw);
 });
 
 // Watch for WebSocket errors
@@ -88,13 +81,8 @@ watch(wsError, (e) => {
 
 // Send a ping
 function sendPing() {
-  if (status.value !== "OPEN") return;
-  try {
-    send(JSON.stringify({ type: "ping" }));
-    error.value = "";
-  } catch (e) {
-    error.value = `Failed to send ping: ${e.message || e}`;
-  }
+  console.log("ping");
+  send(JSON.stringify({ type: "ping" }));
 }
 
 // Optionally open/close hooks for debugging

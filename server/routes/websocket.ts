@@ -8,6 +8,7 @@ export default defineWebSocketHandler({
   },
 
   message(peer: Peer, message: Message) {
+    console.log("incoing");
     const data = JSON.parse(message.text());
     peer.publish("global", data);
   },
