@@ -12,8 +12,7 @@ const items = [
 <template>
   <UTabs :items="items" color="neutral" variant="link" class="w-full">
     <template #comments="{ item }">
-      <Websocket />
-      <!-- <CommentsSelf /> -->
+      <CommentsSelf />
     </template>
   </UTabs>
 </template>

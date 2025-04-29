@@ -24,8 +24,8 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     "@nuxtjs/robots",
     "nuxt-delay-hydration",
-    "nuxt-booster",
-    "@nuxtjs/fontaine",
+    // "nuxt-booster",
+    // "@nuxtjs/fontaine",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -84,9 +84,6 @@ export default defineNuxtConfig({
       routes: generateRoutes(),
       failOnError: true,
       autoSubfolderIndex: false,
-    },
-    experimental: {
-      websocket: true,
     },
   },
   ui: { fonts: false },
@@ -194,28 +191,28 @@ export default defineNuxtConfig({
     highlight: false,
   },
 
-  booster: {
-    detection: {
-      performance: true,
-      browserSupport: true,
-    },
-    performanceMetrics: {
-      device: {
-        hardwareConcurrency: { min: 2, max: 48 },
-        deviceMemory: { min: 2 },
-      },
-      timing: {
-        fcp: 800,
-        dcl: 1200,
-      },
-    },
-    targetFormats: ["webp", "avif", "jpg|jpeg|png|gif"],
-    optimizeSSR: {
-      cleanPreloads: true,
-      cleanPrefetches: true,
-      inlineStyles: true,
-    },
-  },
+  // booster: {
+  //   detection: {
+  //     performance: true,
+  //     browserSupport: true,
+  //   },
+  //   performanceMetrics: {
+  //     device: {
+  //       hardwareConcurrency: { min: 2, max: 48 },
+  //       deviceMemory: { min: 2 },
+  //     },
+  //     timing: {
+  //       fcp: 800,
+  //       dcl: 1200,
+  //     },
+  //   },
+  //   targetFormats: ["webp", "avif", "jpg|jpeg|png|gif"],
+  //   optimizeSSR: {
+  //     cleanPreloads: true,
+  //     cleanPrefetches: true,
+  //     inlineStyles: true,
+  //   },
+  // },
   delayHydration: {
     mode: "init", // or 'manual' or 'mount'
     debug: process.env.NODE_ENV === "development",
