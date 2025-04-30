@@ -6,7 +6,7 @@ const props = defineProps({
   cat: { type: String, required: false, default: "" },
 });
 
-const { data, error } = await useAsyncData(
+const { data, error } = useAsyncData(
   `logs-archives-${route.path}-${props.cat}`,
   async () => {
     try {

@@ -10,8 +10,6 @@ export default defineNuxtConfig({
   spaLoadingTemplate: true,
 
   modules: [
-    "nuxt-delay-hydration",
-    "nuxt-booster",
     "@nuxt/ui",
     "@nuxt/image",
     "nuxt-auth-utils",
@@ -25,6 +23,8 @@ export default defineNuxtConfig({
     "@nuxtjs/sitemap",
     "@nuxtjs/robots",
     "@nuxt/eslint",
+    "nuxt-booster",
+    // "nuxt-delay-hydration",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -204,10 +204,10 @@ export default defineNuxtConfig({
       fallbackInit: true,
     },
   },
-  delayHydration: {
-    mode: "mount", // or 'manual' or 'mount'
-    debug: process.env.NODE_ENV === "development",
-  },
+  // delayHydration: {
+  //   mode: "mount", // or 'manual' or 'mount'
+  //   debug: process.env.NODE_ENV === "development",
+  // },
   robots: {
     disallow: ["/manage", "/profile"],
   },

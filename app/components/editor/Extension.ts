@@ -1,44 +1,44 @@
 import { mergeAttributes, Node } from "@tiptap/core";
-import { NodeViewWrapper, VueNodeViewRenderer } from "@tiptap/vue-3";
+import {
+  nodeViewProps,
+  NodeViewWrapper,
+  VueNodeViewRenderer,
+} from "@tiptap/vue-3";
 import { defineComponent, h } from "vue";
 
-// Function to dynamically import components
-const importComponents = async () => {
-  const context = import.meta.glob("../mdc/**/*.vue", { eager: true });
-  const components = {};
+// 1. Eagerly import all Vue components inside /mdc
+const modules = import.meta.glob("../mdc/**/*.vue", { eager: true });
 
-  for (const [path, module] of Object.entries(context)) {
-    const componentName = path.split("/").pop()?.replace(".vue", "");
-    if (componentName) {
-      components[componentName] = module.default;
-    }
+// 2. Extract components using PascalCase names
+const components: Record<string, any> = {};
+for (const [path, mod] of Object.entries(modules)) {
+  const name = path.split("/").pop()?.replace(".vue", "");
+  if (name && mod && "default" in mod) {
+    components[name] = (mod as any).default;
   }
-  return components;
-};
+}
 
-// Function to create extensions asynchronously
-export const getExtensions = async () => {
-  const components = await importComponents();
-
+// 3. Create one TipTap Node extension per component
+export const getExtensions = () => {
   return Object.entries(components).map(([name, component]) =>
     Node.create({
-      name,
+      name, // PascalCase is OK
       group: "block",
       atom: true,
-      parseHTML() {
-        return [{ tag: name }];
-      },
-      renderHTML({ HTMLAttributes }) {
-        return [name, mergeAttributes(HTMLAttributes)];
-      },
-      addNodeView() {
+      draggable: true,
+      parseHTML: () => [{ tag: name }], // e.g. <HomeIntro />
+      renderHTML: ({ HTMLAttributes }) => [
+        name,
+        mergeAttributes(HTMLAttributes),
+      ],
+      addNodeView: () => {
         return VueNodeViewRenderer(
           defineComponent({
-            components: { component },
-            setup() {
+            props: nodeViewProps,
+            setup(props) {
               return () =>
                 h(NodeViewWrapper, null, {
-                  default: () => h(component),
+                  default: () => h(component, { ...props }),
                 });
             },
           })
