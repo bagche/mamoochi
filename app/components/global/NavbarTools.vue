@@ -87,24 +87,8 @@ const items = computed(() => {
           :to="'/' + locale + '/manage'"
         />
       </Can>
-      <UDropdownMenu
-        :items="items"
-        :content="{
-          align: 'end',
-          side: 'bottom',
-          sideOffset: 8,
-        }"
-      >
-        <UAvatar
-          class="bg-transparent cursor-pointer -mx-2"
-          icon="i-lucide-user"
-          placeholder
-          provider="cloudflare"
-          :modifiers="{ fit: 'contain' }"
-          :src="profile.avatar"
-          preload
-          loading="lazy"
-        />
+      <UDropdownMenu :items="items">
+        <UButton variant="ghost" icon="i-lucide-user" size="xs" />
         <!-- Account slot -->
         <template #account="{ item }">
           <NuxtLinkLocale class="-mx-1 gap-2 flex items-center" to="profile">
