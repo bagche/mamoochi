@@ -24,7 +24,7 @@ export default defineNuxtConfig({
     "@nuxtjs/robots",
     "@nuxt/eslint",
     "nuxt-booster",
-    // "nuxt-delay-hydration",
+    "nuxt-delay-hydration",
   ],
 
   css: ["~/assets/css/main.css", "~/assets/css/extra.css"],
@@ -204,10 +204,10 @@ export default defineNuxtConfig({
       fallbackInit: true,
     },
   },
-  // delayHydration: {
-  //   mode: "mount", // or 'manual' or 'mount'
-  //   debug: process.env.NODE_ENV === "development",
-  // },
+  delayHydration: {
+    mode: "mount", // or 'manual' or 'mount'
+    debug: process.env.NODE_ENV === "development",
+  },
   robots: {
     disallow: ["/manage", "/profile"],
   },
