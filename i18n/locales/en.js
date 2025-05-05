@@ -344,6 +344,5 @@ export default {
   "type": "type",
   "user_agent": "user_agent",
   "username": "username",
-  "vue": "vue",
-  "websocket": "websocket"
+  "vue": "vue"
 };
