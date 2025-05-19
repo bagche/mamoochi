@@ -1,4 +1,4 @@
-import { object, parse, string } from "valibot";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -23,13 +23,13 @@ export default defineEventHandler(async (event) => {
   }
 
   // Define query parameter schema
-  const querySchema = object({
-    pageRoute: string(),
+  const querySchema = z.object({
+    pageRoute: z.string(),
   });
 
   // Parse and validate query parameters
   const query = getQuery(event);
-  const { pageRoute } = parse(querySchema, query);
+  const { pageRoute } = querySchema.parse(query);
 
   // Decode pageRoute to handle URL-encoded values (e.g., blog%2Ftest%2FtileOne -> blog/test/tileOne)
   let decodedPageRoute: string;
@@ -89,6 +89,7 @@ export default defineEventHandler(async (event) => {
       variables: { path: expath },
     }),
   });
+
   // Check for HTTP errors
   if (!response.ok) {
     throw createError({

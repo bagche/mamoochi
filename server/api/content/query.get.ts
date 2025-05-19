@@ -1,5 +1,5 @@
 // server/api/content/query.get.ts
-import { object, optional, parse, pipe, string, transform } from "valibot";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -8,28 +8,22 @@ export default defineEventHandler(async (event) => {
       with: { type: "json" },
     });
 
-    // Define Valibot schema for query parameters
-    const schema = object({
-      intro: optional(
-        pipe(
-          string(),
-          transform((value) => value === "true")
-        ), // Transform string "true"/"false" to boolean
-        undefined
-      ),
-      sortBy: optional(string(), "date"), // Default to sorting by date
-      sortOrder: optional(string(), "DESC"), // Default to descending
-      limit: optional(
-        pipe(string(), transform(Number)), // Transform string to number
-        10
-      ),
-      locale: optional(string()), // Locale as optional string
-      cat: optional(string()), // Add cat as optional string
+    // Define Zod schema for query parameters
+    const schema = z.object({
+      intro: z
+        .string()
+        .transform((value) => value === "true")
+        .optional(),
+      sortBy: z.string().default("date"),
+      sortOrder: z.string().default("DESC"),
+      limit: z.string().transform(Number).default("10"),
+      locale: z.string().optional(),
+      cat: z.string().optional(),
     });
 
     // Parse query parameters
     const query = getQuery(event);
-    const parsed = parse(schema, query);
+    const parsed = schema.parse(query);
 
     // Filter logs by intro, locale, and cat if provided
     let filteredLogs = Logs;

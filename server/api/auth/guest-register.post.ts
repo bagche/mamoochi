@@ -1,22 +1,19 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { minLength, object, parse, pipe, string } from "valibot";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
   const headers = getHeaders(event);
   const now = new Date();
 
-  // Schema validation with pipe pattern
-  const schema = object({
-    firstName: pipe(string(), minLength(1, t("First name must not be empty"))),
-    lastName: pipe(string(), minLength(1, t("Last name must not be empty"))),
-    pub: pipe(string(), minLength(1, t("Public key must not be empty"))),
-    about: pipe(string(), minLength(1, t("About must not be empty"))),
-    token: pipe(
-      string(),
-      minLength(1, t("Verification token must not be empty"))
-    ),
+  // Schema validation with Zod
+  const schema = z.object({
+    firstName: z.string().min(1, t("First name must not be empty")),
+    lastName: z.string().min(1, t("Last name must not be empty")),
+    pub: z.string().min(1, t("Public key must not be empty")),
+    about: z.string().min(1, t("About must not be empty")),
+    token: z.string().min(1, t("Verification token must not be empty")),
   });
 
   try {
@@ -39,9 +36,7 @@ export default defineEventHandler(async (event) => {
 
     // Validate request body
     const body = await readBody(event);
-    const { firstName, lastName, pub, about } = parse(schema, body, {
-      abortEarly: false,
-    });
+    const { firstName, lastName, pub, about } = schema.parse(body);
 
     const { DB } = event.context.cloudflare.env;
     const db = drizzle(DB);

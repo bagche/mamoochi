@@ -1,48 +1,40 @@
 import { and, eq, or } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
 import { desc, sql } from "drizzle-orm/sql";
-import {
-  maxValue,
-  minLength,
-  minValue,
-  number,
-  object,
-  parse,
-  pipe,
-  string,
-  transform,
-} from "valibot";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
 
-  // Define a Valibot schema for validating query parameters
-  const schema = object({
-    page: pipe(
-      string(),
-      transform((val) => Number(val)),
-      number(),
-      minValue(1, t("Invalid page parameter: must be a number >= 1"))
-    ),
-    pageSize: pipe(
-      string(),
-      transform((val) => Number(val)),
-      number(),
-      minValue(
-        1,
-        t("Invalid pageSize parameter: must be a number between 1 and 100")
+  // Define a Zod schema for validating query parameters
+  const schema = z.object({
+    page: z
+      .string()
+      .transform((val) => Number(val))
+      .pipe(
+        z.number().min(1, t("Invalid page parameter: must be a number >= 1"))
       ),
-      maxValue(
-        100,
-        t("Invalid pageSize parameter: must be a number between 1 and 100")
-      )
-    ),
-    path: pipe(string(), minLength(1, t("Missing or invalid path parameter"))),
+    pageSize: z
+      .string()
+      .transform((val) => Number(val))
+      .pipe(
+        z
+          .number()
+          .min(
+            1,
+            t("Invalid pageSize parameter: must be a number between 1 and 100")
+          )
+          .max(
+            100,
+            t("Invalid pageSize parameter: must be a number between 1 and 100")
+          )
+      ),
+    path: z.string().min(1, t("Missing or invalid path parameter")),
   });
 
   // Parse query parameters
   const query = getQuery(event);
-  const parsed = parse(schema, query, { abortEarly: false });
+  const parsed = schema.parse(query);
 
   try {
     const { DB } = event.context.cloudflare.env;

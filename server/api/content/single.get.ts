@@ -1,17 +1,17 @@
-import { minLength, object, parse, pipe, string } from "valibot";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const { default: Content } = await import("#velite/content.json", {
     with: { type: "json" },
   });
   const t = await useTranslation(event);
-  const schema = object({
-    path: pipe(string(), minLength(1, "Missing or invalid path parameter")),
+  const schema = z.object({
+    path: z.string().min(1, "Missing or invalid path parameter"),
   });
   try {
     const query = getQuery(event);
-    const parsed = parse(schema, query, { abortEarly: false });
-    let { path } = parsed as { path: string };
+    const parsed = schema.parse(query);
+    let { path } = parsed;
 
     // Normalize path
     if (path !== "/" && path.endsWith("/")) {

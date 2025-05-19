@@ -1,4 +1,5 @@
 export default {
+  "10": "10",
   ".not-draggable": ".not-draggable",
   "404 - Page Not Found": "404 - Page Not Found",
   "About": "About",
@@ -65,6 +66,7 @@ export default {
   "Current password is incorrect": "Current password is incorrect",
   "Current password must not be empty": "Current password must not be empty",
   "D1 Database Connection": "D1 Database Connection",
+  "DESC": "DESC",
   "Dashboard": "Dashboard",
   "Database Connection Failed": "Database Connection Failed",
   "Database Connection Successful": "Database Connection Successful",
@@ -317,6 +319,7 @@ export default {
   "build_name": "build_name",
   "close-modal": "close-modal",
   "commentPosted": "commentPosted",
+  "date": "date",
   "description": "Web Developer",
   "device_name": "device_name",
   "displayName": "Display Name",

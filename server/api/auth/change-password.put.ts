@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/d1";
-import { minLength, object, parse, string } from "valibot";
+import { z } from "zod";
 
 export default defineEventHandler(async (event) => {
   const t = await useTranslation(event);
@@ -17,18 +17,15 @@ export default defineEventHandler(async (event) => {
     }
     const userId = session.user.id;
 
-    // Define Valibot schema for body validation
-    const schema = object({
-      oldPassword: string([
-        minLength(1, t("Current password must not be empty")),
-      ]),
-      newPassword: string([minLength(1, t("New password must not be empty"))]),
+    // Define Zod schema for body validation
+    const schema = z.object({
+      oldPassword: z.string().min(1, t("Current password must not be empty")),
+      newPassword: z.string().min(1, t("New password must not be empty")),
     });
 
     // Read and validate the body
     const body = await readBody(event);
-    const parsed = parse(schema, body, { abortEarly: false });
-    const { oldPassword, newPassword } = parsed;
+    const { oldPassword, newPassword } = schema.parse(body);
 
     // Initialize DB from Cloudflare environment
     const { DB } = event.context.cloudflare.env;
